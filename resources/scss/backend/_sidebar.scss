@@ -1,0 +1,80 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+.crm-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: $sidebar-width;
+    height: 100vh;
+    background: var(--crm-sidebar);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    flex-direction: column;
+    z-index: 50;
+    transition: width 0.3s ease, transform 0.3s ease;
+    overflow: hidden;
+
+    &.collapsed { width: 72px; }
+}
+
+.sidebar-logo {
+    padding: 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    @include flex(row, center, flex-start, 0.75rem);
+
+    img  { width: 36px; height: 36px; flex-shrink: 0; }
+    span { font-family: $font-heading; font-size: 1.1rem; font-weight: 700; color: #fff; white-space: nowrap; }
+}
+
+.sidebar-nav { flex: 1; padding: 1rem 0; overflow-y: auto; }
+
+.nav-section-label {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--crm-section-label);
+    white-space: nowrap;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 1.25rem;
+    margin: 0.1rem 0.5rem;
+    border-radius: $radius-md;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: $transition-base;
+    white-space: nowrap;
+    cursor: pointer;
+
+    svg, i { width: 20px; height: 20px; flex-shrink: 0; font-size: 1rem; }
+
+    &:hover {
+        background: var(--crm-nav-hover-bg);
+        color: #fff;
+    }
+
+    &.active {
+        background: rgba($orange, 0.15);
+        color: $orange;
+        font-weight: 600;
+    }
+}
+
+.sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 1024px) {
+    .crm-sidebar {
+        transform: translateX(-100%);
+        &.open { transform: translateX(0); }
+    }
+}

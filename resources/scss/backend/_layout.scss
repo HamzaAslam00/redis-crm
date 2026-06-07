@@ -1,0 +1,173 @@
+@use '../variables' as *;
+
+// ─── Page wrapper ──────────────────────────────────────────────
+.crm-wrapper {
+    display: flex;
+    min-height: 100vh;
+    background: var(--crm-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// ─── Main content area ─────────────────────────────────────────
+.crm-main {
+    flex: 1;
+    margin-left: $sidebar-width;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: margin-left 0.3s ease;
+
+    &.sidebar-collapsed { margin-left: 72px; }
+}
+
+.crm-content {
+    flex: 1;
+    padding: 1.5rem 2rem;
+    margin-top: $topbar-height;
+}
+
+// ─── Topbar ────────────────────────────────────────────────────
+.crm-topbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: $sidebar-width;
+    height: $topbar-height;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    background: var(--crm-topbar);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--crm-border);
+    z-index: 30;
+    transition: left 0.3s ease;
+}
+
+.crm-topbar__left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.crm-topbar__right {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+
+.crm-topbar__hamburger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--crm-text-sub);
+    padding: 0.25rem;
+    border-radius: $radius-sm;
+    transition: color 0.15s;
+
+    &:hover { color: var(--crm-text); }
+}
+
+.crm-topbar__collapse-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--crm-hover);
+    border: 1px solid var(--crm-border);
+    cursor: pointer;
+    color: var(--crm-text-sub);
+    padding: 0.375rem;
+    border-radius: $radius-sm;
+    transition: all 0.15s;
+
+    &:hover {
+        background: var(--crm-thead);
+        color: var(--crm-text);
+    }
+}
+
+.crm-topbar__title {
+    font-family: $font-heading;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--crm-text);
+    margin: 0;
+}
+
+.crm-topbar__user-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--crm-text-sub);
+    padding: 0.25rem 0.5rem;
+    border-radius: $radius-md;
+    transition: all 0.15s;
+
+    &:hover { color: var(--crm-text); }
+}
+
+.crm-topbar__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FF6400, #FFB800);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.crm-topbar__username {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--crm-text);
+}
+
+// ─── Dropdown ──────────────────────────────────────────────────
+.crm-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: var(--crm-text-sub);
+    transition: all 0.15s;
+    text-decoration: none;
+    width: 100%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+
+    &:hover { background: var(--crm-hover); color: var(--crm-text); }
+
+    &--danger {
+        color: #F87171;
+        &:hover { background: rgba(#F87171, 0.1); color: #F87171; }
+    }
+}
+
+// ─── Responsive ────────────────────────────────────────────────
+@media (max-width: 1024px) {
+    .crm-main { margin-left: 0; }
+
+    .crm-topbar {
+        left: 0 !important;
+    }
+
+    .crm-topbar__hamburger { display: flex; }
+    .crm-topbar__collapse-btn { display: none; }
+    .crm-topbar__username { display: none; }
+}

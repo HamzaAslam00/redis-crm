@@ -1,0 +1,114 @@
+// ─── Brand Colors (compile-time, theme-independent) ──────────────────────────
+$orange:        #FF6400;
+$orange-golden: #FFB800;
+$orange-dark:   #E55A00;
+$white:         #FFFFFF;
+$black:         #080808;
+
+// ─── Layout (compile-time) ────────────────────────────────────────────────────
+$sidebar-width: 260px;
+$topbar-height: 64px;
+
+// ─── Typography (compile-time) ────────────────────────────────────────────────
+$font-display: 'Clash Display', sans-serif;
+$font-heading: 'Syne', sans-serif;
+$font-body:    'DM Sans', sans-serif;
+$font-mono:    'JetBrains Mono', monospace;
+
+// ─── Transitions (compile-time) ───────────────────────────────────────────────
+$transition-base: all 0.2s ease;
+$transition-slow: all 0.4s ease;
+
+// ─── Border Radius (compile-time) ────────────────────────────────────────────
+$radius-sm:   6px;
+$radius-md:   10px;
+$radius-lg:   16px;
+$radius-xl:   24px;
+$radius-full: 9999px;
+
+// ─── CSS Custom Properties ────────────────────────────────────────────────────
+// Default = dark theme. Light theme overrides via html[data-theme="light"].
+// Both backend and frontend tokens live here to keep one source of truth.
+
+:root,
+html[data-theme="dark"] {
+    // ── Backend / CRM ──
+    --crm-bg:           #100F1A;
+    --crm-card:         #1A1829;
+    --crm-sidebar:      #0F0E1A;
+    --crm-topbar:       rgba(15, 14, 26, 0.96);
+    --crm-input:        #2D2A4E;
+    --crm-input-border: rgba(255, 255, 255, 0.18);
+    --crm-border:       rgba(255, 255, 255, 0.08);
+    --crm-hover:        rgba(255, 255, 255, 0.05);
+    --crm-thead:        rgba(255, 255, 255, 0.03);
+    --crm-scrollbar:    #0F0E1A;
+    --crm-text:         rgba(255, 255, 255, 0.88);
+    --crm-text-sub:     rgba(255, 255, 255, 0.55);
+    --crm-text-muted:   #9CA3AF;
+    --crm-section-label: rgba(255, 255, 255, 0.3);
+    --crm-nav-hover-bg: rgba(255, 255, 255, 0.06);
+    --crm-modal-overlay: rgba(0, 0, 0, 0.7);
+    --crm-shadow:       0 25px 60px rgba(0, 0, 0, 0.5);
+
+    // ── Frontend / Public ──
+    --fg-body:          #080808;
+    --fg-surface:       #141025;
+    --fg-card:          rgba(255, 255, 255, 0.04);
+    --fg-card-border:   rgba(255, 255, 255, 0.08);
+    --fg-text:          rgba(255, 255, 255, 0.85);
+    --fg-text-muted:    rgba(255, 255, 255, 0.55);
+    --fg-heading:       #FFFFFF;
+    --fg-border:        rgba(255, 255, 255, 0.08);
+    --fg-nav-scrolled:  rgba(8, 8, 8, 0.9);
+    --fg-footer:        #141025;
+    --fg-footer-border: rgba(255, 255, 255, 0.08);
+    --fg-section-alt:   #0D0C18;
+    --fg-nav-link:      rgba(255, 255, 255, 0.7);
+    --fg-nav-link-hover: #ffffff;
+    --fg-nav-hover:     rgba(255, 255, 255, 0.06);
+    --fg-nav-hamburger: rgba(255, 255, 255, 0.05);
+    --fg-nav-mobile:    rgba(8, 8, 8, 0.97);
+    --fg-input-placeholder: rgba(255, 255, 255, 0.25);
+}
+
+html[data-theme="light"] {
+    // ── Backend / CRM ──
+    --crm-bg:           #F0EFF8;
+    --crm-card:         #FFFFFF;
+    --crm-sidebar:      #1A1829;   // sidebar intentionally stays dark (brand identity)
+    --crm-topbar:       rgba(250, 249, 255, 0.97);
+    --crm-input:        #FFFFFF;
+    --crm-input-border: rgba(26, 24, 41, 0.28);
+    --crm-border:       rgba(26, 24, 41, 0.09);
+    --crm-hover:        rgba(26, 24, 41, 0.04);
+    --crm-thead:        rgba(26, 24, 41, 0.025);
+    --crm-scrollbar:    #E8E7F2;
+    --crm-text:         #1A1829;
+    --crm-text-sub:     rgba(26, 24, 41, 0.65);
+    --crm-text-muted:   #6B7280;
+    --crm-section-label: rgba(255, 255, 255, 0.3);  // sidebar labels stay light
+    --crm-nav-hover-bg: rgba(255, 255, 255, 0.06);  // sidebar hover stays light
+    --crm-modal-overlay: rgba(0, 0, 0, 0.5);
+    --crm-shadow:       0 25px 60px rgba(0, 0, 0, 0.15);
+
+    // ── Frontend / Public ──
+    --fg-body:          #FFFFFF;
+    --fg-surface:       #F8F7FF;
+    --fg-card:          rgba(26, 24, 41, 0.03);
+    --fg-card-border:   rgba(26, 24, 41, 0.09);
+    --fg-text:          rgba(26, 24, 41, 0.85);
+    --fg-text-muted:    rgba(26, 24, 41, 0.55);
+    --fg-heading:       #1A1829;
+    --fg-border:        rgba(26, 24, 41, 0.09);
+    --fg-nav-scrolled:  rgba(255, 255, 255, 0.96);
+    --fg-footer:        #1A1829;
+    --fg-footer-border: rgba(255, 255, 255, 0.1);
+    --fg-section-alt:   #F2F1FA;
+    --fg-nav-link:      rgba(26, 24, 41, 0.65);
+    --fg-nav-link-hover: #1A1829;
+    --fg-nav-hover:     rgba(26, 24, 41, 0.05);
+    --fg-nav-hamburger: rgba(26, 24, 41, 0.04);
+    --fg-nav-mobile:    rgba(255, 255, 255, 0.98);
+    --fg-input-placeholder: rgba(26, 24, 41, 0.3);
+}

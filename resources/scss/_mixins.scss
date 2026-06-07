@@ -1,0 +1,53 @@
+@use 'variables' as *;
+
+@mixin flex($direction: row, $align: center, $justify: flex-start, $gap: 0) {
+    display: flex;
+    flex-direction: $direction;
+    align-items: $align;
+    justify-content: $justify;
+    @if $gap != 0 { gap: $gap; }
+}
+
+@mixin card {
+    background: var(--crm-card);
+    border: 1px solid var(--crm-border);
+    border-radius: $radius-lg;
+    padding: 1.5rem;
+}
+
+@mixin fg-card {
+    background: var(--fg-card);
+    border: 1px solid var(--fg-card-border);
+    border-radius: $radius-lg;
+    padding: 1.5rem;
+    transition: border-color 0.2s ease, transform 0.25s ease;
+
+    &:hover {
+        border-color: rgba($orange, 0.3);
+        transform: translateY(-4px);
+    }
+}
+
+@mixin orange-gradient {
+    background: linear-gradient(135deg, $orange-golden, $orange, $orange-dark);
+}
+
+@mixin truncate($lines: 1) {
+    @if $lines == 1 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    } @else {
+        display: -webkit-box;
+        -webkit-line-clamp: $lines;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
+
+@mixin responsive($breakpoint) {
+    @if $breakpoint == sm { @media (max-width: 640px) { @content; } }
+    @else if $breakpoint == md { @media (max-width: 768px) { @content; } }
+    @else if $breakpoint == lg { @media (max-width: 1024px) { @content; } }
+    @else if $breakpoint == xl { @media (max-width: 1280px) { @content; } }
+}

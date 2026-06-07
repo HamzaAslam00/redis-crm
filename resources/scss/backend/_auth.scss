@@ -1,0 +1,269 @@
+@use '../variables' as *;
+
+// ─── Wrapper ──────────────────────────────────────────────────────────────────
+
+.auth-body {
+    margin: 0;
+    padding: 0;
+    background: #0F0E1A;
+    font-family: $font-body;
+    min-height: 100vh;
+}
+
+.auth-split {
+    display: flex;
+    min-height: 100vh;
+}
+
+// ─── Left: Brand Panel ────────────────────────────────────────────────────────
+
+.auth-brand {
+    flex: 0 0 52%;
+    background: #0F0E1A;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 2.5rem 3rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+
+    @media (max-width: 1024px) { display: none; }
+}
+
+// Ambient glows
+.auth-brand__glow {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+
+    &--1 {
+        top: -15%;
+        left: -20%;
+        width: 640px;
+        height: 640px;
+        background: radial-gradient(circle, rgba($orange, 0.09) 0%, transparent 65%);
+    }
+
+    &--2 {
+        bottom: -20%;
+        right: -15%;
+        width: 480px;
+        height: 480px;
+        background: radial-gradient(circle, rgba(61, 53, 104, 0.25) 0%, transparent 65%);
+    }
+}
+
+// Dot-grid background pattern
+.auth-brand__grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.6) 30%, rgba(0,0,0,0.6) 70%, transparent 100%);
+}
+
+// Logo at top
+.auth-brand__logo {
+    position: relative;
+    z-index: 1;
+    margin-bottom: auto;
+
+    img { height: 34px; }
+}
+
+// Hero copy block
+.auth-brand__hero {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem 0;
+}
+
+.auth-brand__eyebrow {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $orange;
+    margin-bottom: 1.25rem;
+}
+
+.auth-brand__headline {
+    font-family: $font-heading;
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.15;
+    color: #fff;
+    margin: 0 0 1.25rem;
+
+    em {
+        font-style: normal;
+        background: linear-gradient(135deg, $orange 0%, $orange-golden 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+}
+
+.auth-brand__sub {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.4);
+    line-height: 1.75;
+    max-width: 360px;
+    margin: 0 0 2.5rem;
+}
+
+// Feature list
+.auth-feat {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.auth-feat__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+}
+
+.auth-feat__icon {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: rgba($orange, 0.1);
+    border: 1px solid rgba($orange, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $orange;
+    margin-top: 1px;
+
+    svg { width: 16px; height: 16px; }
+}
+
+.auth-feat__title {
+    font-size: 0.825rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.15rem;
+}
+
+.auth-feat__desc {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.3);
+    line-height: 1.5;
+}
+
+// Bottom strip
+.auth-brand__footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.2);
+    margin-top: auto;
+    padding-top: 1.5rem;
+}
+
+.auth-brand__footer-dot {
+    opacity: 0.4;
+}
+
+// ─── Right: Form Panel ────────────────────────────────────────────────────────
+
+.auth-form-panel {
+    flex: 1;
+    background: #13122099;
+    backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem;
+    position: relative;
+
+    @media (max-width: 1024px) {
+        background: #0F0E1A;
+        padding: 2rem 1.5rem;
+        justify-content: flex-start;
+    }
+}
+
+.auth-form-panel__mobile-logo {
+    display: none;
+    margin-bottom: 2rem;
+
+    @media (max-width: 1024px) { display: block; }
+}
+
+.auth-form-wrap {
+    width: 100%;
+    max-width: 400px;
+    background: rgba(26, 24, 41, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: $radius-lg;
+    padding: 2.25rem 2rem;
+    backdrop-filter: blur(8px);
+}
+
+.auth-form-panel__back {
+    position: absolute;
+    bottom: 1.75rem;
+
+    a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.78rem;
+        color: rgba(255, 255, 255, 0.25);
+        text-decoration: none;
+        transition: color 0.15s;
+
+        &:hover { color: rgba($orange, 0.7); }
+    }
+
+    @media (max-width: 1024px) {
+        position: static;
+        margin-top: 2rem;
+        text-align: center;
+    }
+}
+
+// ─── Form heading styles (used inside slot) ───────────────────────────────────
+
+.auth-heading {
+    font-family: $font-heading;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.92);
+    margin: 0 0 0.3rem;
+}
+
+.auth-sub {
+    font-size: 0.825rem;
+    color: rgba(255, 255, 255, 0.35);
+    margin: 0 0 1.75rem;
+    line-height: 1.6;
+}
+
+.auth-alert-success {
+    padding: 0.75rem 1rem;
+    background: rgba(52, 211, 153, 0.08);
+    border: 1px solid rgba(52, 211, 153, 0.18);
+    border-radius: $radius-sm;
+    color: #34D399;
+    font-size: 0.825rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
+}

@@ -1,0 +1,67 @@
+// CRM Backend Stylesheet
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'reset';
+
+// Backend partials
+@use 'backend/layout';
+@use 'backend/sidebar';
+@use 'backend/tables';
+@use 'backend/cards';
+@use 'backend/forms';
+@use 'backend/badges';
+@use 'backend/modals';
+@use 'backend/buttons';
+@use 'backend/auth';
+
+// ─── Base CRM typography ────────────────────────────────────────
+body {
+    background: var(--crm-bg);
+    color: var(--crm-text);
+    font-family: $font-body;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+h1, h2, h3, h4, h5, h6 { font-family: $font-heading; font-weight: 600; color: var(--crm-text); }
+
+// ─── Scrollbar ──────────────────────────────────────────────────
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--crm-scrollbar); }
+::-webkit-scrollbar-thumb { background: rgba($orange, 0.4); border-radius: $radius-full; }
+::-webkit-scrollbar-thumb:hover { background: $orange; }
+
+// ─── SweetAlert2 toast override ────────────────────────────────
+.custom-class-toast {
+    font-family: $font-body !important;
+}
+
+// ─── Quill editor ───────────────────────────────────────────────
+.ql-toolbar.ql-snow {
+    background: var(--crm-input);
+    border-color: var(--crm-border) !important;
+    border-radius: $radius-sm $radius-sm 0 0;
+}
+
+.ql-container.ql-snow {
+    background: var(--crm-input);
+    border-color: var(--crm-border) !important;
+    border-radius: 0 0 $radius-sm $radius-sm;
+    color: var(--crm-text);
+    min-height: 200px;
+}
+
+.ql-snow .ql-stroke { stroke: var(--crm-text-muted); }
+.ql-snow .ql-fill  { fill: var(--crm-text-muted); }
+.ql-snow.ql-toolbar button:hover .ql-stroke { stroke: $orange; }
+
+// ─── Page title ────────────────────────────────────────────────
+.page-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--crm-text);
+}
+
+.page-subtitle {
+    font-size: 0.85rem;
+    color: var(--crm-text-muted);
+}

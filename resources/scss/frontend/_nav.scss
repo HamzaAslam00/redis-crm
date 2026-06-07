@@ -1,0 +1,206 @@
+@use '../variables' as *;
+@use '../mixins' as *;
+
+// ─── Logo theme switching ─────────────────────────────────────────────────────
+// Use .nav-logo context so specificity (0,2,0) beats .nav-logo img (0,1,1)
+.nav-logo .logo-dark  { display: none; }
+.nav-logo .logo-light { display: block; }
+
+html[data-theme="dark"] {
+    .nav-logo .logo-dark  { display: block; }
+    .nav-logo .logo-light { display: none; }
+}
+
+// ─── Nav over dark photo-hero (transparent state only) ────────────────────────
+// When the page starts with a dark photo-hero, force white nav until scrolled.
+// :has() is supported in all modern browsers (Chrome 105+, Safari 15.4+, FF 121+).
+body:has(.photo-hero) .site-nav:not(.scrolled) {
+    // Always show the white logo over a dark image
+    .nav-logo .logo-light { display: none !important; }
+    .nav-logo .logo-dark  { display: block !important; }
+
+    // White navigation links
+    .nav-links a {
+        color: rgba(255, 255, 255, 0.85);
+
+        &:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        &.active { color: $orange; }
+    }
+
+    // White hamburger icon for mobile
+    .nav-hamburger {
+        border-color: rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.08);
+
+        span,
+        span::before,
+        span::after { background: rgba(255, 255, 255, 0.9); }
+    }
+}
+
+// ─── Nav ─────────────────────────────────────────────────────────────────────
+.site-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1rem 0;
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, padding 0.2s ease;
+    background: transparent;
+
+    &.scrolled {
+        background: var(--fg-nav-scrolled);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border-bottom: 1px solid var(--fg-border);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        padding: 0.6rem 0;
+    }
+}
+
+.nav-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+
+    @include responsive(sm) { padding: 0 1.25rem; }
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    flex-shrink: 0;
+
+    img { height: 38px; width: auto; display: block; }
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    list-style: none;
+    flex: 1;
+    justify-content: center;
+
+    @include responsive(lg) { display: none; }
+
+    a {
+        display: inline-block;
+        padding: 0.4rem 0.875rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--fg-nav-link);
+        border-radius: $radius-sm;
+        transition: color 0.15s ease, background 0.15s ease;
+        text-decoration: none;
+
+        &:hover {
+            color: var(--fg-nav-link-hover);
+            background: var(--fg-nav-hover);
+        }
+
+        &.active {
+            color: $orange;
+            font-weight: 600;
+        }
+    }
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.nav-cta-btn {
+    border-radius: $radius-full !important;
+    padding: 0.6rem 1.4rem !important;
+    font-size: 0.85rem !important;
+
+    @include responsive(lg) { display: none; }
+}
+
+.nav-hamburger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: $radius-sm;
+    border: 1px solid var(--fg-border);
+    background: var(--fg-nav-hamburger);
+    cursor: pointer;
+    position: relative;
+
+    @include responsive(lg) { display: flex; }
+
+    span, span::before, span::after {
+        display: block;
+        width: 18px;
+        height: 2px;
+        background: var(--fg-nav-link-hover);
+        border-radius: 2px;
+        transition: all 0.25s ease;
+        position: relative;
+    }
+
+    span::before, span::after {
+        content: '';
+        position: absolute;
+        left: 0;
+    }
+
+    span::before { top: -6px; }
+    span::after  { top: 6px; }
+
+    span.open { background: transparent; }
+    span.open::before { transform: rotate(45deg) translate(4px, 4px); }
+    span.open::after  { transform: rotate(-45deg) translate(4px, -4px); }
+}
+
+.nav-mobile {
+    background: var(--fg-nav-mobile);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--fg-border);
+    padding: 1.25rem 2rem 2.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    min-height: calc(100dvh - 66px);
+    overflow-y: auto;
+
+    @include responsive(sm) { padding: 1.25rem 1.25rem 2.5rem; }
+
+    &__links {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+
+        a {
+            display: block;
+            padding: 0.875rem 0;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--fg-nav-link);
+            text-decoration: none;
+            border-bottom: 1px solid var(--fg-border);
+            transition: color 0.15s ease;
+
+            &:hover, &.active { color: $orange; }
+        }
+
+        li:last-child a { border-bottom: none; }
+    }
+}

@@ -1,0 +1,63 @@
+@use '../variables' as *;
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    border-radius: $radius-sm;
+    font-family: $font-body;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: $transition-base;
+    white-space: nowrap;
+    text-decoration: none;
+    vertical-align: middle;
+
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    &.btn-sm { padding: 0.3rem 0.65rem; font-size: 0.75rem; }
+    &.btn-lg { padding: 0.75rem 1.5rem; font-size: 1rem; }
+
+    &.btn-primary {
+        background: $orange;
+        color: #fff;
+        &:hover { background: $orange-dark; }
+    }
+
+    &.btn-secondary {
+        background: var(--crm-hover);
+        color: var(--crm-text);
+        border-color: var(--crm-border);
+        &:hover { background: var(--crm-thead); }
+    }
+
+    &.btn-danger {
+        background: rgba(#F87171, 0.12);
+        color: #F87171;
+        border-color: rgba(#F87171, 0.2);
+        &:hover { background: #F87171; color: #fff; }
+    }
+
+    &.btn-success {
+        background: rgba(#34D399, 0.12);
+        color: #34D399;
+        border-color: rgba(#34D399, 0.2);
+        &:hover { background: #34D399; color: #fff; }
+    }
+
+    &.btn-outline-orange {
+        border-color: $orange;
+        color: $orange;
+        &:hover { background: $orange; color: #fff; }
+    }
+
+    &.btn-icon {
+        padding: 0.5rem;
+        border-radius: $radius-sm;
+    }
+}
