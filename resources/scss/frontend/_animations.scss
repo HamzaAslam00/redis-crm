@@ -56,6 +56,24 @@
     100% { background-position: 0% 50%; }
 }
 
+// ─── Scroll-reveal initial hidden state ──────────────────────────────────────
+// Set via CSS (not JS gsap.set) so browser scroll restoration doesn't cause
+// timing races with GSAP's immediateRender.
+[data-gsap-fade] {
+    opacity: 0;
+    transform: translateY(32px);
+}
+
+[data-gsap-stagger] > * {
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.stat-item {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
 // ─── Animation utilities ─────────────────────────────────────────────────────
 
 .anim-fade-up {

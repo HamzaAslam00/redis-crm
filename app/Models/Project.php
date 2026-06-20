@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 class Project extends Model
 {
+    use LogsActivity;
+
     protected $fillable = [
         'project_code', 'client_name', 'title', 'description',
         'requirements_note', 'requirements_doc', 'cost', 'currency',
@@ -48,6 +52,15 @@ class Project extends Model
         return $this->deadline !== null
             && $this->deadline->isPast()
             && ! in_array($this->status, ['completed', 'cancelled']);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['client_name', 'title', 'status', 'developer_name', 'deadline'])
+            ->logOnlyDirty()
+            ->dontLogEmptyChanges()
+            ->useLogName('projects');
     }
 
     public static function generateCode(): string

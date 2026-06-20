@@ -1,9 +1,14 @@
 <?php
 
+use App\Http\Controllers\Backend\ActivityLogController;
+use App\Http\Controllers\Backend\ApiKeyController;
 use App\Http\Controllers\Backend\BudgetController;
+use App\Http\Controllers\Backend\ContactMessageController;
+use App\Http\Controllers\Backend\CredentialController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\HostingClientController;
 use App\Http\Controllers\Backend\InvestmentController;
+use App\Http\Controllers\Backend\PersonalNoteController;
 use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\SettingsController;
@@ -60,22 +65,48 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('can:hosting.view')->resource('hosting', HostingClientController::class)->except(['show'])
         ->parameters(['hosting' => 'hosting']);
 
-    // Placeholder routes (Phase 4+)
-    Route::get('api-keys', fn () => view('backend.placeholder', ['page' => 'API Keys Vault']))->name('api-keys.index');
-    Route::get('credentials', fn () => view('backend.placeholder', ['page' => 'Credentials Vault']))->name('credentials.index');
-    Route::get('notes', fn () => view('backend.placeholder', ['page' => 'Personal Notes']))->name('notes.index');
-    Route::get('contacts', fn () => view('backend.placeholder', ['page' => 'Contact Messages']))->name('contacts.index');
+    // API Keys Vault
+    Route::middleware('can:apikey.view')->group(function () {
+        Route::resource('api-keys', ApiKeyController::class)->except(['show'])->parameters(['api-keys' => 'apiKey']);
+        Route::post('api-keys/{apiKey}/reveal', [ApiKeyController::class, 'reveal'])->name('api-keys.reveal');
+    });
+
+    // Credentials Vault
+    Route::middleware('can:credential.view')->group(function () {
+        Route::resource('credentials', CredentialController::class)->except(['show']);
+        Route::post('credentials/{credential}/reveal', [CredentialController::class, 'reveal'])->name('credentials.reveal');
+    });
+
+    // Personal Notes
+    Route::middleware('can:note.view')->resource('notes', PersonalNoteController::class)->except(['show'])->parameters(['notes' => 'note']);
+
+    // Activity Logs
+    Route::middleware('can:activity.view')->get('activity', [ActivityLogController::class, 'index'])->name('activity.index');
+
+    // Contact Messages
+    Route::prefix('contacts')->name('contacts.')->group(function () {
+        Route::get('/', [ContactMessageController::class, 'index'])->name('index');
+        Route::get('{contact}', [ContactMessageController::class, 'show'])->name('show');
+        Route::patch('{contact}/status', [ContactMessageController::class, 'updateStatus'])->name('status');
+        Route::patch('{contact}/notes', [ContactMessageController::class, 'updateNotes'])->name('notes');
+        Route::post('{contact}/reply', [ContactMessageController::class, 'reply'])->name('reply');
+        Route::delete('{contact}', [ContactMessageController::class, 'destroy'])->name('destroy');
+    });
+
+    // Placeholder routes (Phase 5+)
     Route::get('proposals', fn () => view('backend.placeholder', ['page' => 'Proposals']))->name('proposals.index');
     Route::get('portfolio', fn () => view('backend.placeholder', ['page' => 'Portfolio']))->name('portfolio.index');
     Route::get('blog', fn () => view('backend.placeholder', ['page' => 'Blog Posts']))->name('blog.index');
-    Route::get('activity', fn () => view('backend.placeholder', ['page' => 'Activity Logs']))->name('activity.index');
 
     // Users & Roles
     Route::middleware('can:user.view')->resource('users', UserController::class)->except(['show']);
+    Route::post('users/{user}/impersonate', [UserController::class, 'impersonate'])->name('users.impersonate');
+    Route::post('impersonate/stop', [UserController::class, 'stopImpersonating'])->name('impersonate.stop');
     Route::middleware('can:role.view')->resource('roles', RoleController::class)->except(['show']);
 
     // Settings
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::put('settings', [SettingsController::class, 'update'])->name('settings.update');
+    Route::put('settings/recaptcha', [SettingsController::class, 'updateRecaptcha'])->name('settings.recaptcha');
 
 });

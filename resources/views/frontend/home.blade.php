@@ -187,7 +187,7 @@
                 ['ri-timer-flash-line',   '#FF6400', 'Save Your Time',           'Efficient solutions designed to save your time and streamline your business processes for maximum productivity.'],
                 ['ri-price-tag-3-line',   '#6366F1', 'Affordable Price For You', 'Quality digital solutions at competitive prices, carefully tailored to suit your budget without compromising results.'],
                 ['ri-bar-chart-box-line', '#10B981', 'Best Strategy',            'Proven data-driven strategies to drive sustainable success and achieve your business goals effectively and efficiently.'],
-                ['ri-handshake-line',     '#F59E0B', 'Trusted Partnership',      'We build long-term relationships based on transparency, clear communication, and consistent on-time delivery.'],
+                ['ri-shake-hands-line',   '#F59E0B', 'Trusted Partnership',      'We build long-term relationships based on transparency, clear communication, and consistent on-time delivery.'],
             ] as [$icon, $color, $title, $desc])
             <div class="why-card">
                 <div class="why-card__icon" style="background:{{ $color }}1A;border:1px solid {{ $color }}33;color:{{ $color }}">
@@ -212,13 +212,13 @@
 
         <div class="service-grid" data-gsap-stagger>
             @foreach([
-                ['ri-sparkling-2-line', '#EC4899', 'AI-Based Applications',    'Build AI-powered chatbots, automation pipelines and LLM integrations that give your business a real competitive edge.'],
-                ['ri-window-line',      '#FF6400', 'Website Development',      'Build any website with the expertise of Redis Solution for a faster tomorrow. From landing pages to full SaaS platforms.'],
-                ['ri-smartphone-line',  '#6366F1', 'Mobile App Development',   'Build any mobile app with expertise in Flutter, React Native, iOS & Android. Native performance, beautiful UI.'],
-                ['ri-bar-chart-line',   '#10B981', 'Digital Marketing',        'Drive growth with SEO, Google Ads, Meta campaigns and social media strategies that deliver measurable, trackable ROI.'],
-                ['ri-code-s-slash-line','#0EA5E9', 'Software Development',     'Tailored software solutions designed to meet your unique business needs and drive operational efficiency at scale.'],
-                ['ri-layout-grid-line', '#F59E0B', 'ERP & CMS Development',    'Streamline your operations and manage content effortlessly with custom ERP and CMS solutions built for your workflow.'],
-            ] as [$icon, $color, $title, $desc])
+                ['ri-sparkling-2-line', '#EC4899', 'AI-Based Applications',    'Build AI-powered chatbots, automation pipelines and LLM integrations that give your business a real competitive edge.',   'ai-applications'],
+                ['ri-window-line',      '#FF6400', 'Website Development',      'Build any website with the expertise of Redis Solution for a faster tomorrow. From landing pages to full SaaS platforms.',    'web-development'],
+                ['ri-smartphone-line',  '#6366F1', 'Mobile App Development',   'Build any mobile app with expertise in Flutter, React Native, iOS & Android. Native performance, beautiful UI.',            'mobile-apps'],
+                ['ri-bar-chart-line',   '#10B981', 'Digital Marketing',        'Drive growth with SEO, Google Ads, Meta campaigns and social media strategies that deliver measurable, trackable ROI.',       'digital-marketing'],
+                ['ri-code-s-slash-line','#0EA5E9', 'Software Development',     'Tailored software solutions designed to meet your unique business needs and drive operational efficiency at scale.',           'software-development'],
+                ['ri-layout-grid-line', '#F59E0B', 'ERP & CMS Development',    'Streamline your operations and manage content effortlessly with custom ERP and CMS solutions built for your workflow.',      'erp-cms'],
+            ] as [$icon, $color, $title, $desc, $anchor])
             <div class="service-card" data-tilt>
                 <div class="service-card__icon" style="background:{{ $color }}15;border:1px solid {{ $color }}30;color:{{ $color }}">
                     <i class="{{ $icon }}"></i>
@@ -227,7 +227,7 @@
                     <h3 class="service-card__title">{{ $title }}</h3>
                     <p class="service-card__desc">{{ $desc }}</p>
                 </div>
-                <a href="{{ route('services') }}" class="service-card__arrow">
+                <a href="{{ route('services') }}#{{ $anchor }}" class="service-card__arrow">
                     Read More
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:13px;height:13px"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                 </a>
@@ -303,8 +303,8 @@
                 <div class="about-img-badge">
                     <i class="ri-verified-badge-fill" style="color:#FF6400;font-size:1.75rem"></i>
                     <div>
-                        <div style="font-weight:700;font-size:0.88rem;color:#1A1829">ISO-Standard Code</div>
-                        <div style="font-size:0.75rem;color:#6B7280">Every project, no exceptions</div>
+                        <div style="font-weight:700;font-size:0.88rem;color:var(--fg-heading)">ISO-Standard Code</div>
+                        <div style="font-size:0.75rem;color:var(--fg-text-muted)">Every project, no exceptions</div>
                     </div>
                 </div>
             </div>

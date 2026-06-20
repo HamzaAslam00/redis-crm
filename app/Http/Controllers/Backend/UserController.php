@@ -7,6 +7,8 @@ use App\Http\Requests\Backend\StoreUserRequest;
 use App\Http\Requests\Backend\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
@@ -64,6 +66,32 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index')
             ->with('success', "User {$user->name} updated successfully.");
+    }
+
+    public function impersonate(User $user): RedirectResponse
+    {
+        abort_unless(auth()->user()->hasRole('super-admin'), 403);
+        abort_if(session()->has('impersonator_id'), 403, 'Already impersonating a user.');
+        abort_if($user->hasRole('super-admin'), 403, 'Cannot impersonate a super-admin.');
+        abort_if($user->id === auth()->id(), 403, 'Cannot impersonate yourself.');
+
+        session(['impersonator_id' => auth()->id()]);
+        Auth::login($user);
+
+        return redirect()->route('admin.dashboard')
+            ->with('info', "You are now logged in as {$user->name}.");
+    }
+
+    public function stopImpersonating(Request $request): RedirectResponse
+    {
+        $adminId = session('impersonator_id');
+        abort_unless($adminId, 403);
+
+        session()->forget('impersonator_id');
+        Auth::loginUsingId($adminId);
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'Returned to your admin account.');
     }
 
     public function destroy(User $user): RedirectResponse

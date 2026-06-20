@@ -13,7 +13,7 @@
     {{-- ═══════════════════════════════════════════════
          SERVICE 1 — AI APPLICATIONS (odd = content left)
     ═══════════════════════════════════════════════ --}}
-    <section class="section" id="ai-applications">
+    <section class="section" id="ai-applications" style="scroll-margin-top:80px">
         <div class="container">
             <div class="rg-svc" data-gsap-stagger>
 
@@ -37,7 +37,7 @@
                             <span style="padding:0.3rem 0.75rem;border-radius:99px;background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.25);color:#EC4899;font-size:0.78rem;font-weight:600">{{ $tag }}</span>
                         @endforeach
                     </div>
-                    <a href="{{ route('contact') }}" class="btn-primary">Get a Quote</a>
+                    <a href="{{ route('contact') }}?service=AI+Applications" class="btn-primary">Get a Quote</a>
                 </div>
 
                 {{-- Included card --}}
@@ -70,7 +70,7 @@
     {{-- ═══════════════════════════════════════════════
          SERVICE 2 — WEB DEVELOPMENT (even = content right)
     ═══════════════════════════════════════════════ --}}
-    <section class="section" id="web-development" style="background:var(--fg-surface)">
+    <section class="section" id="web-development" style="background:var(--fg-surface);scroll-margin-top:80px">
         <div class="container">
             <div class="rg-svc" data-gsap-stagger>
 
@@ -117,7 +117,7 @@
                             <span style="padding:0.3rem 0.75rem;border-radius:99px;background:rgba(255,100,0,0.1);border:1px solid rgba(255,100,0,0.25);color:#FF6400;font-size:0.78rem;font-weight:600">{{ $tag }}</span>
                         @endforeach
                     </div>
-                    <a href="{{ route('contact') }}" class="btn-primary">Get a Quote</a>
+                    <a href="{{ route('contact') }}?service=Web+Development" class="btn-primary">Get a Quote</a>
                 </div>
 
             </div>
@@ -127,7 +127,7 @@
     {{-- ═══════════════════════════════════════════════
          SERVICE 3 — MOBILE APPS (odd = content left)
     ═══════════════════════════════════════════════ --}}
-    <section class="section" id="mobile-apps">
+    <section class="section" id="mobile-apps" style="scroll-margin-top:80px">
         <div class="container">
             <div class="rg-svc" data-gsap-stagger>
 
@@ -151,7 +151,7 @@
                             <span style="padding:0.3rem 0.75rem;border-radius:99px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);color:#6366F1;font-size:0.78rem;font-weight:600">{{ $tag }}</span>
                         @endforeach
                     </div>
-                    <a href="{{ route('contact') }}" class="btn-primary">Get a Quote</a>
+                    <a href="{{ route('contact') }}?service=Mobile+Apps" class="btn-primary">Get a Quote</a>
                 </div>
 
                 {{-- Included card --}}
@@ -184,7 +184,7 @@
     {{-- ═══════════════════════════════════════════════
          SERVICE 4 — DIGITAL MARKETING (even = content right)
     ═══════════════════════════════════════════════ --}}
-    <section class="section" id="digital-marketing" style="background:var(--fg-surface)">
+    <section class="section" id="digital-marketing" style="background:var(--fg-surface);scroll-margin-top:80px">
         <div class="container">
             <div class="rg-svc" data-gsap-stagger>
 
@@ -231,7 +231,7 @@
                             <span style="padding:0.3rem 0.75rem;border-radius:99px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:#10B981;font-size:0.78rem;font-weight:600">{{ $tag }}</span>
                         @endforeach
                     </div>
-                    <a href="{{ route('contact') }}" class="btn-primary">Get a Quote</a>
+                    <a href="{{ route('contact') }}?service=Digital+Marketing" class="btn-primary">Get a Quote</a>
                 </div>
 
             </div>
@@ -241,7 +241,7 @@
     {{-- ═══════════════════════════════════════════════
          SERVICE 5 — ERP & CMS (odd = content left)
     ═══════════════════════════════════════════════ --}}
-    <section class="section" id="erp-cms">
+    <section class="section" id="erp-cms" style="scroll-margin-top:80px">
         <div class="container">
             <div class="rg-svc" data-gsap-stagger>
 
@@ -265,7 +265,7 @@
                             <span style="padding:0.3rem 0.75rem;border-radius:99px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);color:#F59E0B;font-size:0.78rem;font-weight:600">{{ $tag }}</span>
                         @endforeach
                     </div>
-                    <a href="{{ route('contact') }}" class="btn-primary">Get a Quote</a>
+                    <a href="{{ route('contact') }}?service=ERP+%26+CMS" class="btn-primary">Get a Quote</a>
                 </div>
 
                 {{-- Included card --}}
@@ -298,7 +298,7 @@
     {{-- ═══════════════════════════════════════════════
          SERVICE 6 — SOFTWARE DEVELOPMENT (even = content right)
     ═══════════════════════════════════════════════ --}}
-    <section class="section" id="software-development" style="background:var(--fg-surface)">
+    <section class="section" id="software-development" style="background:var(--fg-surface);scroll-margin-top:80px">
         <div class="container">
             <div class="rg-svc" data-gsap-stagger>
 
@@ -345,7 +345,7 @@
                             <span style="padding:0.3rem 0.75rem;border-radius:99px;background:rgba(14,165,233,0.1);border:1px solid rgba(14,165,233,0.25);color:#0EA5E9;font-size:0.78rem;font-weight:600">{{ $tag }}</span>
                         @endforeach
                     </div>
-                    <a href="{{ route('contact') }}" class="btn-primary">Get a Quote</a>
+                    <a href="{{ route('contact') }}?service=Software+Development" class="btn-primary">Get a Quote</a>
                 </div>
 
             </div>
@@ -353,5 +353,20 @@
     </section>
 
     <x-frontend.cta-banner />
+
+    @push('scripts')
+    <script>
+        window.addEventListener('load', function () {
+            var hash = window.location.hash;
+            if (!hash) return;
+            var el = document.querySelector(hash);
+            if (!el) return;
+            setTimeout(function () {
+                var top = el.getBoundingClientRect().top + window.scrollY - 88;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+            }, 120);
+        });
+    </script>
+    @endpush
 
 </x-layouts.frontend>

@@ -6,6 +6,7 @@ use App\Models\BudgetExpense;
 use App\Models\BudgetIncome;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -41,16 +42,16 @@ class BudgetTable extends Component
         $this->resetPage();
     }
 
-    public function deleteExpense(int $id): void
+    #[On('delete')]
+    public function delete(int $id, ?string $type = null): void
     {
-        BudgetExpense::findOrFail($id)->delete();
-        $this->dispatch('toast', type: 'success', message: 'Expense deleted.');
-    }
-
-    public function deleteIncome(int $id): void
-    {
-        BudgetIncome::findOrFail($id)->delete();
-        $this->dispatch('toast', type: 'success', message: 'Income deleted.');
+        if ($type === 'income') {
+            BudgetIncome::findOrFail($id)->delete();
+            $this->dispatch('toast', type: 'success', message: 'Income deleted.');
+        } else {
+            BudgetExpense::findOrFail($id)->delete();
+            $this->dispatch('toast', type: 'success', message: 'Expense deleted.');
+        }
     }
 
     /** @return LengthAwarePaginator<BudgetExpense> */

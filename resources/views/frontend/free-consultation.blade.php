@@ -68,7 +68,7 @@
                         @error('message')<p style="color:#EF4444;font-size:0.78rem;margin-top:0.3rem">{{ $message }}</p>@enderror
                     </div>
 
-                    <button type="submit" class="btn-primary" style="width:100%;justify-content:center;font-size:1rem;padding:0.875rem 1.5rem">
+                    <button type="submit" class="btn-primary" data-loading-text="Submitting…" style="width:100%;justify-content:center;font-size:1rem;padding:0.875rem 1.5rem">
                         <i class="ri-calendar-check-line"></i> Request Free Consultation
                     </button>
 

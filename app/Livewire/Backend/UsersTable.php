@@ -5,6 +5,7 @@ namespace App\Livewire\Backend;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -50,7 +51,8 @@ class UsersTable extends Component
         $this->resetPage();
     }
 
-    public function deleteUser(int $id): void
+    #[On('delete')]
+    public function delete(int $id): void
     {
         $user = User::findOrFail($id);
 

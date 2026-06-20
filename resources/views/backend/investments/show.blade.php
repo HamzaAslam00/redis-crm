@@ -36,9 +36,14 @@
                 <a href="{{ route('admin.investments.edit', $investment) }}" class="btn btn-secondary"><i class="ri-pencil-line"></i> Edit</a>
             @endcan
             @can('investment.delete')
-                <form method="POST" action="{{ route('admin.investments.destroy', $investment) }}" onsubmit="return confirm('Delete this investment and all its expenses?')">
+                <form id="delete-investment-form" method="POST" action="{{ route('admin.investments.destroy', $investment) }}">
                     @csrf @method('DELETE')
-                    <button type="submit" class="btn btn-danger"><i class="ri-delete-bin-line"></i> Delete</button>
+                    <button type="button" class="btn btn-danger"
+                        onclick="deleteForm(this)"
+                        data-form="delete-investment-form"
+                        data-label="this investment">
+                        <i class="ri-delete-bin-line"></i> Delete
+                    </button>
                 </form>
             @endcan
         </div>
@@ -147,9 +152,14 @@
                                 <td style="font-size:0.8rem;color:var(--crm-text-muted)">{{ $expense->output ? Str::limit($expense->output, 40) : '—' }}</td>
                                 @can('investment.delete')
                                     <td>
-                                        <form method="POST" action="{{ route('admin.investments.expenses.destroy', [$investment, $expense]) }}" style="display:flex;justify-content:flex-end" onsubmit="return confirm('Delete this expense?')">
+                                        <form id="del-exp-{{ $expense->id }}" method="POST" action="{{ route('admin.investments.expenses.destroy', [$investment, $expense]) }}" style="display:flex;justify-content:flex-end">
                                             @csrf @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"><i class="ri-delete-bin-line"></i></button>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                onclick="deleteForm(this)"
+                                                data-form="del-exp-{{ $expense->id }}"
+                                                data-label="this expense">
+                                                <i class="ri-delete-bin-line"></i>
+                                            </button>
                                         </form>
                                     </td>
                                 @endcan

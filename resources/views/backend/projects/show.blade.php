@@ -48,9 +48,14 @@
                 </a>
             @endcan
             @can('project.delete')
-                <form method="POST" action="{{ route('admin.projects.destroy', $project) }}" onsubmit="return confirm('Delete {{ addslashes($project->project_code) }}? This cannot be undone.')">
+                <form id="delete-project-form" method="POST" action="{{ route('admin.projects.destroy', $project) }}">
                     @csrf @method('DELETE')
-                    <button type="submit" class="btn btn-danger"><i class="ri-delete-bin-line"></i> Delete</button>
+                    <button type="button" class="btn btn-danger"
+                        onclick="deleteForm(this)"
+                        data-form="delete-project-form"
+                        data-label="{{ addslashes($project->project_code) }}">
+                        <i class="ri-delete-bin-line"></i> Delete
+                    </button>
                 </form>
             @endcan
         </div>

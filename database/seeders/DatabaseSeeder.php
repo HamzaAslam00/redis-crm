@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
             SuperAdminSeeder::class,
             SettingsSeeder::class,
+            EmailTemplatesSeeder::class,
+            NotificationSettingsSeeder::class,
         ]);
     }
 }

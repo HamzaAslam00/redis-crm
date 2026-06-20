@@ -47,6 +47,22 @@
         {{-- Topbar --}}
         @include('components.backend.topbar')
 
+        {{-- Impersonation banner --}}
+        @if(session('impersonator_id'))
+            <div style="background:#FF6400;color:#fff;padding:0.5rem 1.5rem;font-size:0.82rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap">
+                <span style="display:flex;align-items:center;gap:0.4rem">
+                    <i class="ri-spy-line"></i>
+                    Viewing as <strong>{{ auth()->user()->name }}</strong>
+                </span>
+                <form method="POST" action="{{ route('admin.impersonate.stop') }}" style="margin:0">
+                    @csrf
+                    <button type="submit" style="background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.35);color:#fff;padding:0.2rem 0.8rem;border-radius:6px;font-size:0.78rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:0.3rem">
+                        <i class="ri-arrow-go-back-line"></i> Return to Admin
+                    </button>
+                </form>
+            </div>
+        @endif
+
         {{-- Page content --}}
         <main class="crm-content">
             @include('components.backend.breadcrumb')
@@ -82,7 +98,39 @@ document.addEventListener('alpine:init', () => {
 {{-- Page-level scripts --}}
 @stack('scripts')
 
+{{-- Global: disable submit buttons on form submit to prevent double-clicks --}}
+<script>
+document.addEventListener('submit', function (e) {
+    const form = e.target;
+    if (form.dataset.noAutoDisable) { return; }
+    form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(function (btn) {
+        btn.disabled = true;
+        if (btn.dataset.loadingText) { btn.textContent = btn.dataset.loadingText; }
+    });
+});
+</script>
+
 @livewireScripts
+
+{{-- Flash session → SweetAlert toast --}}
+@if(session('success') || session('error') || session('warning') || session('info'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if(session('success'))
+            window.toast?.fire({ icon: 'success', title: @json(session('success')) });
+        @endif
+        @if(session('error'))
+            window.toast?.fire({ icon: 'error', title: @json(session('error')) });
+        @endif
+        @if(session('warning'))
+            window.toast?.fire({ icon: 'warning', title: @json(session('warning')) });
+        @endif
+        @if(session('info'))
+            window.toast?.fire({ icon: 'info', title: @json(session('info')) });
+        @endif
+    });
+</script>
+@endif
 
 </body>
 </html>

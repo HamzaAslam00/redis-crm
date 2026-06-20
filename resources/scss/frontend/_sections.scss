@@ -1164,14 +1164,14 @@
     position: absolute;
     bottom: -1.5rem;
     right: -1.5rem;
-    background: #fff;
-    border: 1px solid var(--fg-border);
+    background: var(--fg-surface);
+    border: 1px solid var(--fg-card-border);
     border-radius: $radius-lg;
     padding: 1rem 1.25rem;
     display: flex;
     align-items: center;
     gap: 0.875rem;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
 
     @include responsive(lg) { bottom: 1rem; right: 1rem; }
     @include responsive(sm) { display: none; }

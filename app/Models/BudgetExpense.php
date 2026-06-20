@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 class BudgetExpense extends Model
 {
+    use LogsActivity;
+
     protected $fillable = ['reason', 'type', 'amount', 'currency', 'date', 'note', 'receipt'];
 
     protected function casts(): array
@@ -39,4 +43,13 @@ class BudgetExpense extends Model
     ];
 
     public static array $currencies = ['PKR', 'USD', 'SAR', 'AED', 'GBP'];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['reason', 'type', 'amount', 'currency', 'date'])
+            ->logOnlyDirty()
+            ->dontLogEmptyChanges()
+            ->useLogName('budget');
+    }
 }

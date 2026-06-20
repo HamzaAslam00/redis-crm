@@ -113,7 +113,8 @@
                                         @endcan
                                         @can('budget.delete')
                                             <button type="button" class="btn btn-danger btn-sm" title="Delete"
-                                                onclick="if(confirm('Delete this expense?')) $wire.deleteExpense({{ $expense->id }})"><i class="ri-delete-bin-line"></i></button>
+                                                data-id="{{ $expense->id }}" data-type="expense"
+                                                x-on:click="deleteWire($el, $wire)"><i class="ri-delete-bin-line"></i></button>
                                         @endcan
                                     </div>
                                 </td>
@@ -185,7 +186,8 @@
                                         @endcan
                                         @can('budget.delete')
                                             <button type="button" class="btn btn-danger btn-sm" title="Delete"
-                                                onclick="if(confirm('Delete this income record?')) $wire.deleteIncome({{ $income->id }})"><i class="ri-delete-bin-line"></i></button>
+                                                data-id="{{ $income->id }}" data-type="income"
+                                                x-on:click="deleteWire($el, $wire)"><i class="ri-delete-bin-line"></i></button>
                                         @endcan
                                     </div>
                                 </td>

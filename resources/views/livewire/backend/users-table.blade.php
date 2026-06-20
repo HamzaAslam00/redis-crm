@@ -102,6 +102,14 @@
                             </td>
                             <td>
                                 <div style="display:flex;align-items:center;justify-content:flex-end;gap:0.5rem">
+                                    @if(auth()->user()->hasRole('super-admin') && !session('impersonator_id') && !$user->hasRole('super-admin') && $user->id !== auth()->id())
+                                        <form method="POST" action="{{ route('admin.users.impersonate', $user) }}" style="margin:0">
+                                            @csrf
+                                            <button type="submit" class="btn btn-secondary btn-sm" title="Login as {{ $user->name }}" style="color:#FF6400">
+                                                <i class="ri-spy-line"></i>
+                                            </button>
+                                        </form>
+                                    @endif
                                     @can('user.edit')
                                         <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-secondary btn-sm" title="Edit">
                                             <i class="ri-pencil-line"></i>
@@ -113,7 +121,8 @@
                                                 type="button"
                                                 class="btn btn-danger btn-sm"
                                                 title="Delete"
-                                                onclick="if(confirm('Delete {{ addslashes($user->name) }}? This cannot be undone.')) $wire.deleteUser({{ $user->id }})"
+                                                data-id="{{ $user->id }}"
+                                                x-on:click="deleteWire($el, $wire)"
                                             ><i class="ri-delete-bin-line"></i></button>
                                         @endif
                                     @endcan

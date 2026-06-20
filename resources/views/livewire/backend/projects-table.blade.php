@@ -136,7 +136,8 @@
                                             type="button"
                                             class="btn btn-danger btn-sm"
                                             title="Delete"
-                                            onclick="if(confirm('Delete {{ addslashes($project->project_code) }}? This cannot be undone.')) $wire.deleteProject({{ $project->id }})"
+                                            data-id="{{ $project->id }}"
+                                            x-on:click="deleteWire($el, $wire)"
                                         ><i class="ri-delete-bin-line"></i></button>
                                     @endcan
                                 </div>

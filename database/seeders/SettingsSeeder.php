@@ -14,25 +14,31 @@ class SettingsSeeder extends Seeder
             ['key' => 'theme',                   'value' => 'dark',                      'group' => 'appearance'],
 
             // General
-            ['key' => 'company_name',         'value' => 'Redis Solution Pvt. Ltd.', 'group' => 'general'],
-            ['key' => 'company_phone',         'value' => '+92 XXX XXXXXXX',           'group' => 'general'],
-            ['key' => 'company_email',         'value' => 'info@redissolution.com',    'group' => 'general'],
-            ['key' => 'company_address',       'value' => 'Rawalpindi, Pakistan',      'group' => 'general'],
-            ['key' => 'company_whatsapp',      'value' => '',                          'group' => 'general'],
-            ['key' => 'whatsapp_number',       'value' => '',                          'group' => 'general'],
-            ['key' => 'whatsapp_default_message', 'value' => 'Hello! I am interested in your services.', 'group' => 'general'],
-            ['key' => 'social_facebook',       'value' => '',                          'group' => 'general'],
-            ['key' => 'social_linkedin',       'value' => '',                          'group' => 'general'],
-            ['key' => 'social_twitter',        'value' => '',                          'group' => 'general'],
-            ['key' => 'social_instagram',      'value' => '',                          'group' => 'general'],
+            ['key' => 'company_name',         'value' => 'Redis Solution Pvt. Ltd.',                                         'group' => 'general'],
+            ['key' => 'company_phone',         'value' => '+923493614440',                                                    'group' => 'general'],
+            ['key' => 'company_email',         'value' => 'info@redissolution.com',                                           'group' => 'general'],
+            ['key' => 'company_address',       'value' => 'Office#1 2nd Floor, ABC Plaza, 4th Road, Commercial Market Rd, Rawalpindi, 46000', 'group' => 'general'],
+            ['key' => 'company_whatsapp',      'value' => '+923493614440',                                                    'group' => 'general'],
+            ['key' => 'whatsapp_number',       'value' => '+923493614440',                                                    'group' => 'general'],
+            ['key' => 'whatsapp_default_message', 'value' => 'Hello! I am interested in your services.',                     'group' => 'general'],
+            ['key' => 'social_facebook',       'value' => 'https://www.facebook.com/softwarehouseinpakistan1',                'group' => 'general'],
+            ['key' => 'social_linkedin',       'value' => 'https://www.linkedin.com/company/redis-solution-pvt-ltd1/',        'group' => 'general'],
+            ['key' => 'social_twitter',        'value' => '',                                                                 'group' => 'general'],
+            ['key' => 'social_instagram',      'value' => '',                                                                 'group' => 'general'],
 
             // SMTP
-            ['key' => 'smtp_host',             'value' => '',                          'group' => 'smtp'],
-            ['key' => 'smtp_port',             'value' => '587',                       'group' => 'smtp'],
-            ['key' => 'smtp_username',         'value' => '',                          'group' => 'smtp'],
-            ['key' => 'smtp_password',         'value' => '',                          'group' => 'smtp'],
-            ['key' => 'smtp_encryption',       'value' => 'tls',                       'group' => 'smtp'],
+            ['key' => 'smtp_host',             'value' => 'smtp.gmail.com',            'group' => 'smtp'],
+            ['key' => 'smtp_port',             'value' => '465',                       'group' => 'smtp'],
+            ['key' => 'smtp_username',         'value' => 'hamzaaslam016@gmail.com',   'group' => 'smtp'],
+            ['key' => 'smtp_password',         'value' => 'dzlg zpep ndwm lvtw',      'group' => 'smtp'],
+            ['key' => 'smtp_encryption',       'value' => 'ssl',                       'group' => 'smtp'],
+            ['key' => 'smtp_from_address',     'value' => 'hamzaaslam016@gmail.com',   'group' => 'smtp'],
             ['key' => 'smtp_from_name',        'value' => 'Redis Solution',            'group' => 'smtp'],
+
+            // Email recipients
+            ['key' => 'mail_to',               'value' => 'info@redissolution.com',                        'group' => 'smtp'],
+            ['key' => 'mail_cc',               'value' => 'junikhan209@gmail.com, hamzaaslam016@gmail.com', 'group' => 'smtp'],
+            ['key' => 'mail_test_to',          'value' => 'info@redissolution.com',                        'group' => 'smtp'],
 
             // reCAPTCHA
             ['key' => 'recaptcha_enabled',     'value' => '0',                         'group' => 'recaptcha'],
@@ -51,7 +57,7 @@ class SettingsSeeder extends Seeder
         ];
 
         foreach ($settings as $setting) {
-            Setting::firstOrCreate(['key' => $setting['key']], $setting);
+            Setting::updateOrCreate(['key' => $setting['key']], $setting);
         }
     }
 }

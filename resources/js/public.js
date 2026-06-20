@@ -144,40 +144,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ── GSAP scroll-fade [data-gsap-fade] ────────────────────────────────
-    gsap.utils.toArray('[data-gsap-fade]').forEach(el => {
-        gsap.from(el, {
-            y: 32,
-            opacity: 0,
-            duration: 0.85,
-            ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-        });
-    });
+    // ── Scroll-reveal via IntersectionObserver ────────────────────────────
+    // IO fires correctly on page-restore + fast scroll; ScrollTrigger misses
+    // both because it relies on scroll events that browser restoration skips.
+    const ioOpts = { rootMargin: '0px 0px -8% 0px', threshold: 0 };
 
-    // ── Staggered children [data-gsap-stagger] ───────────────────────────
-    gsap.utils.toArray('[data-gsap-stagger]').forEach(parent => {
-        gsap.from(Array.from(parent.children), {
-            y: 40,
-            opacity: 0,
-            duration: 0.7,
-            ease: 'power3.out',
-            stagger: 0.09,
-            scrollTrigger: { trigger: parent, start: 'top 84%', once: true },
+    const fadeIO = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            fadeIO.unobserve(entry.target);
+            gsap.to(entry.target, { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out' });
         });
-    });
+    }, ioOpts);
+    document.querySelectorAll('[data-gsap-fade]').forEach(el => fadeIO.observe(el));
 
-    // ── Stats strip parallax text ─────────────────────────────────────────
-    gsap.utils.toArray('.stat-item').forEach((el, i) => {
-        gsap.from(el, {
-            y: 30,
-            opacity: 0,
-            duration: 0.6,
-            ease: 'power3.out',
-            delay: i * 0.1,
-            scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+    const staggerIO = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            staggerIO.unobserve(entry.target);
+            gsap.to(Array.from(entry.target.children), {
+                opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.09,
+            });
         });
-    });
+    }, ioOpts);
+    document.querySelectorAll('[data-gsap-stagger]').forEach(el => staggerIO.observe(el));
+
+    const statIO = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            statIO.unobserve(entry.target);
+            const idx = Array.from(entry.target.parentElement?.children ?? []).indexOf(entry.target);
+            gsap.to(entry.target, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: idx * 0.1 });
+        });
+    }, { rootMargin: '0px 0px -5% 0px', threshold: 0 });
+    document.querySelectorAll('.stat-item').forEach(el => statIO.observe(el));
 
     // ── Counter animation ─────────────────────────────────────────────────
     const counters = document.querySelectorAll('[data-count]');
@@ -304,3 +304,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+

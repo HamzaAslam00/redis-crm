@@ -124,6 +124,15 @@
                     <form action="{{ route('contact.store') }}" method="POST" novalidate>
                         @csrf
 
+                        {{-- Anti-bot: honeypot (bots fill this, humans never see it) --}}
+                        <div style="position:absolute;left:-9999px;top:-9999px;width:0;height:0;overflow:hidden" aria-hidden="true" tabindex="-1">
+                            <label for="hp_website">Leave this blank</label>
+                            <input type="text" id="hp_website" name="hp_website" value="" tabindex="-1" autocomplete="off">
+                        </div>
+
+                        {{-- Anti-bot: form load timestamp (bots submit too fast) --}}
+                        <input type="hidden" name="form_loaded_at" value="{{ now()->timestamp }}">
+
                         <div class="form-row">
 
                             {{-- Name --}}
@@ -206,9 +215,10 @@
                                     name="service"
                                     style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid {{ $errors->has('service') ? '#EF4444' : 'var(--fg-border)' }};color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;cursor:pointer"
                                 >
-                                    <option value="" disabled {{ old('service') ? '' : 'selected' }}>Select a service…</option>
-                                    @foreach(['Web Development','Mobile Apps','Digital Marketing','ERP & CMS','AI Applications','Software Development'] as $svc)
-                                        <option value="{{ $svc }}" {{ old('service') === $svc ? 'selected' : '' }}>{{ $svc }}</option>
+                                    @php $selectedService = old('service', request('service')); @endphp
+                                    <option value="" disabled {{ $selectedService ? '' : 'selected' }}>Select a service…</option>
+                                    @foreach(['AI Applications','Web Development','Mobile Apps','Digital Marketing','ERP & CMS','Software Development'] as $svc)
+                                        <option value="{{ $svc }}" {{ $selectedService === $svc ? 'selected' : '' }}>{{ $svc }}</option>
                                     @endforeach
                                 </select>
                                 @error('service')
@@ -251,7 +261,31 @@
                             @enderror
                         </div>
 
-                        <button type="submit" class="btn-primary" style="width:100%;justify-content:center;font-size:1rem;padding:0.85rem 1.5rem">
+                        @php
+                            $recaptchaEnabled = setting('recaptcha_enabled') === '1';
+                            $recaptchaSiteKey = setting('recaptcha_site_key', '');
+                            $recaptchaVersion = setting('recaptcha_version', 'v3');
+                            $recaptchaTheme = setting('theme', 'dark') === 'light' ? 'light' : 'dark';
+                        @endphp
+
+                        @if($recaptchaEnabled && $recaptchaSiteKey)
+                            @if($recaptchaVersion === 'v2')
+                                <div class="g-recaptcha" data-sitekey="{{ $recaptchaSiteKey }}" data-theme="{{ $recaptchaTheme }}" style="margin-bottom:1.25rem"></div>
+                            @else
+                                <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response-contact">
+                                <p style="font-size:0.75rem;color:var(--fg-text-muted);line-height:1.5;margin-bottom:1rem">
+                                    This site is protected by reCAPTCHA —
+                                    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Privacy</a> &amp;
+                                    <a href="https://policies.google.com/terms" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Terms</a> apply.
+                                </p>
+                            @endif
+                        @endif
+
+                        @error('captcha')
+                            <p style="color:#EF4444;font-size:0.82rem;margin-bottom:0.75rem;text-align:center">{{ $message }}</p>
+                        @enderror
+
+                        <button type="submit" class="btn-primary" data-loading-text="Sending…" style="width:100%;justify-content:center;font-size:1rem;padding:0.85rem 1.5rem">
                             Send Message
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:18px;height:18px;margin-left:0.5rem"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" /></svg>
                         </button>
@@ -308,5 +342,32 @@
             </div>
         </div>
     </section>
+
+
+    @if(isset($recaptchaEnabled) && $recaptchaEnabled && $recaptchaSiteKey)
+        @push('scripts')
+            @if($recaptchaVersion === 'v2')
+                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+            @else
+                <script src="https://www.google.com/recaptcha/api.js?render={{ $recaptchaSiteKey }}"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var form = document.querySelector('form[action="{{ route('contact.store') }}"]');
+                        if (!form) return;
+                        form.addEventListener('submit', function (e) {
+                            e.preventDefault();
+                            var f = this;
+                            grecaptcha.ready(function () {
+                                grecaptcha.execute('{{ $recaptchaSiteKey }}', { action: 'contact' }).then(function (token) {
+                                    document.getElementById('g-recaptcha-response-contact').value = token;
+                                    f.submit();
+                                });
+                            });
+                        });
+                    });
+                </script>
+            @endif
+        @endpush
+    @endif
 
 </x-layouts.frontend>

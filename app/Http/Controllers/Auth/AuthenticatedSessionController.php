@@ -36,6 +36,14 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        if ($request->session()->has('impersonator_id')) {
+            $adminId = $request->session()->pull('impersonator_id');
+            Auth::loginUsingId($adminId);
+
+            return redirect()->route('admin.users.index')
+                ->with('success', 'Returned to your admin account.');
+        }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

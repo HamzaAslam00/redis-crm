@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 class HostingClient extends Model
 {
+    use LogsActivity;
+
     protected $fillable = [
         'client_name', 'domain_name', 'starting_date', 'renew_duration',
         'amount', 'currency', 'server_usage', 'hosting_provider',
@@ -48,6 +52,15 @@ class HostingClient extends Model
     ];
 
     public static array $currencies = ['PKR', 'USD', 'SAR', 'AED', 'GBP'];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['client_name', 'domain_name', 'renew_duration', 'amount', 'is_active'])
+            ->logOnlyDirty()
+            ->dontLogEmptyChanges()
+            ->useLogName('hosting');
+    }
 
     public function getNextRenewalDateAttribute(): Carbon
     {

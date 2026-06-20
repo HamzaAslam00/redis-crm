@@ -5,6 +5,7 @@ namespace App\Livewire\Backend;
 use App\Models\HostingClient;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -49,7 +50,8 @@ class HostingClientsTable extends Component
         $this->resetPage();
     }
 
-    public function deleteClient(int $id): void
+    #[On('delete')]
+    public function delete(int $id): void
     {
         HostingClient::findOrFail($id)->delete();
         $this->dispatch('toast', type: 'success', message: 'Hosting client deleted.');

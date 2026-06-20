@@ -103,7 +103,8 @@
                                             type="button"
                                             class="btn btn-danger btn-sm"
                                             title="Delete"
-                                            onclick="if(confirm('Delete this investment? All expenses will be removed.')) $wire.deleteInvestment({{ $inv->id }})"
+                                            data-id="{{ $inv->id }}"
+                                            x-on:click="deleteWire($el, $wire)"
                                         ><i class="ri-delete-bin-line"></i></button>
                                     @endcan
                                 </div>

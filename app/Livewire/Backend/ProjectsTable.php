@@ -5,6 +5,7 @@ namespace App\Livewire\Backend;
 use App\Models\Project;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -49,7 +50,8 @@ class ProjectsTable extends Component
         $this->resetPage();
     }
 
-    public function deleteProject(int $id): void
+    #[On('delete')]
+    public function delete(int $id): void
     {
         $project = Project::findOrFail($id);
         $project->delete();

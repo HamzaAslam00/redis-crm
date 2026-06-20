@@ -114,7 +114,8 @@
                                     @endcan
                                     @can('hosting.delete')
                                         <button type="button" class="btn btn-danger btn-sm" title="Delete"
-                                            onclick="if(confirm('Delete hosting client {{ addslashes($client->client_name) }}?')) $wire.deleteClient({{ $client->id }})"><i class="ri-delete-bin-line"></i></button>
+                                            data-id="{{ $client->id }}"
+                                            x-on:click="deleteWire($el, $wire)"><i class="ri-delete-bin-line"></i></button>
                                     @endcan
                                 </div>
                             </td>

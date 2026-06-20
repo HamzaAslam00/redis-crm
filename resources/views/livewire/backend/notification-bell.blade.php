@@ -5,7 +5,7 @@
         @click="open = !open; if(open) $wire.loadNotifications()"
         @click.away="open = false"
         style="position:relative;width:36px;height:36px;border-radius:8px;background:var(--crm-input);border:1px solid var(--crm-border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--crm-text);transition:all 0.15s"
-        :style="open ? 'background:rgba(255,100,0,0.12);border-color:rgba(255,100,0,0.3);color:#FF6400' : ''"
+        :style="open ? { background: 'rgba(255,100,0,0.12)', borderColor: 'rgba(255,100,0,0.3)', color: '#FF6400' } : {}"
     >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:18px;height:18px"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" /></svg>
 

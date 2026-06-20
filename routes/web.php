@@ -17,12 +17,12 @@ Route::get('/services', [HomeController::class, 'services'])->name('services');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/portfolio', [HomeController::class, 'portfolio'])->name('portfolio');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
-Route::post('/contact', [ContactSubmitController::class, 'store'])->name('contact.store');
+Route::post('/contact', [ContactSubmitController::class, 'store'])->middleware('throttle:3,60')->name('contact.store');
 Route::get('/faqs', [HomeController::class, 'faqs'])->name('faqs');
 Route::get('/privacy-policy', [HomeController::class, 'privacyPolicy'])->name('privacy-policy');
 Route::get('/refund-policy', [HomeController::class, 'refundPolicy'])->name('refund-policy');
 Route::get('/free-audit', [HomeController::class, 'freeAudit'])->name('free-audit');
-Route::post('/free-audit/analyze', [FreeAuditController::class, 'analyze'])->name('free-audit.analyze');
+Route::post('/free-audit/analyze', [FreeAuditController::class, 'analyze'])->middleware('throttle:5,60')->name('free-audit.analyze');
 Route::get('/free-consultation', [HomeController::class, 'freeConsultation'])->name('free-consultation');
 
 // Blog placeholder (Phase 7B)

@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 class Investment extends Model
 {
+    use LogsActivity;
+
     protected $fillable = [
         'person_name', 'amount', 'currency',
         'idea_details', 'start_date', 'expected_end_date', 'status',
@@ -29,6 +33,15 @@ class Investment extends Model
     ];
 
     public static array $currencies = ['PKR', 'USD', 'SAR', 'AED', 'GBP'];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['person_name', 'amount', 'currency', 'status'])
+            ->logOnlyDirty()
+            ->dontLogEmptyChanges()
+            ->useLogName('investments');
+    }
 
     public function expenses(): HasMany
     {

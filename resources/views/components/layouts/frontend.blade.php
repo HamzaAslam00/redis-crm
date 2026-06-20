@@ -58,5 +58,17 @@
 {{-- Page-level scripts --}}
 @stack('scripts')
 
+{{-- Global: disable submit buttons on form submit to prevent double-clicks --}}
+<script>
+document.addEventListener('submit', function (e) {
+    const form = e.target;
+    if (form.dataset.noAutoDisable) { return; }
+    form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(function (btn) {
+        btn.disabled = true;
+        if (btn.dataset.loadingText) { btn.textContent = btn.dataset.loadingText; }
+    });
+});
+</script>
+
 </body>
 </html>

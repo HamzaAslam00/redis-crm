@@ -5,6 +5,16 @@
  * No jQuery. No DataTables.
  */
 
+// ─── Theme-aware SweetAlert base config ─────────────────────────────────────
+function swalTheme() {
+    const dark = document.documentElement.getAttribute('data-theme') !== 'light';
+    return {
+        background:         dark ? '#1A1829' : '#FFFFFF',
+        color:              dark ? '#FFFFFF' : '#1A1829',
+        cancelButtonColor:  dark ? 'rgba(255,255,255,0.1)' : 'rgba(26,24,41,0.08)',
+    };
+}
+
 // ─── Delete Confirmation ─────────────────────────────────────────────────────
 // Usage (standard controller delete):
 //   <button data-delete-url="/admin/projects/1" onclick="deleteRecord(this)">Delete</button>
@@ -23,9 +33,7 @@ function deleteRecord(btn) {
         confirmButtonText: 'Yes, delete',
         cancelButtonText: 'Cancel',
         confirmButtonColor: '#FF6400',
-        cancelButtonColor: 'rgba(255,255,255,0.1)',
-        background: '#1A1829',
-        color: '#fff',
+        ...swalTheme(),
     }).then(result => {
         if (! result.isConfirmed) return;
 
@@ -34,8 +42,7 @@ function deleteRecord(btn) {
             text: 'Please wait',
             allowOutsideClick: false,
             showConfirmButton: false,
-            background: '#1A1829',
-            color: '#fff',
+            ...swalTheme(),
             didOpen: () => window.swal.showLoading(),
         });
 
@@ -60,7 +67,8 @@ function deleteRecord(btn) {
 }
 
 function deleteWire(btn, wire) {
-    const id = btn.getAttribute('data-id');
+    const id   = btn.getAttribute('data-id');
+    const type = btn.getAttribute('data-type') ?? null;
 
     window.swal.fire({
         title: 'Delete this record?',
@@ -70,12 +78,34 @@ function deleteWire(btn, wire) {
         confirmButtonText: 'Yes, delete',
         cancelButtonText: 'Cancel',
         confirmButtonColor: '#FF6400',
-        cancelButtonColor: 'rgba(255,255,255,0.1)',
-        background: '#1A1829',
-        color: '#fff',
+        ...swalTheme(),
     }).then(result => {
         if (result.isConfirmed) {
-            wire.dispatch('delete', { id: parseInt(id) });
+            wire.dispatch('delete', { id: parseInt(id), type });
+        }
+    });
+}
+
+// ─── Form Delete (non-Livewire regular form submits) ─────────────────────────
+// Usage: <button onclick="deleteForm(this)" data-form="form-id" data-label="Project ABC">Delete</button>
+function deleteForm(btn) {
+    const formId = btn.getAttribute('data-form');
+    const label  = btn.getAttribute('data-label') ?? 'this record';
+    const form   = document.getElementById(formId);
+    if (! form) return;
+
+    window.swal.fire({
+        title: 'Delete ' + label + '?',
+        text: 'This action cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete',
+        cancelButtonText: 'Cancel',
+        confirmButtonColor: '#FF6400',
+        ...swalTheme(),
+    }).then(result => {
+        if (result.isConfirmed) {
+            form.submit();
         }
     });
 }
@@ -93,8 +123,7 @@ function toggleStatus(btn) {
         showCancelButton: true,
         confirmButtonText: 'Yes',
         confirmButtonColor: '#FF6400',
-        background: '#1A1829',
-        color: '#fff',
+        ...swalTheme(),
     }).then(result => {
         if (! result.isConfirmed) return;
 

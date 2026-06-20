@@ -5,6 +5,7 @@ namespace App\Livewire\Backend;
 use App\Models\Investment;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -49,7 +50,8 @@ class InvestmentsTable extends Component
         $this->resetPage();
     }
 
-    public function deleteInvestment(int $id): void
+    #[On('delete')]
+    public function delete(int $id): void
     {
         Investment::findOrFail($id)->delete();
 

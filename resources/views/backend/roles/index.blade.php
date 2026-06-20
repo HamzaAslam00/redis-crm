@@ -75,11 +75,13 @@
                                     @can('role.delete')
                                         @if(!in_array($role->name, ['super-admin', 'admin']))
                                             @php $roleLabel = ucwords(str_replace('-', ' ', $role->name)); @endphp
-                                            <form method="POST" action="{{ route('admin.roles.destroy', $role) }}"
-                                                  onsubmit="return confirm('Delete role \'{{ $roleLabel }}\'? This cannot be undone.')">
+                                            <form id="delete-role-{{ $role->id }}" method="POST" action="{{ route('admin.roles.destroy', $role) }}">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                <button type="button" class="btn btn-danger btn-sm"
+                                                    onclick="deleteForm(this)"
+                                                    data-form="delete-role-{{ $role->id }}"
+                                                    data-label="{{ $roleLabel }}">
                                                     <i class="ri-delete-bin-line"></i>
                                                 </button>
                                             </form>
