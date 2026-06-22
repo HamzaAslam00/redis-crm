@@ -10,6 +10,7 @@ use App\Http\Controllers\Backend\HostingClientController;
 use App\Http\Controllers\Backend\InvestmentController;
 use App\Http\Controllers\Backend\PersonalNoteController;
 use App\Http\Controllers\Backend\ProjectController;
+use App\Http\Controllers\Backend\ProposalController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\SettingsController;
 use App\Http\Controllers\Backend\UserController;
@@ -93,8 +94,22 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('{contact}', [ContactMessageController::class, 'destroy'])->name('destroy');
     });
 
-    // Placeholder routes (Phase 5+)
-    Route::get('proposals', fn () => view('backend.placeholder', ['page' => 'Proposals']))->name('proposals.index');
+    // Proposals
+    Route::prefix('proposals')->name('proposals.')->group(function (): void {
+        Route::get('/', [ProposalController::class, 'index'])->name('index');
+        Route::get('/create', [ProposalController::class, 'create'])->name('create');
+        Route::post('/', [ProposalController::class, 'store'])->name('store');
+        Route::get('/{proposal}', [ProposalController::class, 'show'])->name('show');
+        Route::get('/{proposal}/edit', [ProposalController::class, 'edit'])->name('edit');
+        Route::put('/{proposal}', [ProposalController::class, 'update'])->name('update');
+        Route::delete('/{proposal}', [ProposalController::class, 'destroy'])->name('destroy');
+        Route::get('/{proposal}/pdf', [ProposalController::class, 'pdf'])->name('pdf');
+        Route::get('/{proposal}/preview', [ProposalController::class, 'preview'])->name('preview');
+        Route::post('/{proposal}/duplicate', [ProposalController::class, 'duplicate'])->name('duplicate');
+        Route::patch('/{proposal}/status', [ProposalController::class, 'updateStatus'])->name('status');
+    });
+
+    // Placeholder routes (Phase 7+)
     Route::get('portfolio', fn () => view('backend.placeholder', ['page' => 'Portfolio']))->name('portfolio.index');
     Route::get('blog', fn () => view('backend.placeholder', ['page' => 'Blog Posts']))->name('blog.index');
 
