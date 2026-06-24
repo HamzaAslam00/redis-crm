@@ -94,12 +94,12 @@
 
                             {{-- Visual iframe --}}
                             <div x-show="!sourceMode">
-                                <iframe x-ref="editorFrame" style="width:100%;min-height:500px;border:none;display:block;background:#0d1117" frameborder="0"></iframe>
+                                <iframe x-ref="editorFrame" style="width:100%;min-height:500px;border:none;display:block;background:var(--crm-input)" frameborder="0"></iframe>
                             </div>
 
                             {{-- Source textarea --}}
                             <div x-show="sourceMode" x-cloak>
-                                <textarea x-ref="srcArea" style="width:100%;min-height:500px;border:none;font-family:monospace;font-size:0.78rem;line-height:1.6;background:#0d1117;color:#e6edf3;padding:16px;resize:vertical;outline:none;display:block;box-sizing:border-box" spellcheck="false"></textarea>
+                                <textarea x-ref="srcArea" style="width:100%;min-height:500px;border:none;font-family:monospace;font-size:0.78rem;line-height:1.6;background:var(--crm-input);color:var(--crm-text);padding:16px;resize:vertical;outline:none;display:block;box-sizing:border-box" spellcheck="false"></textarea>
                             </div>
 
                         </div>
@@ -176,16 +176,29 @@
                 </div>
 
                 {{-- Featured Image --}}
-                <div class="crm-card">
+                <div class="crm-card" x-data="featuredImageUploader">
                     <h3 style="font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--crm-text-muted);margin-bottom:1rem">Featured Image</h3>
-                    <div class="form-group">
-                        <label class="form-label" for="featured_image">Image URL</label>
-                        <input type="text" id="featured_image" name="featured_image"
-                            class="form-control @error('featured_image') is-invalid @enderror"
-                            value="{{ old('featured_image') }}" placeholder="https://… or /storage/…">
-                        <p style="font-size:0.75rem;color:var(--crm-text-muted);margin-top:0.3rem">Paste a URL or upload path.</p>
-                        @error('featured_image')<p class="form-error">{{ $message }}</p>@enderror
+
+                    {{-- Preview --}}
+                    <div x-show="preview" style="margin-bottom:0.75rem">
+                        <img :src="preview" alt="" style="width:100%;height:140px;object-fit:cover;border-radius:8px;border:1px solid var(--crm-border)">
                     </div>
+
+                    {{-- Upload button --}}
+                    <input type="file" x-ref="fileInput" accept="image/*" style="display:none" @change="upload($event)">
+                    <button type="button" @click="$refs.fileInput.click()" :disabled="uploading"
+                        style="display:flex;align-items:center;gap:0.5rem;width:100%;padding:0.6rem 1rem;margin-bottom:0.75rem;border-radius:8px;border:1.5px dashed var(--crm-border);background:transparent;color:var(--crm-text-muted);font-size:0.85rem;cursor:pointer;transition:all 0.15s"
+                        onmouseover="this.style.borderColor='#FF6400';this.style.color='#FF6400'" onmouseout="this.style.borderColor='var(--crm-border)';this.style.color='var(--crm-text-muted)'">
+                        <i :class="uploading ? 'ri-loader-4-line' : 'ri-upload-cloud-line'" style="font-size:1rem"></i>
+                        <span x-text="uploading ? 'Uploading…' : 'Upload from device'"></span>
+                    </button>
+
+                    {{-- URL fallback --}}
+                    <label class="form-label" for="featured_image" style="font-size:0.78rem">Or paste image URL</label>
+                    <input type="text" id="featured_image" name="featured_image"
+                        class="form-control @error('featured_image') is-invalid @enderror"
+                        x-model="url" placeholder="https://… or /storage/…">
+                    @error('featured_image')<p class="form-error">{{ $message }}</p>@enderror
                 </div>
 
             </div>
@@ -231,17 +244,24 @@ document.addEventListener('alpine:init', () => {
         initEditor(html) {
             const iframe = this.$refs.editorFrame;
             if (!iframe) return;
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light' ||
+                (!document.documentElement.hasAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: light)').matches);
+            const bg   = isLight ? '#ffffff' : '#0d1117';
+            const text = isLight ? '#1a1829'  : '#e6edf3';
+            const head = isLight ? '#1a1829'  : '#ffffff';
+            const bq   = isLight ? 'rgba(26,24,41,0.55)' : 'rgba(255,255,255,0.6)';
+            const code = isLight ? 'rgba(26,24,41,0.07)'  : 'rgba(255,255,255,0.1)';
             const doc = iframe.contentDocument || iframe.contentWindow.document;
             doc.open();
             doc.write(
                 '<style>' +
-                'html,body{margin:0;padding:16px 20px;font-family:Arial,sans-serif;font-size:15px;line-height:1.7;color:#e6edf3;background:#0d1117}' +
-                'h1,h2,h3,h4{margin:1.4rem 0 0.6rem;color:#fff}' +
+                'html,body{margin:0;padding:16px 20px;font-family:Arial,sans-serif;font-size:15px;line-height:1.7;color:' + text + ';background:' + bg + '}' +
+                'h1,h2,h3,h4{margin:1.4rem 0 0.6rem;color:' + head + '}' +
                 'p{margin:0 0 1rem}' +
                 'a{color:#FF6400}' +
                 'ul,ol{padding-left:1.5rem;margin:0 0 1rem}' +
-                'blockquote{border-left:3px solid #FF6400;padding-left:1rem;margin:1rem 0;color:rgba(255,255,255,0.6);font-style:italic}' +
-                'code{background:rgba(255,255,255,0.1);padding:0.1rem 0.35rem;border-radius:4px;font-size:0.875em;font-family:monospace}' +
+                'blockquote{border-left:3px solid #FF6400;padding-left:1rem;margin:1rem 0;color:' + bq + ';font-style:italic}' +
+                'code{background:' + code + ';padding:0.1rem 0.35rem;border-radius:4px;font-size:0.875em;font-family:monospace}' +
                 'pre{background:#161b22;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:1.1rem 1.2rem;overflow-x:auto;margin:1.2rem 0}' +
                 'pre code{background:transparent;padding:0;font-size:0.82em;color:#79c0ff;line-height:1.65;display:block}' +
                 'img{max-width:100%;height:auto;border-radius:8px;margin:0.5rem 0;cursor:pointer}' +
@@ -369,6 +389,31 @@ document.addEventListener('alpine:init', () => {
             if (this.sourceMode) return this.$refs.srcArea.value;
             const iframe = this.$refs.editorFrame;
             return iframe?.contentDocument?.body?.innerHTML || '';
+        },
+    }));
+
+    Alpine.data('featuredImageUploader', (initial = '') => ({
+        url: initial,
+        preview: initial || null,
+        uploading: false,
+        async upload(event) {
+            const file = event.target.files[0];
+            if (!file) { return; }
+            this.uploading = true;
+            const form = new FormData();
+            form.append('file', file);
+            form.append('_token', document.querySelector('meta[name="csrf-token"]').content);
+            try {
+                const res = await fetch('{{ route('admin.blog.upload-media') }}', { method: 'POST', body: form });
+                const data = await res.json();
+                this.url = data.url;
+                this.preview = data.url;
+            } catch (e) {
+                console.error('Upload failed', e);
+            } finally {
+                this.uploading = false;
+                event.target.value = '';
+            }
         },
     }));
 });

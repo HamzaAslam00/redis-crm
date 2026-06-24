@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\FaqCategory;
 use App\Models\PortfolioItem;
+use App\Models\Testimonial;
 use Illuminate\View\View;
 
 class HomeController extends Controller
 {
     public function index(): View
     {
-        return view('frontend.home');
+        $testimonials = Testimonial::active()->orderBy('display_order')->get();
+
+        return view('frontend.home', compact('testimonials'));
     }
 
     public function services(): View
@@ -41,7 +45,12 @@ class HomeController extends Controller
 
     public function faqs(): View
     {
-        return view('frontend.faqs');
+        $categories = FaqCategory::active()
+            ->with('activeFaqs')
+            ->orderBy('display_order')
+            ->get();
+
+        return view('frontend.faqs', compact('categories'));
     }
 
     public function privacyPolicy(): View

@@ -9,6 +9,8 @@ use App\Http\Controllers\Backend\BudgetController;
 use App\Http\Controllers\Backend\ContactMessageController;
 use App\Http\Controllers\Backend\CredentialController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\FaqCategoryController;
+use App\Http\Controllers\Backend\FaqController;
 use App\Http\Controllers\Backend\HostingClientController;
 use App\Http\Controllers\Backend\InvestmentController;
 use App\Http\Controllers\Backend\PersonalNoteController;
@@ -18,6 +20,7 @@ use App\Http\Controllers\Backend\ProposalController;
 use App\Http\Controllers\Backend\RoleController;
 use App\Http\Controllers\Backend\SeoController;
 use App\Http\Controllers\Backend\SettingsController;
+use App\Http\Controllers\Backend\TestimonialController;
 use App\Http\Controllers\Backend\UserController;
 use App\Models\Project;
 use Illuminate\Http\Request;
@@ -130,6 +133,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/tools', [SeoController::class, 'tools'])->name('tools');
         Route::post('/tools/robots', [SeoController::class, 'updateRobots'])->name('tools.robots');
         Route::post('/tools/sitemap', [SeoController::class, 'regenerateSitemap'])->name('tools.sitemap');
+    });
+
+    // Testimonials CMS
+    Route::middleware('can:testimonial.view')->resource('testimonials', TestimonialController::class)->except(['show']);
+
+    // FAQs CMS
+    Route::middleware('can:faq.view')->group(function () {
+        Route::resource('faqs', FaqController::class)->except(['show']);
+        Route::get('faq-categories', [FaqCategoryController::class, 'index'])->name('faq-categories.index');
+        Route::post('faq-categories', [FaqCategoryController::class, 'store'])->name('faq-categories.store');
+        Route::put('faq-categories/{faqCategory}', [FaqCategoryController::class, 'update'])->name('faq-categories.update');
+        Route::delete('faq-categories/{faqCategory}', [FaqCategoryController::class, 'destroy'])->name('faq-categories.destroy');
     });
 
     // Portfolio CMS

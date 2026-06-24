@@ -111,6 +111,20 @@
         </a>
         @endcan
 
+        @can('testimonial.view')
+        <a href="{{ route('admin.testimonials.index') }}" class="nav-item {{ isActive('admin.testimonials.*') }}">
+            <i class="ri-chat-quote-line" style="font-size:1.2rem;flex-shrink:0"></i>
+            <span x-show="!collapsed">Testimonials</span>
+        </a>
+        @endcan
+
+        @can('faq.view')
+        <a href="{{ route('admin.faqs.index') }}" class="nav-item {{ isActive('admin.faqs.*') }}{{ isActive('admin.faq-categories.*') ? ' active' : '' }}">
+            <i class="ri-question-answer-line" style="font-size:1.2rem;flex-shrink:0"></i>
+            <span x-show="!collapsed">FAQs</span>
+        </a>
+        @endcan
+
         {{-- Admin --}}
         <div x-show="!collapsed" class="nav-section-label">Admin</div>
 

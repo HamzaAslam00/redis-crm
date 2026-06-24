@@ -432,25 +432,18 @@
 
         <div class="testimonial-carousel" style="margin-top:0">
             <div class="testimonial-carousel__track">
-                @php
-                $reviews = [
-                    ['"Redis Solution transformed our outdated inventory system into a full ERP platform in under 3 months. Results were impressive — 40% faster order processing."', 'Ahmed Khan', 'CEO, TechManage Pvt. Ltd.', 'AK', '#FF6400'],
-                    ['"They delivered our Flutter mobile app on time and within budget. Runs flawlessly on both iOS and Android. Communication was exceptional throughout."', 'Mark Jensen', 'CEO, Agnatech', 'MJ', '#6366F1'],
-                    ['"SEO rankings went from page 5 to #1 in 4 months. ROAS on Google Ads improved by 280%. Redis Solution delivers exactly what they promise."', 'Omar Raza', 'Marketing Director, PakBazar', 'OR', '#10B981'],
-                    ['"Working with Redis Solution was a game changer. They understood our business needs instantly and delivered a website that significantly boosted enquiries."', 'Sarah Mitchell', 'Founder, BrightEdge Solutions', 'SM', '#EC4899'],
-                    ['"The AI chatbot they built handles 70% of customer queries automatically. Incredible ROI from day one."', 'Zubair Malik', 'CTO, Finova Tech', 'ZM', '#F59E0B'],
-                ];
-                $double = array_merge($reviews, $reviews);
-                @endphp
-                @foreach($double as [$text, $name, $role, $initials, $color])
+                @php $double = $testimonials->concat($testimonials); @endphp
+                @foreach($double as $review)
                 <div class="testimonial-card">
-                    <div class="testimonial-card__stars">@for($i=0;$i<5;$i++)<i class="ri-star-fill"></i>@endfor</div>
-                    <p class="testimonial-card__text">{{ $text }}</p>
+                    <div class="testimonial-card__stars">
+                        @for($i = 0; $i < $review->rating; $i++)<i class="ri-star-fill"></i>@endfor
+                    </div>
+                    <p class="testimonial-card__text">"{{ $review->quote }}"</p>
                     <div class="testimonial-card__author">
-                        <div class="testimonial-card__avatar" style="background:{{ $color }}20;color:{{ $color }};border-color:{{ $color }}40">{{ $initials }}</div>
+                        <div class="testimonial-card__avatar" style="background:{{ $review->avatar_color }}20;color:{{ $review->avatar_color }};border-color:{{ $review->avatar_color }}40">{{ $review->displayInitials() }}</div>
                         <div>
-                            <div class="testimonial-card__name">{{ $name }}</div>
-                            <div class="testimonial-card__role">{{ $role }}</div>
+                            <div class="testimonial-card__name">{{ $review->name }}</div>
+                            <div class="testimonial-card__role">{{ implode(', ', array_filter([$review->role, $review->company])) }}</div>
                         </div>
                     </div>
                 </div>
@@ -461,7 +454,7 @@
 </section>
 
 {{-- ══════════════════════════════════════════════ BLOG --}}
-@php try { $posts = \App\Models\Blog::where('published',true)->orderBy('published_at','desc')->take(3)->get(); } catch(\Throwable $e) { $posts = collect(); } @endphp
+@php try { $posts = \App\Models\BlogPost::published()->orderByDesc('published_at')->take(3)->get(); } catch(\Throwable $e) { $posts = collect(); } @endphp
 @if($posts->isNotEmpty())
 <section class="section">
     <div class="container">

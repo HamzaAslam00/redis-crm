@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             NotificationSettingsSeeder::class,
             SeoPageSeeder::class,
             BlogAndPortfolioSeeder::class,
+            TestimonialsAndFaqsSeeder::class,
         ]);
     }
 }
