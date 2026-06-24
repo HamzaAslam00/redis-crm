@@ -133,6 +133,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/tools', [SeoController::class, 'tools'])->name('tools');
         Route::post('/tools/robots', [SeoController::class, 'updateRobots'])->name('tools.robots');
         Route::post('/tools/sitemap', [SeoController::class, 'regenerateSitemap'])->name('tools.sitemap');
+        Route::get('/audit-logs', [SeoController::class, 'auditLogs'])->name('audit-logs');
     });
 
     // Testimonials CMS

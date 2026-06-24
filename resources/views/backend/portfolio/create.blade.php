@@ -128,11 +128,25 @@
                 <div class="crm-card">
                     <h3 style="font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--crm-text-muted);margin-bottom:1rem">Image</h3>
 
-                    <div class="form-group">
-                        <label class="form-label" for="featured_image">Featured Image URL</label>
-                        <input type="text" id="featured_image" name="featured_image"
+                    <div class="form-group" x-data="featuredImageUploader('')">
+                        <label class="form-label">Featured Image</label>
+
+                        <template x-if="preview">
+                            <img :src="preview" alt="Preview"
+                                style="width:100%;height:130px;object-fit:cover;border-radius:8px;margin-bottom:0.75rem">
+                        </template>
+
+                        <input type="file" x-ref="fileInput" accept="image/*" @change="upload($event)" style="display:none">
+                        <button type="button" @click="$refs.fileInput.click()"
+                            class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;margin-bottom:0.6rem"
+                            :disabled="uploading">
+                            <i class="ri-upload-2-line"></i>
+                            <span x-text="uploading ? 'Uploading…' : 'Upload from Computer'"></span>
+                        </button>
+
+                        <input type="text" name="featured_image" x-model="url"
                             class="form-control @error('featured_image') is-invalid @enderror"
-                            value="{{ old('featured_image') }}" placeholder="https://… or /storage/…">
+                            placeholder="or paste URL here…">
                         @error('featured_image')<p class="form-error">{{ $message }}</p>@enderror
                     </div>
 
@@ -149,5 +163,31 @@
 
         </div>
     </form>
+
+    @push('scripts')
+    <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('featuredImageUploader', (initial = '') => ({
+            url: initial,
+            preview: initial || null,
+            uploading: false,
+            async upload(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                this.uploading = true;
+                const form = new FormData();
+                form.append('file', file);
+                form.append('_token', document.querySelector('meta[name="csrf-token"]').content);
+                const res = await fetch('{{ route('admin.blog.upload-media') }}', { method: 'POST', body: form });
+                const data = await res.json();
+                this.url = data.url;
+                this.preview = data.url;
+                this.uploading = false;
+                event.target.value = '';
+            }
+        }));
+    });
+    </script>
+    @endpush
 
 </x-layouts.backend>

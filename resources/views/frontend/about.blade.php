@@ -138,10 +138,10 @@
             <div class="team-grid" style="margin-top:3rem" data-gsap-stagger>
                 @php
                     $team = [
-                        ['AK', 'Ahmed Khan',        'CEO & Founder',   '#FF6400'],
-                        ['SR', 'Sara Rashid',        'CTO',             '#6366F1'],
-                        ['MH', 'Muhammad Hassan',    'Lead Developer',  '#0EA5E9'],
-                        ['FA', 'Fatima Aslam',       'Marketing Head',  '#10B981'],
+                        ['JI', 'Junaid Iqbal',  'CEO & Founder',   '#FF6400'],
+                        ['HA', 'Hamza Aslam',   'CTO',             '#6366F1'],
+                        ['GA', 'Gohar Ayub',    'Lead Developer',  '#0EA5E9'],
+                        ['FA', 'Fatima Aslam',  'Marketing Head',  '#10B981'],
                     ];
                 @endphp
                 @foreach($team as [$initials, $name, $role, $color])

@@ -111,6 +111,11 @@ class SeoController extends Controller
 
     // ── Tools ─────────────────────────────────────────────────────────────────
 
+    public function auditLogs(): View
+    {
+        return view('backend.seo.audit-logs');
+    }
+
     public function tools(): View
     {
         $robotsTxt = file_exists(public_path('robots.txt'))

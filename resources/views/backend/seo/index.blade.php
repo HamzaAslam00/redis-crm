@@ -2,6 +2,7 @@
 
     <x-backend.page-header title="SEO Management" description="Manage meta tags, keywords, backlinks, and technical SEO for your website">
         <div style="display:flex;gap:0.5rem">
+            <a href="{{ route('admin.seo.audit-logs') }}" class="btn btn-secondary"><i class="ri-radar-line"></i> Audit Logs</a>
             <a href="{{ route('admin.seo.tools') }}" class="btn btn-secondary"><i class="ri-tools-line"></i> Tools</a>
             <a href="{{ route('admin.seo.keywords') }}" class="btn btn-secondary"><i class="ri-price-tag-3-line"></i> Keywords</a>
             <a href="{{ route('admin.seo.backlinks') }}" class="btn btn-secondary"><i class="ri-links-line"></i> Backlinks</a>

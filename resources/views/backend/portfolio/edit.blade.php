@@ -132,15 +132,24 @@
                 <div class="crm-card">
                     <h3 style="font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--crm-text-muted);margin-bottom:1rem">Image & URL</h3>
 
-                    @if($portfolio->featured_image)
-                        <img src="{{ $portfolio->featured_image }}" alt=""
-                            style="width:100%;height:130px;object-fit:cover;border-radius:8px;margin-bottom:0.75rem">
-                    @endif
+                    <div class="form-group" x-data="featuredImageUploader('{{ old('featured_image', $portfolio->featured_image) }}')">
+                        <label class="form-label">Featured Image</label>
 
-                    <div class="form-group">
-                        <label class="form-label" for="featured_image">Featured Image URL</label>
-                        <input type="text" id="featured_image" name="featured_image"
-                            class="form-control" value="{{ old('featured_image', $portfolio->featured_image) }}" placeholder="https://…">
+                        <template x-if="preview">
+                            <img :src="preview" alt="Preview"
+                                style="width:100%;height:130px;object-fit:cover;border-radius:8px;margin-bottom:0.75rem">
+                        </template>
+
+                        <input type="file" x-ref="fileInput" accept="image/*" @change="upload($event)" style="display:none">
+                        <button type="button" @click="$refs.fileInput.click()"
+                            class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;margin-bottom:0.6rem"
+                            :disabled="uploading">
+                            <i class="ri-upload-2-line"></i>
+                            <span x-text="uploading ? 'Uploading…' : 'Upload from Computer'"></span>
+                        </button>
+
+                        <input type="text" name="featured_image" x-model="url"
+                            class="form-control" placeholder="or paste URL here…">
                     </div>
 
                     <div class="form-group" style="margin-top:1rem">
@@ -170,5 +179,31 @@
         @csrf
         @method('DELETE')
     </form>
+
+    @push('scripts')
+    <script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('featuredImageUploader', (initial = '') => ({
+            url: initial,
+            preview: initial || null,
+            uploading: false,
+            async upload(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                this.uploading = true;
+                const form = new FormData();
+                form.append('file', file);
+                form.append('_token', document.querySelector('meta[name="csrf-token"]').content);
+                const res = await fetch('{{ route('admin.blog.upload-media') }}', { method: 'POST', body: form });
+                const data = await res.json();
+                this.url = data.url;
+                this.preview = data.url;
+                this.uploading = false;
+                event.target.value = '';
+            }
+        }));
+    });
+    </script>
+    @endpush
 
 </x-layouts.backend>
