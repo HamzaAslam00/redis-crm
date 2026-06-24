@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\SeoBacklink;
+use App\Models\SeoKeyword;
 use App\Models\SeoPage;
 use Illuminate\Database\Seeder;
 
@@ -433,6 +435,105 @@ class SeoPageSeeder extends Seeder
             SeoPage::updateOrCreate(
                 ['route_name' => $page['route_name']],
                 $page
+            );
+        }
+
+        $this->seedKeywords($domain);
+        $this->seedBacklinks($domain);
+    }
+
+    private function seedKeywords(string $domain): void
+    {
+        $keywords = [
+            ['keyword' => 'web development company Pakistan', 'target_url' => $domain, 'priority' => 'high', 'current_position' => 8, 'monthly_volume' => 1900, 'difficulty' => 45, 'notes' => 'Primary homepage keyword', 'last_checked_at' => now()],
+            ['keyword' => 'AI agents Pakistan', 'target_url' => $domain.'/services', 'priority' => 'high', 'current_position' => 4, 'monthly_volume' => 720, 'difficulty' => 28, 'notes' => 'Emerging high-intent keyword', 'last_checked_at' => now()],
+            ['keyword' => 'mobile app development Pakistan', 'target_url' => $domain.'/services', 'priority' => 'high', 'current_position' => 12, 'monthly_volume' => 2400, 'difficulty' => 52, 'notes' => 'High volume, mid difficulty', 'last_checked_at' => now()],
+            ['keyword' => 'Laravel development company Pakistan', 'target_url' => $domain.'/services', 'priority' => 'medium', 'current_position' => 6, 'monthly_volume' => 590, 'difficulty' => 35, 'notes' => 'Tech-specific keyword', 'last_checked_at' => now()],
+            ['keyword' => 'digital marketing agency Pakistan', 'target_url' => $domain.'/services', 'priority' => 'medium', 'current_position' => 18, 'monthly_volume' => 3600, 'difficulty' => 62, 'notes' => 'Competitive — long-term target', 'last_checked_at' => now()],
+            ['keyword' => 'LLM integration Pakistan', 'target_url' => $domain.'/services', 'priority' => 'high', 'current_position' => 2, 'monthly_volume' => 320, 'difficulty' => 18, 'notes' => 'Low competition, fast-growing niche', 'last_checked_at' => now()],
+            ['keyword' => 'Flutter app development Pakistan', 'target_url' => $domain.'/services', 'priority' => 'medium', 'current_position' => 9, 'monthly_volume' => 880, 'difficulty' => 40, 'notes' => 'Cross-platform mobile keyword', 'last_checked_at' => now()],
+            ['keyword' => 'free SEO audit tool Pakistan', 'target_url' => $domain.'/free-audit', 'priority' => 'medium', 'current_position' => 5, 'monthly_volume' => 480, 'difficulty' => 22, 'notes' => 'Free tool — drives top-of-funnel traffic', 'last_checked_at' => now()],
+            ['keyword' => 'custom ERP development Pakistan', 'target_url' => $domain.'/services', 'priority' => 'low', 'current_position' => 14, 'monthly_volume' => 390, 'difficulty' => 38, 'notes' => 'Enterprise keyword — good ROI per lead', 'last_checked_at' => now()],
+            ['keyword' => 'n8n automation Pakistan', 'target_url' => $domain.'/services', 'priority' => 'low', 'current_position' => 3, 'monthly_volume' => 210, 'difficulty' => 15, 'notes' => 'Very low competition, rank fast', 'last_checked_at' => now()],
+        ];
+
+        foreach ($keywords as $kw) {
+            SeoKeyword::firstOrCreate(
+                ['keyword' => $kw['keyword']],
+                $kw
+            );
+        }
+    }
+
+    private function seedBacklinks(string $domain): void
+    {
+        $backlinks = [
+            [
+                'source_url' => 'https://techblog.com.pk/best-web-dev-companies-pakistan',
+                'source_domain' => 'techblog.com.pk',
+                'target_url' => $domain,
+                'anchor_text' => 'Redis Solution',
+                'link_type' => 'dofollow',
+                'domain_authority' => 42,
+                'status' => 'active',
+                'discovered_at' => now()->subDays(30),
+                'last_checked_at' => now()->subDays(2),
+                'notes' => 'Listicle — top 10 web dev companies Pakistan',
+            ],
+            [
+                'source_url' => 'https://startupspk.io/ai-agencies-to-watch-2024',
+                'source_domain' => 'startupspk.io',
+                'target_url' => $domain.'/services',
+                'anchor_text' => 'AI development agency Pakistan',
+                'link_type' => 'dofollow',
+                'domain_authority' => 35,
+                'status' => 'active',
+                'discovered_at' => now()->subDays(60),
+                'last_checked_at' => now()->subDays(5),
+                'notes' => 'Featured in AI startups to watch article',
+            ],
+            [
+                'source_url' => 'https://clutch.co/profile/redis-solution',
+                'source_domain' => 'clutch.co',
+                'target_url' => $domain,
+                'anchor_text' => 'Redis Solution',
+                'link_type' => 'nofollow',
+                'domain_authority' => 78,
+                'status' => 'active',
+                'discovered_at' => now()->subDays(90),
+                'last_checked_at' => now()->subDays(1),
+                'notes' => 'High DA profile on Clutch — important brand citation',
+            ],
+            [
+                'source_url' => 'https://pakistanitsummit.pk/sponsors/redis-solution',
+                'source_domain' => 'pakistanitsummit.pk',
+                'target_url' => $domain,
+                'anchor_text' => 'Redis Solution — AI & Web Development',
+                'link_type' => 'dofollow',
+                'domain_authority' => 29,
+                'status' => 'active',
+                'discovered_at' => now()->subDays(45),
+                'last_checked_at' => now()->subDays(7),
+                'notes' => 'Event sponsorship backlink',
+            ],
+            [
+                'source_url' => 'https://freelancepk.net/top-flutter-developers-pakistan',
+                'source_domain' => 'freelancepk.net',
+                'target_url' => $domain.'/services',
+                'anchor_text' => 'best Flutter developers Pakistan',
+                'link_type' => 'dofollow',
+                'domain_authority' => 31,
+                'status' => 'active',
+                'discovered_at' => now()->subDays(20),
+                'last_checked_at' => now()->subDays(3),
+                'notes' => 'Niche directory for Pakistan developers',
+            ],
+        ];
+
+        foreach ($backlinks as $bl) {
+            SeoBacklink::firstOrCreate(
+                ['source_url' => $bl['source_url']],
+                $bl
             );
         }
     }

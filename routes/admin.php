@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Backend\ActivityLogController;
 use App\Http\Controllers\Backend\ApiKeyController;
+use App\Http\Controllers\Backend\BlogCategoryController;
+use App\Http\Controllers\Backend\BlogMediaController;
+use App\Http\Controllers\Backend\BlogPostController;
 use App\Http\Controllers\Backend\BudgetController;
 use App\Http\Controllers\Backend\ContactMessageController;
 use App\Http\Controllers\Backend\CredentialController;
@@ -9,6 +12,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\HostingClientController;
 use App\Http\Controllers\Backend\InvestmentController;
 use App\Http\Controllers\Backend\PersonalNoteController;
+use App\Http\Controllers\Backend\PortfolioController;
 use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\ProposalController;
 use App\Http\Controllers\Backend\RoleController;
@@ -86,7 +90,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('can:activity.view')->get('activity', [ActivityLogController::class, 'index'])->name('activity.index');
 
     // Contact Messages
-    Route::prefix('contacts')->name('contacts.')->group(function () {
+    Route::middleware('can:contact.view')->prefix('contacts')->name('contacts.')->group(function () {
         Route::get('/', [ContactMessageController::class, 'index'])->name('index');
         Route::get('{contact}', [ContactMessageController::class, 'show'])->name('show');
         Route::patch('{contact}/status', [ContactMessageController::class, 'updateStatus'])->name('status');
@@ -96,7 +100,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     // Proposals
-    Route::prefix('proposals')->name('proposals.')->group(function (): void {
+    Route::middleware('can:proposal.view')->prefix('proposals')->name('proposals.')->group(function (): void {
         Route::get('/', [ProposalController::class, 'index'])->name('index');
         Route::get('/create', [ProposalController::class, 'create'])->name('create');
         Route::post('/', [ProposalController::class, 'store'])->name('store');
@@ -110,8 +114,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::patch('/{proposal}/status', [ProposalController::class, 'updateStatus'])->name('status');
     });
 
-    // SEO Management (Phase 7A)
-    Route::prefix('seo')->name('seo.')->group(function (): void {
+    // SEO Management
+    Route::middleware('can:setting.edit')->prefix('seo')->name('seo.')->group(function (): void {
         Route::get('/', [SeoController::class, 'index'])->name('index');
         Route::get('/pages/{seoPage}/edit', [SeoController::class, 'editPage'])->name('pages.edit');
         Route::put('/pages/{seoPage}', [SeoController::class, 'updatePage'])->name('pages.update');
@@ -128,9 +132,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/tools/sitemap', [SeoController::class, 'regenerateSitemap'])->name('tools.sitemap');
     });
 
-    // Placeholder routes (Phase 7B+)
-    Route::get('portfolio', fn () => view('backend.placeholder', ['page' => 'Portfolio']))->name('portfolio.index');
-    Route::get('blog', fn () => view('backend.placeholder', ['page' => 'Blog Posts']))->name('blog.index');
+    // Portfolio CMS
+    Route::middleware('can:portfolio.view')->resource('portfolio', PortfolioController::class)->except(['show'])->names('portfolio');
+
+    // Blog CMS
+    Route::middleware('can:blog.view')->prefix('blog')->name('blog.')->group(function () {
+        Route::post('upload-media', [BlogMediaController::class, 'upload'])->name('upload-media');
+        Route::resource('posts', BlogPostController::class)->except(['show'])->names('posts');
+        Route::get('categories', [BlogCategoryController::class, 'index'])->name('categories.index');
+        Route::post('categories', [BlogCategoryController::class, 'store'])->name('categories.store');
+        Route::get('categories/{category}/edit', [BlogCategoryController::class, 'edit'])->name('categories.edit');
+        Route::put('categories/{category}', [BlogCategoryController::class, 'update'])->name('categories.update');
+        Route::delete('categories/{category}', [BlogCategoryController::class, 'destroy'])->name('categories.destroy');
+    });
 
     // Users & Roles
     Route::middleware('can:user.view')->resource('users', UserController::class)->except(['show']);
@@ -139,8 +153,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('can:role.view')->resource('roles', RoleController::class)->except(['show']);
 
     // Settings
-    Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
-    Route::put('settings', [SettingsController::class, 'update'])->name('settings.update');
-    Route::put('settings/recaptcha', [SettingsController::class, 'updateRecaptcha'])->name('settings.recaptcha');
+    Route::middleware('can:setting.view')->group(function () {
+        Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+        Route::put('settings', [SettingsController::class, 'update'])->name('settings.update');
+        Route::put('settings/recaptcha', [SettingsController::class, 'updateRecaptcha'])->name('settings.recaptcha');
+    });
 
 });

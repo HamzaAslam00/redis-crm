@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\PortfolioItem;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -24,7 +25,13 @@ class HomeController extends Controller
 
     public function portfolio(): View
     {
-        return view('frontend.portfolio');
+        $items = PortfolioItem::active()
+            ->orderBy('display_order')
+            ->orderByDesc('is_featured')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('frontend.portfolio', compact('items'));
     }
 
     public function contact(): View

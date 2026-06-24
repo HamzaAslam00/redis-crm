@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\BlogController;
 use App\Http\Controllers\Frontend\ContactSubmitController;
 use App\Http\Controllers\Frontend\FreeAuditController;
 use App\Http\Controllers\Frontend\HomeController;
@@ -24,8 +25,8 @@ Route::middleware(ApplySeoMeta::class)->group(function (): void {
     Route::get('/refund-policy', [HomeController::class, 'refundPolicy'])->name('refund-policy');
     Route::get('/free-audit', [HomeController::class, 'freeAudit'])->name('free-audit');
     Route::get('/free-consultation', [HomeController::class, 'freeConsultation'])->name('free-consultation');
-    Route::get('/blog', fn () => view('frontend.blog-placeholder'))->name('blog.index');
-    Route::get('/blog/{slug}', fn () => abort(404))->name('blog.show');
+    Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 });
 
 Route::post('/contact', [ContactSubmitController::class, 'store'])->middleware('throttle:3,60')->name('contact.store');

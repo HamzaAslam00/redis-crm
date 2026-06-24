@@ -9,6 +9,7 @@
     {!! SEOMeta::generate() !!}
     {!! OpenGraph::generate() !!}
     {!! TwitterCard::generate() !!}
+    {!! JsonLd::generate() !!}
 
     {{-- Preconnects --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">

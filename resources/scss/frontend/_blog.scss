@@ -1,1 +1,193 @@
+@use '../variables' as *;
 
+// ─── Layout ───────────────────────────────────────────────────────────────────
+.blog-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 3rem;
+    align-items: start;
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.blog-sidebar-sticky {
+    position: sticky;
+    top: 7rem;
+}
+
+// ─── Post item ────────────────────────────────────────────────────────────────
+.blog-post-item {
+    display: grid;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--fg-border);
+    align-items: start;
+    gap: 1.5rem;
+
+    &--with-thumb {
+        grid-template-columns: 200px 1fr;
+
+        @media (max-width: 600px) {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+.blog-post-thumb {
+    display: block;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 130px;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    &:hover img {
+        transform: scale(1.04);
+    }
+
+    @media (max-width: 600px) {
+        height: 200px;
+    }
+}
+
+.blog-cat-pill {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    background: rgba(255, 100, 0, 0.12);
+    color: #FF6400;
+    border: 1px solid rgba(255, 100, 0, 0.25);
+}
+
+.blog-post-title-link {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--fg-heading);
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &:hover {
+        color: #FF6400;
+    }
+}
+
+.blog-read-more {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #FF6400;
+    text-decoration: none;
+    transition: opacity 0.2s;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+// ─── Sidebar ──────────────────────────────────────────────────────────────────
+.blog-sidebar-widget {
+    background: var(--fg-card);
+    border: 1px solid var(--fg-card-border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    h3 {
+        font-family: 'Syne', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--fg-heading);
+        margin: 0 0 1rem;
+    }
+}
+
+.blog-sidebar-cat-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    font-size: 0.875rem;
+    color: var(--fg-text-muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--fg-border);
+    transition: color 0.2s;
+
+    &:hover {
+        color: #FF6400;
+    }
+
+    .count {
+        font-size: 0.75rem;
+        background: var(--fg-card-border);
+        border-radius: 20px;
+        padding: 0.15rem 0.5rem;
+        color: var(--fg-text-muted);
+        flex-shrink: 0;
+    }
+}
+
+.blog-sidebar-cta {
+    background: linear-gradient(135deg, rgba(255, 100, 0, 0.12), rgba(236, 72, 153, 0.08));
+    border: 1px solid rgba(255, 100, 0, 0.2);
+    border-radius: 14px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+// ─── Load More ────────────────────────────────────────────────────────────────
+[x-cloak] {
+    display: none !important;
+}
+
+.btn-load-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 2.5rem;
+    padding: 0.75rem 2.2rem;
+    background: transparent;
+    border: 1.5px solid var(--fg-border);
+    border-radius: 50px;
+    color: var(--fg-text);
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: $font-body;
+    cursor: pointer;
+    transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+
+    &:hover:not(:disabled) {
+        border-color: #FF6400;
+        color: #FF6400;
+        transform: translateY(-1px);
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+.load-more-spinner {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: lm-spin 0.65s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes lm-spin {
+    to { transform: rotate(360deg); }
+}

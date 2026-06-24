@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
             SettingsSeeder::class,
             EmailTemplatesSeeder::class,
             NotificationSettingsSeeder::class,
+            SeoPageSeeder::class,
+            BlogAndPortfolioSeeder::class,
         ]);
     }
 }
