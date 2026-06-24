@@ -94,6 +94,12 @@
 
     @include responsive(lg) { grid-template-columns: repeat(2, 1fr); }
     @include responsive(sm) { grid-template-columns: 1fr; }
+
+    &--2col {
+        grid-template-columns: repeat(2, 1fr);
+
+        @include responsive(sm) { grid-template-columns: 1fr; }
+    }
 }
 
 .service-card {
@@ -103,6 +109,11 @@
     gap: 1rem;
     position: relative;
     overflow: hidden;
+
+    &--featured {
+        border-color: rgba(236, 72, 153, 0.3);
+        background: linear-gradient(135deg, var(--fg-card) 0%, rgba(236, 72, 153, 0.04) 100%);
+    }
 
     &__num {
         font-family: $font-heading;

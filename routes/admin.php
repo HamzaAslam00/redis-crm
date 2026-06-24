@@ -12,6 +12,7 @@ use App\Http\Controllers\Backend\PersonalNoteController;
 use App\Http\Controllers\Backend\ProjectController;
 use App\Http\Controllers\Backend\ProposalController;
 use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\SeoController;
 use App\Http\Controllers\Backend\SettingsController;
 use App\Http\Controllers\Backend\UserController;
 use App\Models\Project;
@@ -109,7 +110,25 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::patch('/{proposal}/status', [ProposalController::class, 'updateStatus'])->name('status');
     });
 
-    // Placeholder routes (Phase 7+)
+    // SEO Management (Phase 7A)
+    Route::prefix('seo')->name('seo.')->group(function (): void {
+        Route::get('/', [SeoController::class, 'index'])->name('index');
+        Route::get('/pages/{seoPage}/edit', [SeoController::class, 'editPage'])->name('pages.edit');
+        Route::put('/pages/{seoPage}', [SeoController::class, 'updatePage'])->name('pages.update');
+        Route::get('/keywords', [SeoController::class, 'keywords'])->name('keywords');
+        Route::post('/keywords', [SeoController::class, 'storeKeyword'])->name('keywords.store');
+        Route::put('/keywords/{keyword}', [SeoController::class, 'updateKeyword'])->name('keywords.update');
+        Route::delete('/keywords/{keyword}', [SeoController::class, 'destroyKeyword'])->name('keywords.destroy');
+        Route::get('/backlinks', [SeoController::class, 'backlinks'])->name('backlinks');
+        Route::post('/backlinks', [SeoController::class, 'storeBacklink'])->name('backlinks.store');
+        Route::put('/backlinks/{backlink}', [SeoController::class, 'updateBacklink'])->name('backlinks.update');
+        Route::delete('/backlinks/{backlink}', [SeoController::class, 'destroyBacklink'])->name('backlinks.destroy');
+        Route::get('/tools', [SeoController::class, 'tools'])->name('tools');
+        Route::post('/tools/robots', [SeoController::class, 'updateRobots'])->name('tools.robots');
+        Route::post('/tools/sitemap', [SeoController::class, 'regenerateSitemap'])->name('tools.sitemap');
+    });
+
+    // Placeholder routes (Phase 7B+)
     Route::get('portfolio', fn () => view('backend.placeholder', ['page' => 'Portfolio']))->name('portfolio.index');
     Route::get('blog', fn () => view('backend.placeholder', ['page' => 'Blog Posts']))->name('blog.index');
 

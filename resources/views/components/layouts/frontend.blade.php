@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? config('app.name') }}</title>
-
-    {{-- SEO Meta --}}
+    {{-- SEO Meta (managed via admin SEO panel) --}}
     {!! SEOMeta::generate() !!}
     {!! OpenGraph::generate() !!}
     {!! TwitterCard::generate() !!}

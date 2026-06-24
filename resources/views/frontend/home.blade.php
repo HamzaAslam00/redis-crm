@@ -7,20 +7,27 @@
 
             {{-- Left: copy --}}
             <div class="hero-v2__left">
-                <div class="hero-v2__badge">
-                    <i class="ri-star-fill" style="color:#FFB800;font-size:0.85rem"></i>
-                    Trusted by 100+ Businesses Worldwide
+                <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.25rem">
+                    <div class="hero-v2__badge">
+                        <i class="ri-star-fill" style="color:#FFB800;font-size:0.85rem"></i>
+                        Trusted by 100+ Businesses Worldwide
+                    </div>
+                    <div class="hero-v2__badge" style="background:rgba(236,72,153,0.1);border-color:rgba(236,72,153,0.25);color:#EC4899">
+                        <i class="ri-robot-2-line" style="font-size:0.85rem"></i>
+                        AI Agents &amp; Integrations
+                    </div>
                 </div>
 
                 <h1 class="hero-v2__title">
-                    We Make Your<br>Business
-                    <span class="gradient-text">Digital</span>
+                    We Build<br>
+                    <span class="gradient-text">AI-Powered</span><br>
+                    Digital Products
                 </h1>
 
                 <p class="hero-v2__sub">
-                    Transform your business with our cutting-edge digital solutions,
-                    designed to drive growth and innovation. From strategy to
-                    implementation, we'll guide every step of the way.
+                    From custom AI agents and LLM integrations to full-stack web apps
+                    and mobile platforms — we design, build and scale digital solutions
+                    that give your business a real competitive edge.
                 </p>
 
                 <div class="hero-v2__actions">
@@ -69,7 +76,7 @@
                                 <span></span><span></span><span></span>
                             </div>
                             <span class="dev-pipeline__title">
-                                <i class="ri-git-branch-line"></i> redis-solution / ai-dev-lifecycle
+                                <i class="ri-git-branch-line"></i> redis-solution / ai-agent-build
                             </span>
                             <span class="dev-pipeline__live">
                                 <span class="dev-pipeline__live-dot"></span> LIVE
@@ -79,11 +86,11 @@
                         <div class="dev-pipeline__body">
                             @php
                             $stages = [
-                                ['ri-user-star-line',    '#FF6400', 'Client Discovery',  'Brief received · requirements mapped',      'done',   '0.1s'],
-                                ['ri-robot-line',        '#6366F1', 'AI Planning',        'Stack, architecture & timeline defined',    'done',   '0.55s'],
-                                ['ri-code-s-slash-line', '#10B981', 'Development',        'Full-stack build with AI pair-programming', 'done',   '1.0s'],
-                                ['ri-test-tube-line',    '#0EA5E9', 'Testing & QA',       '24/24 passed · 0 bugs found',               'done',   '1.45s'],
-                                ['ri-rocket-2-line',     '#FF6400', 'Deployment',         'Pushing to production server…',             'active', '1.9s'],
+                                ['ri-user-star-line',    '#FF6400', 'Client Discovery',   'Requirements mapped · AI use-case defined',  'done',   '0.1s'],
+                                ['ri-robot-2-line',      '#EC4899', 'AI Agent Design',    'Agent tools, memory & planning configured',  'done',   '0.55s'],
+                                ['ri-git-merge-line',    '#6366F1', 'LLM Integration',    'Claude + OpenAI APIs wired & tested',        'done',   '1.0s'],
+                                ['ri-flow-chart',        '#10B981', 'Automation Pipeline','n8n workflows & webhooks deployed',          'done',   '1.45s'],
+                                ['ri-rocket-2-line',     '#FF6400', 'Go Live',            'Agent running on production · monitoring…',  'active', '1.9s'],
                             ];
                             @endphp
                             @foreach($stages as $idx => [$icon, $color, $label, $sub, $state, $delay])
@@ -111,9 +118,9 @@
 
                         <div class="dev-pipeline__footer">
                             @foreach([
-                                ['#10B981','ri-shield-check-line','On-Time Delivery'],
-                                ['#6366F1','ri-robot-line',       'AI-Powered Build'],
-                                ['#FF6400','ri-lock-line',        'NDA Protected'],
+                                ['#EC4899','ri-robot-2-line',     'AI Agents'],
+                                ['#6366F1','ri-flow-chart',       'Automation'],
+                                ['#FF6400','ri-cpu-line',         'MCP Servers'],
                             ] as [$color, $icon, $label])
                             <span class="dp-tag" style="color:{{ $color }};background:{{ $color }}12;border:1px solid {{ $color }}28">
                                 <i class="{{ $icon }}"></i> {{ $label }}
@@ -157,12 +164,12 @@
     <div class="marquee-track">
         @php
         $techs = [
+            ['OpenAI','ri-robot-line'],['Claude AI','ri-sparkling-2-line'],['AI Agents','ri-robot-2-line'],
             ['Laravel','ri-code-box-line'],['React','ri-reactjs-line'],['Flutter','ri-flutter-fill'],
-            ['Node.js','ri-nodejs-line'],['Vue.js','ri-vuejs-line'],['Next.js','ri-code-s-slash-line'],
-            ['Python','ri-terminal-box-line'],['MySQL','ri-database-2-line'],['MongoDB','ri-server-line'],
-            ['AWS','ri-cloud-line'],['Figma','ri-pen-nib-line'],['TailwindCSS','ri-palette-line'],
-            ['TypeScript','ri-braces-line'],['Docker','ri-ship-2-line'],['Firebase','ri-fire-line'],
-            ['Google Ads','ri-google-line'],['Meta Ads','ri-facebook-circle-line'],['OpenAI','ri-robot-line'],
+            ['Node.js','ri-nodejs-line'],['LangChain','ri-links-line'],['n8n Automation','ri-flow-chart'],
+            ['Python','ri-terminal-box-line'],['RAG Pipeline','ri-database-2-line'],['Vector DB','ri-server-line'],
+            ['AWS','ri-cloud-line'],['TypeScript','ri-braces-line'],['Docker','ri-ship-2-line'],
+            ['Google Ads','ri-google-line'],['Meta Ads','ri-facebook-circle-line'],['MCP','ri-cpu-line'],
         ];
         $all = array_merge($techs, $techs);
         @endphp
@@ -207,24 +214,27 @@
         <div class="sh" data-gsap-fade>
             <span class="sh__eye">Our Services</span>
             <h2 class="sh__title">What We Offer</h2>
-            <p class="sh__sub">Comprehensive digital solutions covering every aspect of your technology and marketing needs.</p>
+            <p class="sh__sub">From AI agents and smart integrations to full-stack development and digital marketing — everything your business needs to grow.</p>
         </div>
 
-        <div class="service-grid" data-gsap-stagger>
+        <div class="service-grid service-grid--2col" data-gsap-stagger>
             @foreach([
-                ['ri-sparkling-2-line', '#EC4899', 'AI-Based Applications',    'Build AI-powered chatbots, automation pipelines and LLM integrations that give your business a real competitive edge.',   'ai-applications'],
-                ['ri-window-line',      '#FF6400', 'Website Development',      'Build any website with the expertise of Redis Solution for a faster tomorrow. From landing pages to full SaaS platforms.',    'web-development'],
-                ['ri-smartphone-line',  '#6366F1', 'Mobile App Development',   'Build any mobile app with expertise in Flutter, React Native, iOS & Android. Native performance, beautiful UI.',            'mobile-apps'],
-                ['ri-bar-chart-line',   '#10B981', 'Digital Marketing',        'Drive growth with SEO, Google Ads, Meta campaigns and social media strategies that deliver measurable, trackable ROI.',       'digital-marketing'],
-                ['ri-code-s-slash-line','#0EA5E9', 'Software Development',     'Tailored software solutions designed to meet your unique business needs and drive operational efficiency at scale.',           'software-development'],
-                ['ri-layout-grid-line', '#F59E0B', 'ERP & CMS Development',    'Streamline your operations and manage content effortlessly with custom ERP and CMS solutions built for your workflow.',      'erp-cms'],
-            ] as [$icon, $color, $title, $desc, $anchor])
-            <div class="service-card" data-tilt>
+                ['ri-robot-2-line',     '#EC4899', 'AI Agents &amp; Integrations', 'Custom AI agents (Claude, OpenAI), RAG pipelines, n8n automation and MCP servers — built to automate your operations and create a real competitive edge.',  'ai-applications',      true],
+                ['ri-window-line',      '#FF6400', 'Website Development',           'Build any website with the expertise of Redis Solution for a faster tomorrow. From landing pages to full SaaS platforms.',                                      'web-development',      false],
+                ['ri-smartphone-line',  '#6366F1', 'Mobile App Development',        'Cross-platform apps in Flutter with native performance, beautiful UI and seamless API integrations.',                                                          'mobile-apps',          false],
+                ['ri-bar-chart-line',   '#10B981', 'Digital Marketing',             'Drive growth with SEO, Google Ads, Meta campaigns and social media strategies that deliver measurable, trackable ROI.',                                         'digital-marketing',    false],
+                ['ri-code-s-slash-line','#0EA5E9', 'Software Development',          'Tailored software solutions designed to meet your unique business needs and drive operational efficiency at scale.',                                            'software-development', false],
+                ['ri-layout-grid-line', '#F59E0B', 'ERP &amp; CMS Development',    'Streamline your operations and manage content effortlessly with custom ERP and CMS solutions built for your workflow.',                                         'erp-cms',              false],
+            ] as [$icon, $color, $title, $desc, $anchor, $featured])
+            <div class="service-card{{ $featured ? ' service-card--featured' : '' }}" data-tilt>
+                @if($featured)
+                    <span style="position:absolute;top:1rem;right:1rem;padding:0.2rem 0.6rem;border-radius:99px;background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.3);color:#EC4899;font-size:0.68rem;font-weight:700;letter-spacing:0.06em">FEATURED</span>
+                @endif
                 <div class="service-card__icon" style="background:{{ $color }}15;border:1px solid {{ $color }}30;color:{{ $color }}">
                     <i class="{{ $icon }}"></i>
                 </div>
                 <div>
-                    <h3 class="service-card__title">{{ $title }}</h3>
+                    <h3 class="service-card__title">{!! $title !!}</h3>
                     <p class="service-card__desc">{{ $desc }}</p>
                 </div>
                 <a href="{{ route('services') }}#{{ $anchor }}" class="service-card__arrow">
@@ -245,17 +255,17 @@
 <section class="section">
     <div class="container">
         <div class="sh" data-gsap-fade>
-            <span class="sh__eye">Growth Services</span>
-            <h2 class="sh__title">Grow Your Brand Online</h2>
-            <p class="sh__sub">Beyond development — we drive traffic, generate leads, and build brand authority that converts visitors into customers.</p>
+            <span class="sh__eye">Additional Services</span>
+            <h2 class="sh__title">Beyond Code — We Drive Growth</h2>
+            <p class="sh__sub">Automation, marketing, strategy and content — a complete digital team for your business.</p>
         </div>
 
         <div class="mini-services-grid" data-gsap-stagger>
             @foreach([
-                ['ri-advertisement-line',   '#EC4899', 'Social Media Ads',   'High-converting ad campaigns on Facebook, Instagram, TikTok and LinkedIn that drive real conversions.'],
-                ['ri-mail-send-line',        '#6366F1', 'Email Marketing',    'Automated email sequences that nurture leads, reduce churn and drive repeat purchases on autopilot.'],
-                ['ri-file-text-line',        '#10B981', 'Content Writing',    'SEO-optimised blog posts, web copy and marketing content that ranks on Google and converts visitors.'],
-                ['ri-lightbulb-flash-line',  '#F59E0B', 'Business Strategy',  'Consulting on digital transformation, product roadmaps and growth strategies tailored to your business.'],
+                ['ri-robot-2-line',          '#EC4899', 'AI Workflow Automation', 'Custom n8n pipelines, AI agents and webhook integrations that eliminate repetitive tasks and scale your operations.'],
+                ['ri-advertisement-line',    '#6366F1', 'Social Media Ads',       'High-converting ad campaigns on Facebook, Instagram, TikTok and LinkedIn that drive real conversions.'],
+                ['ri-mail-send-line',        '#10B981', 'Email Marketing',        'Automated email sequences that nurture leads, reduce churn and drive repeat purchases on autopilot.'],
+                ['ri-lightbulb-flash-line',  '#F59E0B', 'Business Strategy',      'Consulting on digital transformation, AI adoption roadmaps and growth strategies tailored to your business.'],
             ] as [$icon, $color, $title, $desc])
             <div class="mini-service-card">
                 <div class="mini-service-card__icon" style="color:{{ $color }}"><i class="{{ $icon }}"></i></div>

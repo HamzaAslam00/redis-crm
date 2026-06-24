@@ -1,17 +1,17 @@
-<x-layouts.frontend title="Full-Stack Digital Services — Redis Solution">
+<x-layouts.frontend title="AI Agents, Integrations & Digital Services — Redis Solution">
 
     <section class="photo-hero">
-        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1600&q=80&auto=format&fit=crop" alt="Services" class="photo-hero__img">
+        <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1600&q=80&auto=format&fit=crop" alt="AI Services" class="photo-hero__img">
         <div class="photo-hero__overlay"></div>
         <div class="container photo-hero__content">
             <p class="photo-hero__eye">What We Do</p>
-            <h1 class="photo-hero__title">Full-Stack Digital Services<br><span>Built to Scale</span></h1>
-            <p class="photo-hero__sub">From concept to launch — we design, build and grow digital products that deliver real business results.</p>
+            <h1 class="photo-hero__title">AI Agents &amp; Full-Stack<br><span>Digital Services</span></h1>
+            <p class="photo-hero__sub">From autonomous AI agents and LLM integrations to web apps, mobile platforms and digital marketing — everything built to scale your business.</p>
         </div>
     </section>
 
     {{-- ═══════════════════════════════════════════════
-         SERVICE 1 — AI APPLICATIONS (odd = content left)
+         SERVICE 1 — AI AGENTS, INTEGRATIONS & AUTOMATION
     ═══════════════════════════════════════════════ --}}
     <section class="section" id="ai-applications" style="scroll-margin-top:80px">
         <div class="container">
@@ -21,39 +21,61 @@
                 <div>
                     <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
                         <div style="display:flex;align-items:center;justify-content:center;width:60px;height:60px;border-radius:14px;background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.25)">
-                            <i class="ri-sparkling-2-line" style="color:#EC4899;font-size:1.75rem"></i>
+                            <i class="ri-robot-2-line" style="color:#EC4899;font-size:1.75rem"></i>
                         </div>
                         <span style="font-size:3rem;font-weight:800;color:rgba(236,72,153,0.15);font-family:'Clash Display',sans-serif;line-height:1">01</span>
+                        <span style="padding:0.25rem 0.75rem;border-radius:99px;background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.3);color:#EC4899;font-size:0.72rem;font-weight:700;letter-spacing:0.06em">FEATURED SERVICE</span>
                     </div>
-                    <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:700;color:var(--fg-heading);margin-bottom:0.75rem">AI Applications</h2>
+                    <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:700;color:var(--fg-heading);margin-bottom:0.75rem">AI Agents, Integrations &amp; Automation</h2>
                     <p style="font-size:1.1rem;color:var(--fg-text);font-weight:500;margin-bottom:1rem;line-height:1.6">
-                        Practical AI products that automate work and create competitive advantage.
+                        Autonomous AI agents and smart integrations that run your workflows — so your team doesn't have to.
                     </p>
                     <p style="color:var(--fg-text-muted);line-height:1.8;margin-bottom:1.5rem">
-                        We build AI-powered applications on top of the latest LLMs, computer vision models and ML pipelines — but we keep our feet on the ground. Every feature we ship solves a concrete business problem: automating document processing, generating content at scale, powering intelligent search, or predicting churn before it happens.
+                        We design and build custom AI agents powered by Claude, OpenAI and open-source LLMs. These agents don't just answer questions — they browse the web, call APIs, write and execute code, manage databases, and complete multi-step tasks end-to-end without human intervention. We also wire your existing tools together using n8n, webhooks, and custom MCP servers, creating automation pipelines that eliminate repetitive work and scale effortlessly.
                     </p>
+
+                    {{-- AI capability sub-cards --}}
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.5rem">
+                        @foreach([
+                            ['ri-robot-line',        '#EC4899', 'AI Agents',          'Autonomous agents that plan, decide & act across tools and APIs'],
+                            ['ri-git-merge-line',    '#6366F1', 'LLM Integrations',   'Connect Claude, GPT-4o & open-source models to your existing systems'],
+                            ['ri-flow-chart',        '#10B981', 'Workflow Automation', 'n8n, Zapier & custom pipelines that run your ops on autopilot'],
+                            ['ri-cpu-line',          '#F59E0B', 'MCP Servers',        'Model Context Protocol servers to give AI agents direct tool access'],
+                        ] as [$icon, $color, $title, $desc])
+                        <div style="padding:0.9rem 1rem;border-radius:10px;border:1px solid rgba(236,72,153,0.15);background:rgba(236,72,153,0.04)">
+                            <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.35rem">
+                                <i class="{{ $icon }}" style="color:{{ $color }};font-size:1rem"></i>
+                                <span style="font-weight:700;font-size:0.82rem;color:var(--fg-heading)">{{ $title }}</span>
+                            </div>
+                            <p style="font-size:0.76rem;color:var(--fg-text-muted);margin:0;line-height:1.5">{{ $desc }}</p>
+                        </div>
+                        @endforeach
+                    </div>
+
                     <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.75rem">
-                        @foreach(['OpenAI API','Claude API','Python','FastAPI','LangChain','Vector DBs','RAG','Fine-tuning'] as $tag)
+                        @foreach(['Claude API','OpenAI GPT-4o','LangChain','n8n','RAG Pipeline','Vector DB','FastAPI','Python','MCP','AutoGen','Webhooks','Fine-tuning'] as $tag)
                             <span style="padding:0.3rem 0.75rem;border-radius:99px;background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.25);color:#EC4899;font-size:0.78rem;font-weight:600">{{ $tag }}</span>
                         @endforeach
                     </div>
-                    <a href="{{ route('contact') }}?service=AI+Applications" class="btn-primary">Get a Quote</a>
+                    <a href="{{ route('contact') }}?service=AI+Agents+%26+Automation" class="btn-primary">Get a Quote <i class="ri-arrow-right-line"></i></a>
                 </div>
 
                 {{-- Included card --}}
                 <div class="included-card">
                     <div class="included-card__header">
-                        <div class="included-card__icon-wrap"><i class="ri-robot-line"></i></div>
+                        <div class="included-card__icon-wrap"><i class="ri-robot-2-line"></i></div>
                         <span class="included-card__heading">What's Included</span>
                     </div>
                     <ul class="included-card__list">
                         @foreach([
-                            'AI use-case discovery & feasibility assessment',
-                            'Prompt engineering & LLM integration (OpenAI, Claude)',
-                            'Custom fine-tuning or RAG pipeline development',
-                            'Secure API design with rate limiting & auth',
-                            'Model evaluation, testing & safety guardrails',
-                            'Monitoring dashboards for model performance & costs',
+                            'AI use-case discovery & ROI feasibility assessment',
+                            'Custom AI agent design with memory, tools & planning',
+                            'LLM integration (Claude, GPT-4o, Llama, Mistral)',
+                            'RAG pipeline — vector embeddings, semantic search & retrieval',
+                            'Third-party API integrations & webhook automation',
+                            'n8n / custom workflow automation setup & deployment',
+                            'MCP server development for AI tool access',
+                            'Safety guardrails, rate limiting & cost monitoring',
                         ] as $item)
                         <li class="included-card__item">
                             <div class="included-card__check"><i class="ri-check-line"></i></div>
