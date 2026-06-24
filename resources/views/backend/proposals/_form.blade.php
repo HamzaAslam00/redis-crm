@@ -1,24 +1,29 @@
 @php
     $isEdit      = !is_null($proposal);
+    $defaultMilestones = [
+        ['label' => 'On Project Start (50%)', 'amount' => 0],
+        ['label' => 'On Final Delivery (50%)', 'amount' => 0],
+    ];
+    $initialMilestones = ($isEdit && !empty($proposal->milestones)) ? $proposal->milestones : $defaultMilestones;
     $initialItems = $isEdit
         ? $proposal->items->map(fn($i) => [
-            'title'       => $i->title,
-            'description' => $i->description ?? '',
-            'unit_price'  => $i->unit_price ? (float) $i->unit_price : '',
-            'quantity'    => $i->quantity,
-            'total'       => (float) $i->total,
+            'title'         => $i->title,
+            'description'   => $i->description ?? '',
+            'delivery_days' => $i->delivery_days ?? '',
+            'price'         => (float) $i->total,
           ])->values()->toArray()
-        : [['title' => '', 'description' => '', 'unit_price' => '', 'quantity' => 1, 'total' => 0]];
+        : [['title' => '', 'description' => '', 'delivery_days' => '', 'price' => 0]];
 
     // Order matches PDF output order exactly
     $initialSections = array_merge(
-        ['description' => true, 'scope' => true, 'pricing' => true, 'details' => true, 'terms' => true, 'why_us' => true, 'contact' => true],
+        ['description' => true, 'scope' => true, 'prices' => true, 'pricing' => true, 'details' => true, 'terms' => true, 'why_us' => true, 'contact' => true],
         ($isEdit && $proposal->sections_enabled) ? $proposal->sections_enabled : []
     );
 
     $sectionLabels = [
         'description' => ['icon' => 'ri-file-text-line',    'label' => 'Project Overview'],
         'scope'       => ['icon' => 'ri-list-check',         'label' => 'Scope of Work'],
+        'prices'      => ['icon' => 'ri-money-dollar-circle-line', 'label' => 'Show Item Prices'],
         'pricing'     => ['icon' => 'ri-price-tag-3-line',   'label' => 'Pricing Summary'],
         'details'     => ['icon' => 'ri-calendar-line',      'label' => 'Project Details'],
         'terms'       => ['icon' => 'ri-file-shield-2-line', 'label' => 'Terms & Conditions'],
@@ -218,7 +223,7 @@
                                 <div>
                                     <div style="font-size:0.58rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#FF6400;margin-bottom:3px">Valid Until</div>
                                     <input type="date" name="valid_until" x-model="validUntil"
-                                        value="{{ old('valid_until', $proposal?->valid_until?->format('Y-m-d')) }}"
+                                        value="{{ old('valid_until', $proposal?->valid_until?->format('Y-m-d') ?? now()->addDays(3)->format('Y-m-d')) }}"
                                         class="pdf-field pdf-field-sm">
                                 </div>
                             </div>
@@ -268,18 +273,16 @@
                             <colgroup>
                                 <col style="width:28px">
                                 <col>
-                                <col style="width:52px">
-                                <col style="width:110px">
                                 <col style="width:100px">
+                                <template x-if="sections['prices']"><col style="width:100px"></template>
                                 <col style="width:28px">
                             </colgroup>
                             <thead>
                                 <tr style="background:#FF6400">
                                     <th style="padding:6px 8px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#fff;text-align:left">#</th>
                                     <th style="padding:6px 8px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#fff;text-align:left">Service / Deliverable</th>
-                                    <th style="padding:6px 8px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#fff;text-align:right">Qty</th>
-                                    <th style="padding:6px 8px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#fff;text-align:right">Unit Price</th>
-                                    <th style="padding:6px 8px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#fff;text-align:right">Total</th>
+                                    <th style="padding:6px 8px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#fff;text-align:center">Delivery Days</th>
+                                    <th x-show="sections['prices']" style="padding:6px 8px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#fff;text-align:right">Price</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -297,20 +300,17 @@
                                                 class="pdf-field"
                                                 style="font-size:0.78rem;color:#666;border-bottom-color:rgba(0,0,0,0.1)">
                                         </td>
-                                        <td style="padding:8px;vertical-align:top">
-                                            <input type="number" :name="'items['+index+'][quantity]'" x-model="item.quantity"
-                                                @input="updateItemTotal(index)" min="1" required
+                                        <td style="padding:8px;vertical-align:top;text-align:center">
+                                            <input :name="'items['+index+'][delivery_days]'" x-model="item.delivery_days"
+                                                placeholder="e.g. 5 Days"
                                                 class="pdf-field"
-                                                style="font-size:0.85rem;text-align:right">
+                                                style="font-size:0.8rem;text-align:center">
                                         </td>
-                                        <td style="padding:8px;vertical-align:top">
-                                            <input type="number" :name="'items['+index+'][unit_price]'" x-model="item.unit_price"
-                                                @input="updateItemTotal(index)" min="0" step="0.01" placeholder="0.00"
+                                        <td x-show="sections['prices']" style="padding:8px;vertical-align:top">
+                                            <input type="number" :name="'items['+index+'][price]'" x-model="item.price"
+                                                min="0" step="0.01" placeholder="0.00"
                                                 class="pdf-field"
-                                                style="font-size:0.85rem;text-align:right">
-                                        </td>
-                                        <td style="padding:8px;text-align:right;vertical-align:top">
-                                            <div style="font-size:0.85rem;font-weight:700;color:#FF6400;padding-top:4px;white-space:nowrap" x-text="currency + ' ' + fmt(item.total)"></div>
+                                                style="font-size:0.85rem;text-align:right;font-weight:700;color:#FF6400">
                                         </td>
                                         <td style="text-align:center;vertical-align:top;padding-top:8px">
                                             <button type="button" @click="removeItem(index)" x-show="items.length > 1"
@@ -328,31 +328,78 @@
                          SECTION 3: Pricing Summary
                     ══════════════════════════════════════════════ --}}
                     <div x-show="sections['pricing']" x-transition class="pdf-doc-section">
-                        <div class="pdf-sec-title">3. Pricing Summary</div>
-                        <div style="max-width:290px;margin-left:auto">
-                            <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.85rem;color:#555;padding:3px 0">
-                                <span>Subtotal</span>
-                                <span x-text="currency + ' ' + fmt(subtotal)" style="font-weight:600;color:#1a1a1a"></span>
+                        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                            <div class="pdf-sec-title" style="margin-bottom:0;flex:1">3. Pricing Summary</div>
+                            {{-- Mode toggle --}}
+                            <div style="display:flex;gap:0;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;flex-shrink:0">
+                                <button type="button" @click="milestoneMode = false"
+                                    :style="!milestoneMode ? 'background:#FF6400;color:#fff' : 'background:#f9f9f9;color:#555'"
+                                    style="padding:4px 10px;font-size:0.7rem;font-weight:700;border:none;cursor:pointer;transition:all 0.15s">
+                                    Total Only
+                                </button>
+                                <button type="button" @click="milestoneMode = true"
+                                    :style="milestoneMode ? 'background:#FF6400;color:#fff' : 'background:#f9f9f9;color:#555'"
+                                    style="padding:4px 10px;font-size:0.7rem;font-weight:700;border:none;cursor:pointer;border-left:1px solid #e0e0e0;transition:all 0.15s">
+                                    Milestones
+                                </button>
                             </div>
-                            <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;gap:0.5rem">
-                                <div style="display:flex;align-items:center;gap:5px;flex:1">
-                                    <span style="font-size:0.85rem;color:#555;white-space:nowrap">Discount</span>
-                                    <select name="discount_type" x-model="discountType"
-                                        style="font-size:0.78rem;border:1px solid #d0d0d0;border-radius:4px;padding:2px 5px;background:#f9f9f9;color:#333;outline:none;cursor:pointer">
-                                        <option value="fixed">Fixed</option>
-                                        <option value="percent">%</option>
-                                    </select>
-                                    <input type="number" name="discount_amount" x-model="discountAmount"
-                                        min="0" step="0.01" placeholder="0"
-                                        style="font-size:0.82rem;border:1px solid #d0d0d0;border-radius:4px;padding:3px 6px;background:#f9f9f9;color:#1a1a1a;outline:none;width:70px;text-align:right">
-                                </div>
-                                <span x-show="discountValue > 0" style="font-size:0.82rem;color:#e53e3e;font-weight:600;white-space:nowrap" x-text="'−' + currency + ' ' + fmt(discountValue)"></span>
-                            </div>
-                            <div style="border:2px solid #FF6400;padding:7px 10px;display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+                        </div>
+
+                        {{-- Total Only mode --}}
+                        <div x-show="!milestoneMode" style="max-width:290px;margin-left:auto">
+                            <div style="border:2px solid #FF6400;padding:8px 12px;display:flex;justify-content:space-between;align-items:center">
                                 <span style="font-size:0.95rem;font-weight:800;color:#FF6400">TOTAL</span>
                                 <span style="font-size:1rem;font-weight:800;color:#FF6400" x-text="currency + ' ' + fmt(total)"></span>
                             </div>
                         </div>
+
+                        {{-- Milestones mode --}}
+                        <div x-show="milestoneMode">
+                            <table style="width:100%;border-collapse:collapse;margin-bottom:8px">
+                                <thead>
+                                    <tr style="background:#f5f5f5">
+                                        <th style="padding:6px 8px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#555;text-align:left">Milestone / Payment Phase</th>
+                                        <th style="padding:6px 8px;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#555;text-align:right;width:120px">Amount</th>
+                                        <th style="width:28px"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template x-for="(ms, mi) in milestones" :key="mi">
+                                        <tr style="border-bottom:1px solid #eee">
+                                            <td style="padding:6px 8px">
+                                                <input :name="'ms_label_'+mi" x-model="ms.label"
+                                                    placeholder="e.g. On Project Start (50%)"
+                                                    class="pdf-field" style="font-size:0.82rem">
+                                            </td>
+                                            <td style="padding:6px 8px">
+                                                <input type="number" :name="'ms_amount_'+mi" x-model="ms.amount"
+                                                    placeholder="0.00" min="0" step="0.01"
+                                                    class="pdf-field" style="font-size:0.82rem;text-align:right;font-weight:700;color:#FF6400">
+                                            </td>
+                                            <td style="text-align:center">
+                                                <button type="button" @click="removeMilestone(mi)" x-show="milestones.length > 1"
+                                                    style="border:none;background:none;color:#ef4444;cursor:pointer;font-size:0.88rem">
+                                                    <i class="ri-close-line"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                            <div style="display:flex;align-items:center;justify-content:space-between">
+                                <button type="button" @click="addMilestone()"
+                                    style="font-size:0.72rem;font-weight:700;color:#FF6400;background:none;border:1px dashed #FF6400;border-radius:4px;padding:3px 10px;cursor:pointer">
+                                    + Add Milestone
+                                </button>
+                                <div style="font-size:0.78rem;color:#555">
+                                    Total: <strong x-text="currency + ' ' + fmt(milestoneTotal)" style="color:#FF6400"></strong>
+                                    <span x-show="Math.abs(milestoneTotal - total) > 0.01" style="color:#e53e3e;font-size:0.7rem" x-text="' ≠ ' + currency + ' ' + fmt(total) + ' (scope total)'"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="milestone_mode" :value="milestoneMode ? '1' : '0'">
+                        <input type="hidden" name="milestones" :value="JSON.stringify(milestones)">
                     </div>
 
                     {{-- ══════════════════════════════════════════
@@ -489,14 +536,6 @@
                             <span style="color:var(--crm-text-muted)">Items</span>
                             <span x-text="items.length + ' item' + (items.length !== 1 ? 's' : '')"></span>
                         </div>
-                        <div style="display:flex;justify-content:space-between;font-size:0.84rem">
-                            <span style="color:var(--crm-text-muted)">Subtotal</span>
-                            <span x-text="currency + ' ' + fmt(subtotal)"></span>
-                        </div>
-                        <div style="display:flex;justify-content:space-between;font-size:0.84rem;color:#ef4444" x-show="discountValue > 0">
-                            <span>Discount</span>
-                            <span x-text="'−' + currency + ' ' + fmt(discountValue)"></span>
-                        </div>
                         <div style="border-top:2px solid #FF6400;margin-top:0.4rem;padding-top:0.5rem;display:flex;justify-content:space-between;font-size:1.05rem;font-weight:800;color:#FF6400">
                             <span>TOTAL</span>
                             <span x-text="currency + ' ' + fmt(total)"></span>
@@ -570,15 +609,15 @@ function proposalBuilder() {
     return {
         currency:       '{{ old('currency', $proposal?->currency ?? 'USD') }}',
         platform:       '{{ old('platform', $proposal?->platform ?? '') }}',
-        discountType:   '{{ old('discount_type', $proposal?->discount_type ?? 'fixed') }}',
-        discountAmount: {{ old('discount_amount', $proposal?->discount_amount ?? 0) }},
         items:          @json($initialItems),
         sections:       @json($initialSections),
         descHtml:       @json(old('project_description', $proposal?->project_description ?? '')),
         clientName:     @json(old('client_name', $proposal?->client_name ?? '')),
         timeline:       @json(old('timeline', $proposal?->timeline ?? '')),
         revisionRounds: @json(old('revision_rounds', $proposal?->revision_rounds !== null ? (string)$proposal->revision_rounds : '')),
-        validUntil:     @json(old('valid_until', $proposal?->valid_until?->format('Y-m-d') ?? '')),
+        validUntil:     @json(old('valid_until', $proposal?->valid_until?->format('Y-m-d') ?? now()->addDays(3)->format('Y-m-d'))),
+        milestoneMode:  {{ ($proposal?->milestone_mode ?? false) ? 'true' : 'false' }},
+        milestones:     @json($initialMilestones),
 
         init() {
             this.$nextTick(() => {
@@ -606,31 +645,31 @@ function proposalBuilder() {
         },
 
         get subtotal() {
-            return this.items.reduce((sum, item) => {
-                return sum + ((parseFloat(item.unit_price) || 0) * (parseInt(item.quantity) || 1));
-            }, 0);
-        },
-
-        get discountValue() {
-            const amt = parseFloat(this.discountAmount) || 0;
-            return this.discountType === 'percent' ? this.subtotal * (amt / 100) : amt;
+            return this.items.reduce((sum, item) => sum + (parseFloat(item.price) || 0), 0);
         },
 
         get total() {
-            return Math.max(0, this.subtotal - this.discountValue);
+            return this.subtotal;
         },
 
-        updateItemTotal(index) {
-            const item = this.items[index];
-            item.total = (parseFloat(item.unit_price) || 0) * (parseInt(item.quantity) || 1);
+        get milestoneTotal() {
+            return this.milestones.reduce((sum, ms) => sum + (parseFloat(ms.amount) || 0), 0);
         },
 
         addItem() {
-            this.items.push({ title: '', description: '', unit_price: '', quantity: 1, total: 0 });
+            this.items.push({ title: '', description: '', delivery_days: '', price: 0 });
         },
 
         removeItem(index) {
             if (this.items.length > 1) { this.items.splice(index, 1); }
+        },
+
+        addMilestone() {
+            this.milestones.push({ label: '', amount: 0 });
+        },
+
+        removeMilestone(index) {
+            if (this.milestones.length > 1) { this.milestones.splice(index, 1); }
         },
 
         fmt(num) {

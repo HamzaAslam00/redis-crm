@@ -25,19 +25,19 @@ class StoreProposalRequest extends FormRequest
             'project_title' => ['required', 'string', 'max:255'],
             'project_description' => ['nullable', 'string'],
             'currency' => ['required', 'string', 'max:10'],
-            'discount_type' => ['required', 'in:fixed,percent'],
-            'discount_amount' => ['nullable', 'numeric', 'min:0'],
             'timeline' => ['nullable', 'string', 'max:100'],
             'revision_rounds' => ['nullable', 'integer', 'min:0'],
             'valid_until' => ['nullable', 'date'],
             'terms_conditions' => ['nullable', 'string'],
             'notes' => ['nullable', 'string'],
             'sections_enabled' => ['nullable', 'string'],
+            'milestone_mode' => ['nullable'],
+            'milestones' => ['nullable', 'string'],
             'items' => ['required', 'array', 'min:1'],
             'items.*.title' => ['required', 'string', 'max:255'],
             'items.*.description' => ['nullable', 'string'],
-            'items.*.unit_price' => ['nullable', 'numeric', 'min:0'],
-            'items.*.quantity' => ['required', 'integer', 'min:1'],
+            'items.*.delivery_days' => ['nullable', 'string', 'max:50'],
+            'items.*.price' => ['nullable', 'numeric', 'min:0'],
         ];
     }
 }

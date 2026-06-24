@@ -110,7 +110,7 @@ class ProposalController extends Controller
 
         foreach ($proposal->items as $item) {
             $newProposal->items()->create(
-                $item->only(['title', 'description', 'unit_price', 'quantity', 'total', 'sort_order'])
+                $item->only(['title', 'description', 'delivery_days', 'unit_price', 'quantity', 'total', 'sort_order'])
             );
         }
 
@@ -139,39 +139,36 @@ class ProposalController extends Controller
     {
         $items = $request->input('items', []);
 
-        $subtotal = collect($items)->sum(function (array $item): float {
-            return (float) ($item['unit_price'] ?? 0) * (int) ($item['quantity'] ?? 1);
-        });
-
-        $discountType = $request->input('discount_type', 'fixed');
-        $discountAmount = (float) ($request->input('discount_amount', 0));
-        $discountValue = $discountType === 'percent'
-            ? $subtotal * ($discountAmount / 100)
-            : $discountAmount;
+        $subtotal = collect($items)->sum(fn (array $item): float => (float) ($item['price'] ?? 0));
 
         $sectionsRaw = $request->input('sections_enabled');
         $sections = $sectionsRaw ? json_decode($sectionsRaw, true) : null;
+
+        $milestonesRaw = $request->input('milestones');
+        $milestones = $milestonesRaw ? json_decode($milestonesRaw, true) : null;
 
         return [
             'client_name' => $request->client_name,
             'client_email' => $request->client_email,
             'client_phone' => $request->client_phone,
             'client_company' => $request->client_company,
-            'platform' => $request->platform,
+            'platform' => $request->platform ?: null,
             'fiverr_username' => $request->fiverr_username,
             'project_title' => $request->project_title,
             'project_description' => $request->project_description,
             'currency' => $request->currency,
             'subtotal' => $subtotal,
-            'discount_type' => $discountType,
-            'discount_amount' => $discountAmount,
-            'total_amount' => max(0, $subtotal - $discountValue),
+            'discount_type' => 'fixed',
+            'discount_amount' => 0,
+            'total_amount' => $subtotal,
             'timeline' => $request->timeline,
             'revision_rounds' => $request->revision_rounds,
             'valid_until' => $request->valid_until,
             'terms_conditions' => $request->terms_conditions,
             'notes' => $request->notes,
             'sections_enabled' => $sections,
+            'milestone_mode' => (bool) $request->input('milestone_mode', false),
+            'milestones' => $milestones,
             'created_by' => auth()->id(),
         ];
     }
@@ -182,15 +179,15 @@ class ProposalController extends Controller
         $proposal->items()->delete();
 
         foreach ($items as $index => $item) {
-            $price = (float) ($item['unit_price'] ?? 0);
-            $qty = (int) ($item['quantity'] ?? 1);
+            $price = (float) ($item['price'] ?? 0);
 
             $proposal->items()->create([
                 'title' => $item['title'],
                 'description' => $item['description'] ?? null,
+                'delivery_days' => $item['delivery_days'] ?? null,
                 'unit_price' => $price ?: null,
-                'quantity' => $qty,
-                'total' => $price * $qty,
+                'quantity' => 1,
+                'total' => $price,
                 'sort_order' => $index,
             ]);
         }

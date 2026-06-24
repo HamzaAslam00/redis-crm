@@ -17,7 +17,7 @@ class Proposal extends Model
         'platform', 'fiverr_username', 'project_title', 'project_description',
         'currency', 'subtotal', 'discount_type', 'discount_amount', 'total_amount',
         'timeline', 'revision_rounds', 'valid_until', 'status', 'sections_enabled',
-        'terms_conditions', 'notes', 'rejection_reason', 'sent_at', 'viewed_at', 'created_by',
+        'terms_conditions', 'notes', 'milestone_mode', 'milestones', 'rejection_reason', 'sent_at', 'viewed_at', 'created_by',
     ];
 
     /** @var array<string, string> */
@@ -29,6 +29,8 @@ class Proposal extends Model
         'sent_at' => 'datetime',
         'viewed_at' => 'datetime',
         'sections_enabled' => 'array',
+        'milestone_mode' => 'boolean',
+        'milestones' => 'array',
     ];
 
     protected static function booted(): void

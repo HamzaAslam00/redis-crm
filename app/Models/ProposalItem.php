@@ -9,7 +9,7 @@ class ProposalItem extends Model
 {
     /** @var list<string> */
     protected $fillable = [
-        'proposal_id', 'title', 'description', 'unit_price', 'quantity', 'total', 'sort_order',
+        'proposal_id', 'title', 'description', 'delivery_days', 'unit_price', 'quantity', 'total', 'sort_order',
     ];
 
     /** @var array<string, string> */

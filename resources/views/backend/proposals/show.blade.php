@@ -68,6 +68,7 @@
             </div>
 
             {{-- Line Items --}}
+            @php $hasDelivery = $proposal->items->filter(fn($i) => !empty($i->delivery_days))->isNotEmpty(); @endphp
             <div class="crm-card" style="padding:0;overflow:hidden">
                 <div style="padding:1.25rem;border-bottom:1px solid var(--crm-border)">
                     <h3 style="font-size:0.95rem;font-weight:700;margin:0">Scope of Work</h3>
@@ -77,9 +78,10 @@
                         <tr>
                             <th style="width:36px">#</th>
                             <th>Service / Deliverable</th>
-                            <th style="width:100px;text-align:right">Qty</th>
-                            <th style="width:120px;text-align:right">Unit Price</th>
-                            <th style="width:120px;text-align:right">Total</th>
+                            @if($hasDelivery)
+                                <th style="width:110px;text-align:center">Delivery Days</th>
+                            @endif
+                            <th style="width:130px;text-align:right">Price</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -92,10 +94,11 @@
                                         <div style="font-size:0.8rem;color:var(--crm-text-muted);margin-top:0.2rem">{{ $item->description }}</div>
                                     @endif
                                 </td>
-                                <td style="text-align:right">{{ $item->quantity }}</td>
-                                <td style="text-align:right;font-size:0.88rem">
-                                    {{ $item->unit_price ? $proposal->currency . ' ' . number_format($item->unit_price, 2) : '—' }}
-                                </td>
+                                @if($hasDelivery)
+                                    <td style="text-align:center;font-size:0.85rem;color:var(--crm-text-muted)">
+                                        {{ $item->delivery_days ?: '—' }}
+                                    </td>
+                                @endif
                                 <td style="text-align:right;font-weight:700;color:#FF6400">
                                     {{ $proposal->currency }} {{ number_format($item->total, 2) }}
                                 </td>
@@ -103,22 +106,20 @@
                         @endforeach
                     </tbody>
                     <tfoot>
-                        <tr style="border-top:2px solid var(--crm-border)">
-                            <td colspan="4" style="text-align:right;color:var(--crm-text-muted);font-size:0.85rem;padding:0.6rem 1rem">Subtotal</td>
-                            <td style="text-align:right;padding:0.6rem 1rem">{{ $proposal->currency }} {{ number_format($proposal->subtotal, 2) }}</td>
-                        </tr>
-                        @if($proposal->discount_amount > 0)
-                            <tr>
-                                <td colspan="4" style="text-align:right;color:#ef4444;font-size:0.85rem;padding:0.4rem 1rem">
-                                    Discount @if($proposal->discount_type === 'percent')({{ $proposal->discount_amount }}%)@endif
-                                </td>
-                                <td style="text-align:right;color:#ef4444;padding:0.4rem 1rem">
-                                    − {{ $proposal->currency }} {{ number_format($proposal->discountValue(), 2) }}
-                                </td>
-                            </tr>
+                        @if($proposal->milestone_mode && !empty($proposal->milestones))
+                            @foreach($proposal->milestones as $ms)
+                                <tr style="border-top:1px solid var(--crm-border)">
+                                    <td colspan="{{ $hasDelivery ? 3 : 2 }}" style="text-align:right;font-size:0.85rem;color:var(--crm-text-muted);padding:0.5rem 1rem">
+                                        {{ $ms['label'] ?? '' }}
+                                    </td>
+                                    <td style="text-align:right;padding:0.5rem 1rem;font-weight:600">
+                                        {{ $proposal->currency }} {{ number_format((float)($ms['amount'] ?? 0), 2) }}
+                                    </td>
+                                </tr>
+                            @endforeach
                         @endif
-                        <tr style="background:#FF640012">
-                            <td colspan="4" style="text-align:right;font-weight:800;font-size:1rem;padding:0.75rem 1rem;color:#FF6400">TOTAL</td>
+                        <tr style="background:#FF640012;border-top:2px solid var(--crm-border)">
+                            <td colspan="{{ $hasDelivery ? 3 : 2 }}" style="text-align:right;font-weight:800;font-size:1rem;padding:0.75rem 1rem;color:#FF6400">TOTAL</td>
                             <td style="text-align:right;font-weight:800;font-size:1.05rem;padding:0.75rem 1rem;color:#FF6400">
                                 {{ $proposal->currency }} {{ number_format($proposal->total_amount, 2) }}
                             </td>
