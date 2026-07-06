@@ -50,7 +50,7 @@
             <li><a href="{{ route('free-audit') }}"        class="{{ isActive('free-audit') }}">Free SEO Audit</a></li>
         </ul>
         <div style="margin-top:1.5rem">
-            <a href="{{ route('contact') }}" class="btn-primary" style="display:inline-flex;justify-content:center;width:100%">
+            <a href="{{ route('contact') }}" class="btn-outline" style="display:inline-flex;justify-content:center">
                 Get a Quote
             </a>
         </div>
