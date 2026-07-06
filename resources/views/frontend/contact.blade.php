@@ -166,7 +166,7 @@
                             <h3 style="font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:700;color:var(--fg-heading);margin-bottom:0.5rem">Message Sent!</h3>
                             <p x-text="doneMsg" style="color:var(--fg-text-muted);font-size:0.92rem;line-height:1.6"></p>
                         </div>
-                        <button type="button" @click="done=false;errors={};" class="btn-outline" style="margin-top:0.5rem;font-size:0.85rem;padding:0.6rem 1.25rem">
+                        <button type="button" @click="done=false;errors={};$nextTick(()=>$el.closest('[x-data]').querySelector('form').reset())" class="btn-outline" style="margin-top:0.5rem;font-size:0.85rem;padding:0.6rem 1.25rem">
                             Send Another Message
                         </button>
                     </div>
