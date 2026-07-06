@@ -70,6 +70,23 @@ class SettingsController extends Controller
         return back()->with('success', 'reCAPTCHA settings saved.');
     }
 
+    public function updateWhatsApp(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'whatsapp_notify_enabled' => ['boolean'],
+            'whatsapp_notify_number' => ['nullable', 'string', 'max:30'],
+            'ultramsg_instance' => ['nullable', 'string', 'max:100'],
+            'ultramsg_token' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        Setting::updateOrCreate(['key' => 'whatsapp_notify_enabled'], ['value' => $request->boolean('whatsapp_notify_enabled') ? '1' : '0']);
+        Setting::updateOrCreate(['key' => 'whatsapp_notify_number'], ['value' => $data['whatsapp_notify_number'] ?? '']);
+        Setting::updateOrCreate(['key' => 'ultramsg_instance'], ['value' => $data['ultramsg_instance'] ?? '']);
+        Setting::updateOrCreate(['key' => 'ultramsg_token'], ['value' => $data['ultramsg_token'] ?? '']);
+
+        return back()->with('success', 'WhatsApp notification settings saved.');
+    }
+
     public function updateTheme(Request $request): RedirectResponse
     {
         $request->validate(['theme' => ['required', 'in:dark,light']]);

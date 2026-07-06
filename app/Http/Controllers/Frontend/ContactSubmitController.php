@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\TemplateMail;
 use App\Models\ContactInquiry;
 use App\Models\EmailTemplate;
+use App\Services\WhatsAppService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -89,6 +90,7 @@ class ContactSubmitController extends Controller
         $inquiry = ContactInquiry::create($data);
 
         $this->sendEmails($inquiry, $data);
+        $this->sendWhatsAppNotification($inquiry);
 
         return back()->with('success', self::FAKE_SUCCESS);
     }
@@ -148,6 +150,44 @@ class ContactSubmitController extends Controller
             } catch (\Throwable $e) {
                 Log::error('Contact admin notification failed', ['error' => $e->getMessage()]);
             }
+        }
+    }
+
+    private function sendWhatsAppNotification(ContactInquiry $inquiry): void
+    {
+        if (setting('whatsapp_notify_enabled') !== '1') {
+            return;
+        }
+
+        $lines = [
+            '🔔 *New Lead — Redis Solution*',
+            '',
+            '👤 *Name:* '.$inquiry->name,
+            '📧 *Email:* '.$inquiry->email,
+        ];
+
+        if ($inquiry->phone) {
+            $lines[] = '📞 *Phone:* '.$inquiry->phone;
+        }
+        if ($inquiry->service) {
+            $lines[] = '💼 *Service:* '.$inquiry->service;
+        }
+        if ($inquiry->budget) {
+            $lines[] = '💰 *Budget:* '.$inquiry->budget;
+        }
+        if ($inquiry->message) {
+            $lines[] = '';
+            $lines[] = '📝 *Message:*';
+            $lines[] = $inquiry->message;
+        }
+
+        $lines[] = '';
+        $lines[] = '🕐 '.now()->format('d M Y, h:i A');
+
+        try {
+            app(WhatsAppService::class)->sendToAdmin(implode("\n", $lines));
+        } catch (\Throwable $e) {
+            Log::error('WhatsApp notification failed', ['error' => $e->getMessage()]);
         }
     }
 

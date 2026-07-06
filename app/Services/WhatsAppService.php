@@ -6,45 +6,60 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 /**
- * WhatsApp notifications via Callmebot (free, no paid API).
+ * WhatsApp notifications via UltraMsg (ultramsg.com).
  *
- * Setup for each user:
- *  1. Save +34 644 10 28 72 in their phone as "CallMeBot"
- *  2. Send WhatsApp message: "I allow callmebot to send me messages"
- *  3. Bot replies with an API key — save it in user.callmebot_key
- *
- * API: GET https://api.callmebot.com/whatsapp.php?phone=PHONE&text=TEXT&apikey=KEY
+ * Setup:
+ *  1. Sign up at ultramsg.com → create an instance → scan QR with your WhatsApp
+ *  2. Copy Instance ID and Token from the dashboard
+ *  3. Save both in Admin → Settings → WhatsApp
  */
 class WhatsAppService
 {
-    private const API_URL = 'https://api.callmebot.com/whatsapp.php';
+    private const API_BASE = 'https://api.ultramsg.com';
 
-    public function send(string $phone, string $apiKey, string $message): bool
+    public function sendToAdmin(string $message): bool
     {
-        $phone = preg_replace('/[^0-9+]/', '', $phone);
+        $instance = setting('ultramsg_instance', '');
+        $token = setting('ultramsg_token', '');
+        $to = setting('whatsapp_notify_number', '');
+
+        if (! $instance || ! $token || ! $to) {
+            return false;
+        }
+
+        return $this->send($instance, $token, $to, $message);
+    }
+
+    public function send(string $instance, string $token, string $to, string $message): bool
+    {
+        $to = preg_replace('/[^0-9+]/', '', $to);
 
         try {
-            $response = Http::timeout(15)->get(self::API_URL, [
-                'phone' => $phone,
-                'text' => $message,
-                'apikey' => $apiKey,
-            ]);
+            $response = Http::timeout(15)
+                ->asForm()
+                ->post(self::API_BASE."/{$instance}/messages/chat", [
+                    'token' => $token,
+                    'to' => $to,
+                    'body' => $message,
+                ]);
 
-            if ($response->successful()) {
+            $json = $response->json();
+
+            if ($response->successful() && isset($json['sent']) && $json['sent'] === 'true') {
                 return true;
             }
 
-            Log::warning('Callmebot WhatsApp failed', [
+            Log::warning('UltraMsg WhatsApp failed', [
                 'status' => $response->status(),
                 'body' => $response->body(),
-                'phone' => $phone,
+                'to' => $to,
             ]);
 
             return false;
         } catch (\Throwable $e) {
-            Log::error('Callmebot WhatsApp exception', [
+            Log::error('UltraMsg WhatsApp exception', [
                 'error' => $e->getMessage(),
-                'phone' => $phone,
+                'to' => $to,
             ]);
 
             return false;

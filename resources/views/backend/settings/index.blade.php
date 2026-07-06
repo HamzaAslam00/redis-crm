@@ -15,7 +15,7 @@
     <div x-data="{ tab: 'general' }">
 
         <div style="display:flex;border-bottom:2px solid var(--crm-border);margin-bottom:1.75rem">
-            @foreach(['general' => 'General', 'smtp' => 'SMTP / Email', 'templates' => 'Email Templates', 'notifications' => 'Notifications', 'recaptcha' => 'reCAPTCHA'] as $key => $label)
+            @foreach(['general' => 'General', 'smtp' => 'SMTP / Email', 'templates' => 'Email Templates', 'notifications' => 'Notifications', 'recaptcha' => 'reCAPTCHA', 'whatsapp' => 'WhatsApp'] as $key => $label)
                 <button
                     class="settings-tab"
                     :class="{ 'settings-tab--active': tab === '{{ $key }}' }"
@@ -328,6 +328,92 @@
 
                     <div style="display:flex;justify-content:flex-end">
                         <button type="submit" class="btn btn-primary"><i class="ri-save-line"></i> Save reCAPTCHA Settings</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        {{-- ══════════════════════════════════════════════════════
+             TAB 6: WhatsApp Notifications
+        ══════════════════════════════════════════════════════ --}}
+        <div x-show="tab === 'whatsapp'" x-cloak x-transition>
+            <form method="POST" action="{{ route('admin.settings.whatsapp') }}">
+                @csrf @method('PUT')
+
+                <div class="crm-card">
+                    <h2 style="font-size:0.95rem;font-weight:700;color:var(--crm-text);margin-bottom:0.25rem">
+                        <i class="ri-whatsapp-line" style="color:#25D366"></i> WhatsApp Notifications
+                    </h2>
+                    <p style="font-size:0.8rem;color:var(--crm-text-muted);margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--crm-border)">
+                        Get a WhatsApp message instantly when someone submits the contact or consultation form.
+                        Uses <strong style="color:var(--crm-text)">UltraMsg</strong> — sign up free at
+                        <strong style="color:var(--crm-text)">ultramsg.com</strong>, create an instance, scan QR with your WhatsApp, then paste the credentials below.
+                    </p>
+
+                    {{-- Setup steps --}}
+                    <div style="background:rgba(37,211,102,0.06);border:1px solid rgba(37,211,102,0.2);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1.5rem;font-size:0.82rem;color:var(--crm-text)">
+                        <div style="font-weight:700;margin-bottom:0.6rem;color:#25D366"><i class="ri-information-line"></i> How to set up (one-time, 3 minutes)</div>
+                        <ol style="list-style:decimal;padding-left:1.2rem;display:flex;flex-direction:column;gap:0.3rem">
+                            <li>Go to <strong>ultramsg.com</strong> → Sign up (free)</li>
+                            <li>Create a new instance → Scan the QR code with <strong>your WhatsApp</strong></li>
+                            <li>Copy the <strong>Instance ID</strong> and <strong>Token</strong> from the dashboard</li>
+                            <li>Paste them below and enable notifications</li>
+                        </ol>
+                    </div>
+
+                    {{-- Enable toggle --}}
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:1rem;background:var(--crm-hover);border-radius:10px;margin-bottom:1.25rem" x-data="{ enabled: {{ setting('whatsapp_notify_enabled') === '1' ? 'true' : 'false' }} }">
+                        <div>
+                            <div style="font-weight:600;color:var(--crm-text);font-size:0.9rem">Enable WhatsApp Notifications</div>
+                            <div style="font-size:0.78rem;color:var(--crm-text-muted)">Send a WhatsApp message for every new contact/consultation form submission.</div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:0.5rem">
+                            <input type="hidden" name="whatsapp_notify_enabled" value="0">
+                            <input type="checkbox" name="whatsapp_notify_enabled" value="1"
+                                {{ setting('whatsapp_notify_enabled') === '1' ? 'checked' : '' }}
+                                x-model="enabled"
+                                style="display:none">
+                            <div @click="enabled = !enabled"
+                                :style="{ background: enabled ? '#25D366' : 'var(--crm-border)' }"
+                                style="width:44px;height:24px;border-radius:12px;cursor:pointer;transition:background 0.2s;position:relative">
+                                <div :style="{ left: enabled ? '22px' : '2px' }"
+                                    style="position:absolute;top:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left 0.2s;box-shadow:0 1px 4px rgba(0,0,0,0.2)"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem">
+                        <div>
+                            <label class="form-label">Your WhatsApp Number <span style="color:#ef4444">*</span></label>
+                            <input type="text" name="whatsapp_notify_number" class="form-control"
+                                value="{{ old('whatsapp_notify_number', setting('whatsapp_notify_number', '')) }}"
+                                placeholder="+923001234567">
+                            <p style="font-size:0.75rem;color:var(--crm-text-muted);margin-top:0.4rem">Include country code, e.g. +923001234567</p>
+                        </div>
+                        <div>
+                            <label class="form-label">UltraMsg Instance ID <span style="color:#ef4444">*</span></label>
+                            <input type="text" name="ultramsg_instance" class="form-control"
+                                value="{{ old('ultramsg_instance', setting('ultramsg_instance', '')) }}"
+                                placeholder="instance123">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:1.5rem">
+                        <label class="form-label">UltraMsg Token <span style="color:#ef4444">*</span></label>
+                        <input type="password" name="ultramsg_token" class="form-control"
+                            value="{{ old('ultramsg_token', setting('ultramsg_token', '')) }}"
+                            placeholder="Your UltraMsg token">
+                    </div>
+
+                    @if(setting('whatsapp_notify_enabled') === '1' && (!setting('ultramsg_instance') || !setting('ultramsg_token') || !setting('whatsapp_notify_number')))
+                        <div style="display:flex;align-items:flex-start;gap:0.6rem;padding:0.8rem 1rem;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.25);border-radius:8px;font-size:0.82rem;color:var(--crm-text);margin-bottom:1.25rem">
+                            <i class="ri-error-warning-line" style="color:#ef4444;font-size:1rem;flex-shrink:0;margin-top:0.05rem"></i>
+                            <span>WhatsApp notifications are <strong>ON</strong> but credentials are incomplete. Fill all three fields above.</span>
+                        </div>
+                    @endif
+
+                    <div style="display:flex;justify-content:flex-end">
+                        <button type="submit" class="btn btn-primary"><i class="ri-save-line"></i> Save WhatsApp Settings</button>
                     </div>
                 </div>
             </form>
