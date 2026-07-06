@@ -49,7 +49,7 @@
             <li><a href="{{ route('contact') }}"           class="{{ isActive('contact') }}">Contact</a></li>
             <li><a href="{{ route('free-audit') }}"        class="{{ isActive('free-audit') }}">Free SEO Audit</a></li>
         </ul>
-        <div style="margin-top:1.5rem">
+        <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:0.75rem">
             <a href="{{ route('contact') }}" class="btn-outline" style="display:inline-flex;justify-content:center">
                 Get a Quote
             </a>
