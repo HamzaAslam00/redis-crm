@@ -53,8 +53,6 @@ body:has(.photo-hero) .site-nav:not(.scrolled) {
     padding: 1rem 0;
     transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, padding 0.2s ease;
     background: transparent;
-    // Prevent nav bar itself from overflowing viewport horizontally
-    overflow-x: clip;
 
     &.scrolled {
         background: var(--fg-nav-scrolled);

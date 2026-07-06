@@ -43,13 +43,18 @@
 {{-- Navigation --}}
 @include('components.frontend.nav')
 
-{{-- Page content --}}
-<main>
-    {{ $slot }}
-</main>
+{{-- Wrapper clips horizontal overflow without affecting fixed nav --}}
+<div class="page-wrapper">
 
-{{-- Footer --}}
-@include('components.frontend.footer')
+    {{-- Page content --}}
+    <main>
+        {{ $slot }}
+    </main>
+
+    {{-- Footer --}}
+    @include('components.frontend.footer')
+
+</div>
 
 {{-- WhatsApp floating bubble --}}
 @include('components.whatsapp-bubble')
