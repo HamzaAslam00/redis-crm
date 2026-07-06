@@ -174,6 +174,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('settings', [SettingsController::class, 'update'])->name('settings.update');
         Route::put('settings/recaptcha', [SettingsController::class, 'updateRecaptcha'])->name('settings.recaptcha');
         Route::put('settings/whatsapp', [SettingsController::class, 'updateWhatsApp'])->name('settings.whatsapp');
+        Route::post('settings/whatsapp/test', [SettingsController::class, 'testWhatsApp'])->name('settings.whatsapp.test');
     });
 
 });

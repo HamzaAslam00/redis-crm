@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use App\Services\WhatsAppService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -85,6 +87,26 @@ class SettingsController extends Controller
         Setting::updateOrCreate(['key' => 'ultramsg_token'], ['value' => $data['ultramsg_token'] ?? '']);
 
         return back()->with('success', 'WhatsApp notification settings saved.');
+    }
+
+    public function testWhatsApp(Request $request): JsonResponse
+    {
+        $instance = setting('ultramsg_instance', '');
+        $token = setting('ultramsg_token', '');
+        $to = setting('whatsapp_notify_number', '');
+
+        if (! $instance || ! $token || ! $to) {
+            return response()->json(['success' => false, 'message' => 'Credentials incomplete. Fill Instance ID, Token, and Phone Number first.']);
+        }
+
+        $sent = app(WhatsAppService::class)->sendToAdmin(
+            "✅ *Test Message — Redis Solution CRM*\n\nWhatsApp notifications are working correctly!\n\n🕐 ".now()->format('d M Y, h:i A')
+        );
+
+        return response()->json([
+            'success' => $sent,
+            'message' => $sent ? 'Test message sent! Check your WhatsApp.' : 'Failed to send. Check your credentials and make sure your UltraMsg instance is connected (QR scanned).',
+        ]);
     }
 
     public function updateTheme(Request $request): RedirectResponse

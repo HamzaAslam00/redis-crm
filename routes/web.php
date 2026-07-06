@@ -24,7 +24,7 @@ Route::middleware(ApplySeoMeta::class)->group(function (): void {
     Route::get('/privacy-policy', [HomeController::class, 'privacyPolicy'])->name('privacy-policy');
     Route::get('/refund-policy', [HomeController::class, 'refundPolicy'])->name('refund-policy');
     Route::get('/free-audit', [HomeController::class, 'freeAudit'])->name('free-audit');
-    Route::get('/free-consultation', [HomeController::class, 'freeConsultation'])->name('free-consultation');
+    Route::redirect('/free-consultation', '/contact', 301)->name('free-consultation');
     Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
     Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 });

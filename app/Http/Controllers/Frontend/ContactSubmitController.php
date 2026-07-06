@@ -7,6 +7,7 @@ use App\Mail\TemplateMail;
 use App\Models\ContactInquiry;
 use App\Models\EmailTemplate;
 use App\Services\WhatsAppService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -17,24 +18,30 @@ class ContactSubmitController extends Controller
 {
     private const FAKE_SUCCESS = 'Thank you! We received your message and will get back to you within 24 hours.';
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): RedirectResponse|JsonResponse
     {
-        // Layer 1: Honeypot — bots fill the hidden field, humans never see it
+        $isAjax = $request->expectsJson();
+
+        // Layer 1: Honeypot
         if ($request->filled('hp_website')) {
             Log::info('Bot blocked via honeypot', ['ip' => $request->ip()]);
 
-            return back()->with('success', self::FAKE_SUCCESS);
+            return $isAjax
+                ? response()->json(['message' => self::FAKE_SUCCESS])
+                : back()->with('success', self::FAKE_SUCCESS);
         }
 
-        // Layer 2: Time check — real humans take at least 4 seconds to fill a form
+        // Layer 2: Time check
         $loadedAt = (int) $request->input('form_loaded_at', 0);
         if ($loadedAt === 0 || (now()->timestamp - $loadedAt) < 4) {
-            Log::info('Bot blocked via time check', ['ip' => $request->ip(), 'elapsed' => now()->timestamp - $loadedAt]);
+            Log::info('Bot blocked via time check', ['ip' => $request->ip()]);
 
-            return back()->with('success', self::FAKE_SUCCESS);
+            return $isAjax
+                ? response()->json(['message' => self::FAKE_SUCCESS])
+                : back()->with('success', self::FAKE_SUCCESS);
         }
 
-        // Layer 3: Validate fields
+        // Layer 3: Validate fields (auto-returns 422 JSON when expectsJson)
         $data = $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'email', 'max:150'],
@@ -45,19 +52,23 @@ class ContactSubmitController extends Controller
             'message' => ['nullable', 'string', 'max:3000'],
         ]);
 
-        // Layer 4: Spam content check — block if message has too many URLs or known spam triggers
+        // Layer 4: Spam check
         if ($this->isSpamMessage($data['message'] ?? '', $data['name'])) {
-            Log::info('Bot blocked via spam check', ['ip' => $request->ip(), 'name' => $data['name']]);
+            Log::info('Bot blocked via spam check', ['ip' => $request->ip()]);
 
-            return back()->with('success', self::FAKE_SUCCESS);
+            return $isAjax
+                ? response()->json(['message' => self::FAKE_SUCCESS])
+                : back()->with('success', self::FAKE_SUCCESS);
         }
 
-        // Layer 5: reCAPTCHA — only when enabled and keys are configured
+        // Layer 5: reCAPTCHA
         if (setting('recaptcha_enabled') === '1' && setting('recaptcha_secret_key')) {
             $token = $request->input('g-recaptcha-response', '');
 
             if (empty($token)) {
-                return back()->withInput()->withErrors(['captcha' => 'Security check failed. Please try again.']);
+                return $isAjax
+                    ? response()->json(['message' => 'Security check failed.', 'errors' => ['captcha' => ['Security check failed. Please try again.']]], 422)
+                    : back()->withInput()->withErrors(['captcha' => 'Security check failed. Please try again.']);
             }
 
             try {
@@ -70,16 +81,19 @@ class ContactSubmitController extends Controller
                 if (! ($result['success'] ?? false)) {
                     Log::info('Bot blocked via reCAPTCHA failure', ['ip' => $request->ip()]);
 
-                    return back()->withInput()->withErrors(['captcha' => 'Security verification failed. Please try again.']);
+                    return $isAjax
+                        ? response()->json(['message' => 'Security verification failed.', 'errors' => ['captcha' => ['Security verification failed. Please try again.']]], 422)
+                        : back()->withInput()->withErrors(['captcha' => 'Security verification failed. Please try again.']);
                 }
 
-                // v3 score threshold check — low score = likely bot, use fake success so it won't retry
                 if (setting('recaptcha_version') === 'v3') {
                     $threshold = (float) setting('recaptcha_threshold', '0.5');
                     if (($result['score'] ?? 1.0) < $threshold) {
-                        Log::info('Bot blocked via reCAPTCHA v3 score', ['ip' => $request->ip(), 'score' => $result['score'] ?? 0]);
+                        Log::info('Bot blocked via reCAPTCHA v3 score', ['ip' => $request->ip()]);
 
-                        return back()->with('success', self::FAKE_SUCCESS);
+                        return $isAjax
+                            ? response()->json(['message' => self::FAKE_SUCCESS])
+                            : back()->with('success', self::FAKE_SUCCESS);
                     }
                 }
             } catch (\Throwable $e) {
@@ -92,7 +106,9 @@ class ContactSubmitController extends Controller
         $this->sendEmails($inquiry, $data);
         $this->sendWhatsAppNotification($inquiry);
 
-        return back()->with('success', self::FAKE_SUCCESS);
+        return $isAjax
+            ? response()->json(['message' => self::FAKE_SUCCESS])
+            : back()->with('success', self::FAKE_SUCCESS);
     }
 
     private function sendEmails(ContactInquiry $inquiry, array $data): void

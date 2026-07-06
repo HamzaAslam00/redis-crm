@@ -20,7 +20,7 @@
         <div class="container">
 
             @if(session('success'))
-                <div style="padding:1rem 1.5rem;border-radius:10px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#10B981;margin-bottom:2rem;display:flex;align-items:center;gap:0.75rem" data-gsap-fade>
+                <div style="padding:1rem 1.5rem;border-radius:10px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:#10B981;margin-bottom:2rem;display:flex;align-items:center;gap:0.75rem">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:20px;height:20px;flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
                     <span>{{ session('success') }}</span>
                 </div>
@@ -113,188 +113,184 @@
 
                 </div>
 
-                {{-- RIGHT: Contact form --}}
-                <div class="contact-form-card" data-gsap-fade>
+                {{-- RIGHT: Contact form (AJAX) --}}
+                @php
+                    $rcEnabled = setting('recaptcha_enabled') === '1';
+                    $rcKey     = setting('recaptcha_site_key', '');
+                    $rcVersion = setting('recaptcha_version', 'v3');
+                    $rcTheme   = setting('theme', 'dark') === 'light' ? 'light' : 'dark';
+                @endphp
 
-                    <div style="margin-bottom:2rem">
-                        <h2 style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:var(--fg-heading);margin-bottom:0.4rem">Send Us a Message</h2>
-                        <p style="color:var(--fg-text-muted);font-size:0.9rem">Fill in the details below and we'll get back to you within one business day.</p>
+                <div class="contact-form-card" data-gsap-fade
+                    x-data="{
+                        submitting: false,
+                        done: false,
+                        doneMsg: '',
+                        errors: {},
+                        genError: '',
+                        async submit(event) {
+                            this.submitting = true;
+                            this.errors = {};
+                            this.genError = '';
+                            const form = event.target;
+                            try {
+                                const res = await fetch(form.action, {
+                                    method: 'POST',
+                                    headers: { 'Accept': 'application/json' },
+                                    body: new FormData(form),
+                                });
+                                const json = await res.json().catch(() => ({}));
+                                if (res.ok) {
+                                    this.done = true;
+                                    this.doneMsg = json.message || 'Message sent!';
+                                } else if (res.status === 422) {
+                                    this.errors = json.errors || {};
+                                } else if (res.status === 429) {
+                                    this.genError = 'Too many requests. Please wait a moment and try again.';
+                                } else {
+                                    this.genError = json.message || 'Something went wrong. Please try again.';
+                                }
+                            } catch(e) {
+                                this.genError = 'Network error. Please check your connection and try again.';
+                            }
+                            this.submitting = false;
+                        }
+                    }">
+
+                    {{-- SUCCESS STATE --}}
+                    <div x-show="done" x-cloak style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 2rem;gap:1.25rem">
+                        <div style="width:72px;height:72px;border-radius:50%;background:rgba(16,185,129,0.12);display:flex;align-items:center;justify-content:center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#10B981" style="width:36px;height:36px"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+                        </div>
+                        <div>
+                            <h3 style="font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:700;color:var(--fg-heading);margin-bottom:0.5rem">Message Sent!</h3>
+                            <p x-text="doneMsg" style="color:var(--fg-text-muted);font-size:0.92rem;line-height:1.6"></p>
+                        </div>
+                        <button type="button" @click="done=false;errors={};" class="btn-outline" style="margin-top:0.5rem;font-size:0.85rem;padding:0.6rem 1.25rem">
+                            Send Another Message
+                        </button>
                     </div>
 
-                    <form action="{{ route('contact.store') }}" method="POST" novalidate>
-                        @csrf
+                    {{-- FORM STATE --}}
+                    <div x-show="!done">
 
-                        {{-- Anti-bot: honeypot (bots fill this, humans never see it) --}}
-                        <div style="position:absolute;left:-9999px;top:-9999px;width:0;height:0;overflow:hidden" aria-hidden="true" tabindex="-1">
-                            <label for="hp_website">Leave this blank</label>
-                            <input type="text" id="hp_website" name="hp_website" value="" tabindex="-1" autocomplete="off">
+                        <div style="margin-bottom:2rem">
+                            <h2 style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:var(--fg-heading);margin-bottom:0.4rem">Send Us a Message</h2>
+                            <p style="color:var(--fg-text-muted);font-size:0.9rem">Fill in the details below and we'll get back to you within one business day.</p>
                         </div>
 
-                        {{-- Anti-bot: form load timestamp (bots submit too fast) --}}
-                        <input type="hidden" name="form_loaded_at" value="{{ now()->timestamp }}">
+                        <form action="{{ route('contact.store') }}" method="POST" novalidate @submit.prevent="submit($event)">
+                            @csrf
 
-                        <div class="form-row">
-
-                            {{-- Name --}}
-                            <div>
-                                <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--fg-text);margin-bottom:0.4rem">Full Name <span style="color:#FF6400">*</span></label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value="{{ old('name') }}"
-                                    placeholder="John Smith"
-                                    style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid {{ $errors->has('name') ? '#EF4444' : 'var(--fg-border)' }};color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;transition:border-color 0.2s"
-                                    onfocus="this.style.borderColor='#FF6400'"
-                                    onblur="this.style.borderColor='{{ $errors->has('name') ? '#EF4444' : 'var(--fg-border)' }}'"
-                                />
-                                @error('name')
-                                    <p style="color:#EF4444;font-size:0.78rem;margin-top:0.3rem">{{ $message }}</p>
-                                @enderror
+                            {{-- Anti-bot: honeypot --}}
+                            <div style="position:absolute;left:-9999px;top:-9999px;width:0;height:0;overflow:hidden" aria-hidden="true" tabindex="-1">
+                                <input type="text" name="hp_website" value="" tabindex="-1" autocomplete="off">
                             </div>
 
-                            {{-- Email --}}
-                            <div>
-                                <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--fg-text);margin-bottom:0.4rem">Email Address <span style="color:#FF6400">*</span></label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value="{{ old('email') }}"
-                                    placeholder="john@company.com"
-                                    style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid {{ $errors->has('email') ? '#EF4444' : 'var(--fg-border)' }};color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;transition:border-color 0.2s"
-                                    onfocus="this.style.borderColor='#FF6400'"
-                                    onblur="this.style.borderColor='{{ $errors->has('email') ? '#EF4444' : 'var(--fg-border)' }}'"
-                                />
-                                @error('email')
-                                    <p style="color:#EF4444;font-size:0.78rem;margin-top:0.3rem">{{ $message }}</p>
-                                @enderror
+                            {{-- Anti-bot: timestamp --}}
+                            <input type="hidden" name="form_loaded_at" value="{{ now()->timestamp }}">
+
+                            {{-- General error --}}
+                            <div x-show="genError" x-text="genError"
+                                style="padding:0.75rem 1rem;border-radius:8px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);color:#EF4444;font-size:0.83rem;margin-bottom:1.25rem"></div>
+
+                            <div class="form-row">
+                                <div>
+                                    <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--fg-text);margin-bottom:0.4rem">Full Name <span style="color:#FF6400">*</span></label>
+                                    <input type="text" name="name" placeholder="John Smith"
+                                        :style="{ borderColor: errors.name ? '#EF4444' : '' }"
+                                        style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid var(--fg-border);color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;transition:border-color 0.2s"
+                                        onfocus="this.style.borderColor='#FF6400'" onblur="this.style.borderColor=''">
+                                    <p x-show="errors.name" x-text="errors.name?.[0]" style="color:#EF4444;font-size:0.78rem;margin-top:0.3rem"></p>
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--fg-text);margin-bottom:0.4rem">Email Address <span style="color:#FF6400">*</span></label>
+                                    <input type="email" name="email" placeholder="john@company.com"
+                                        :style="{ borderColor: errors.email ? '#EF4444' : '' }"
+                                        style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid var(--fg-border);color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;transition:border-color 0.2s"
+                                        onfocus="this.style.borderColor='#FF6400'" onblur="this.style.borderColor=''">
+                                    <p x-show="errors.email" x-text="errors.email?.[0]" style="color:#EF4444;font-size:0.78rem;margin-top:0.3rem"></p>
+                                </div>
                             </div>
 
-                        </div>
-
-                        <div class="form-row">
-
-                            {{-- Phone --}}
-                            <div>
-                                <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--fg-text);margin-bottom:0.4rem">Phone Number <span style="color:#FF6400">*</span></label>
-                                <input
-                                    type="tel"
-                                    name="phone"
-                                    value="{{ old('phone') }}"
-                                    placeholder="+92 300 000 0000"
-                                    style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid {{ $errors->has('phone') ? '#EF4444' : 'var(--fg-border)' }};color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;transition:border-color 0.2s"
-                                    onfocus="this.style.borderColor='#FF6400'"
-                                    onblur="this.style.borderColor='{{ $errors->has('phone') ? '#EF4444' : 'var(--fg-border)' }}'"
-                                />
-                                @error('phone')
-                                    <p style="color:#EF4444;font-size:0.78rem;margin-top:0.3rem">{{ $message }}</p>
-                                @enderror
+                            <div class="form-row">
+                                <div>
+                                    <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--fg-text);margin-bottom:0.4rem">Phone Number</label>
+                                    <input type="tel" name="phone" placeholder="+92 300 000 0000"
+                                        style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid var(--fg-border);color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;transition:border-color 0.2s"
+                                        onfocus="this.style.borderColor='#FF6400'" onblur="this.style.borderColor=''">
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--fg-text);margin-bottom:0.4rem">Company <span style="color:var(--fg-text-muted);font-weight:400">(optional)</span></label>
+                                    <input type="text" name="company" placeholder="Acme Inc."
+                                        style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid var(--fg-border);color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;transition:border-color 0.2s"
+                                        onfocus="this.style.borderColor='#FF6400'" onblur="this.style.borderColor=''">
+                                </div>
                             </div>
 
-                            {{-- Company --}}
-                            <div>
-                                <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--fg-text);margin-bottom:0.4rem">Company <span style="color:var(--fg-text-muted);font-weight:400">(optional)</span></label>
-                                <input
-                                    type="text"
-                                    name="company"
-                                    value="{{ old('company') }}"
-                                    placeholder="Acme Inc."
-                                    style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid var(--fg-border);color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;transition:border-color 0.2s"
-                                    onfocus="this.style.borderColor='#FF6400'"
-                                    onblur="this.style.borderColor='var(--fg-border)'"
-                                />
+                            <div class="form-row">
+                                <div>
+                                    <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--fg-text);margin-bottom:0.4rem">Service Needed</label>
+                                    <select name="service"
+                                        style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid var(--fg-border);color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;cursor:pointer">
+                                        @php $selectedService = request('service', ''); @endphp
+                                        <option value="" {{ $selectedService ? '' : 'selected' }}>Select a service…</option>
+                                        @foreach(['AI Applications','Web Development','Mobile Apps','Digital Marketing','ERP & CMS','Software Development'] as $svc)
+                                            <option value="{{ $svc }}" {{ $selectedService === $svc ? 'selected' : '' }}>{{ $svc }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--fg-text);margin-bottom:0.4rem">Project Budget</label>
+                                    <select name="budget"
+                                        style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid var(--fg-border);color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;cursor:pointer">
+                                        <option value="">Select a range…</option>
+                                        @foreach(['$1,000 – $5,000','$5,000 – $15,000','$15,000 – $50,000','$50,000+'] as $b)
+                                            <option value="{{ $b }}">{{ $b }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
 
-                        </div>
-
-                        <div class="form-row">
-
-                            {{-- Service --}}
-                            <div>
-                                <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--fg-text);margin-bottom:0.4rem">Service Needed <span style="color:#FF6400">*</span></label>
-                                <select
-                                    name="service"
-                                    style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid {{ $errors->has('service') ? '#EF4444' : 'var(--fg-border)' }};color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;cursor:pointer"
-                                >
-                                    @php $selectedService = old('service', request('service')); @endphp
-                                    <option value="" disabled {{ $selectedService ? '' : 'selected' }}>Select a service…</option>
-                                    @foreach(['AI Applications','Web Development','Mobile Apps','Digital Marketing','ERP & CMS','Software Development'] as $svc)
-                                        <option value="{{ $svc }}" {{ $selectedService === $svc ? 'selected' : '' }}>{{ $svc }}</option>
-                                    @endforeach
-                                </select>
-                                @error('service')
-                                    <p style="color:#EF4444;font-size:0.78rem;margin-top:0.3rem">{{ $message }}</p>
-                                @enderror
+                            <div style="margin-bottom:1.75rem">
+                                <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--fg-text);margin-bottom:0.4rem">Your Message</label>
+                                <textarea name="message" rows="5"
+                                    placeholder="Tell us about your project, goals, timeline or anything else that's relevant…"
+                                    :style="{ borderColor: errors.message ? '#EF4444' : '' }"
+                                    style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid var(--fg-border);color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;resize:vertical;font-family:inherit;transition:border-color 0.2s"
+                                    onfocus="this.style.borderColor='#FF6400'" onblur="this.style.borderColor=''"></textarea>
+                                <p x-show="errors.message" x-text="errors.message?.[0]" style="color:#EF4444;font-size:0.78rem;margin-top:0.3rem"></p>
                             </div>
 
-                            {{-- Budget --}}
-                            <div>
-                                <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--fg-text);margin-bottom:0.4rem">Project Budget <span style="color:#FF6400">*</span></label>
-                                <select
-                                    name="budget"
-                                    style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid {{ $errors->has('budget') ? '#EF4444' : 'var(--fg-border)' }};color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;cursor:pointer"
-                                >
-                                    <option value="" disabled {{ old('budget') ? '' : 'selected' }}>Select a range…</option>
-                                    @foreach(['$1,000 – $5,000','$5,000 – $15,000','$15,000 – $50,000','$50,000+'] as $budget)
-                                        <option value="{{ $budget }}" {{ old('budget') === $budget ? 'selected' : '' }}>{{ $budget }}</option>
-                                    @endforeach
-                                </select>
-                                @error('budget')
-                                    <p style="color:#EF4444;font-size:0.78rem;margin-top:0.3rem">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                        </div>
-
-                        {{-- Message --}}
-                        <div style="margin-bottom:1.75rem">
-                            <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--fg-text);margin-bottom:0.4rem">Your Message <span style="color:#FF6400">*</span></label>
-                            <textarea
-                                name="message"
-                                rows="5"
-                                placeholder="Tell us about your project, goals, timeline or anything else that's relevant…"
-                                style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid {{ $errors->has('message') ? '#EF4444' : 'var(--fg-border)' }};color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;resize:vertical;font-family:inherit;transition:border-color 0.2s"
-                                onfocus="this.style.borderColor='#FF6400'"
-                                onblur="this.style.borderColor='{{ $errors->has('message') ? '#EF4444' : 'var(--fg-border)' }}'"
-                            >{{ old('message') }}</textarea>
-                            @error('message')
-                                <p style="color:#EF4444;font-size:0.78rem;margin-top:0.3rem">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        @php
-                            $recaptchaEnabled = setting('recaptcha_enabled') === '1';
-                            $recaptchaSiteKey = setting('recaptcha_site_key', '');
-                            $recaptchaVersion = setting('recaptcha_version', 'v3');
-                            $recaptchaTheme = setting('theme', 'dark') === 'light' ? 'light' : 'dark';
-                        @endphp
-
-                        @if($recaptchaEnabled && $recaptchaSiteKey)
-                            @if($recaptchaVersion === 'v2')
-                                <div class="g-recaptcha" data-sitekey="{{ $recaptchaSiteKey }}" data-theme="{{ $recaptchaTheme }}" style="margin-bottom:1.25rem"></div>
-                            @else
-                                <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response-contact">
-                                <p style="font-size:0.75rem;color:var(--fg-text-muted);line-height:1.5;margin-bottom:1rem">
-                                    This site is protected by reCAPTCHA —
-                                    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Privacy</a> &amp;
-                                    <a href="https://policies.google.com/terms" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Terms</a> apply.
-                                </p>
+                            @if($rcEnabled && $rcKey)
+                                @if($rcVersion === 'v2')
+                                    <div class="g-recaptcha" data-sitekey="{{ $rcKey }}" data-theme="{{ $rcTheme }}" style="margin-bottom:1.25rem"></div>
+                                @else
+                                    <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response-contact">
+                                    <p style="font-size:0.75rem;color:var(--fg-text-muted);line-height:1.5;margin-bottom:1rem">Protected by reCAPTCHA —
+                                        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Privacy</a> &amp;
+                                        <a href="https://policies.google.com/terms" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Terms</a>
+                                    </p>
+                                @endif
                             @endif
-                        @endif
 
-                        @error('captcha')
-                            <p style="color:#EF4444;font-size:0.82rem;margin-bottom:0.75rem;text-align:center">{{ $message }}</p>
-                        @enderror
+                            <p x-show="errors.captcha" x-text="errors.captcha?.[0]" style="color:#EF4444;font-size:0.82rem;margin-bottom:0.75rem;text-align:center"></p>
 
-                        <button type="submit" class="btn-primary" data-loading-text="Sending…" style="width:100%;justify-content:center;font-size:1rem;padding:0.85rem 1.5rem">
-                            Send Message
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:18px;height:18px;margin-left:0.5rem"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" /></svg>
-                        </button>
+                            <button type="submit" :disabled="submitting"
+                                class="btn-primary"
+                                style="width:100%;justify-content:center;font-size:1rem;padding:0.85rem 1.5rem;opacity:1;transition:opacity 0.2s"
+                                :style="{ opacity: submitting ? '0.7' : '1' }">
+                                <span x-text="submitting ? 'Sending…' : 'Send Message'"></span>
+                                <svg x-show="!submitting" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:18px;height:18px;margin-left:0.5rem"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" /></svg>
+                                <svg x-show="submitting" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:18px;height:18px;margin-left:0.5rem;animation:spin 1s linear infinite"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
+                            </button>
 
-                        <p style="text-align:center;font-size:0.8rem;color:var(--fg-text-muted);margin-top:1rem">
-                            We respect your privacy. Your information will never be shared with third parties.
-                        </p>
+                            <p style="text-align:center;font-size:0.8rem;color:var(--fg-text-muted);margin-top:1rem">
+                                We respect your privacy. Your information will never be shared with third parties.
+                            </p>
 
-                    </form>
+                        </form>
+                    </div>
                 </div>
 
             </div>
@@ -344,30 +340,34 @@
     </section>
 
 
-    @if(isset($recaptchaEnabled) && $recaptchaEnabled && $recaptchaSiteKey)
+    @if($rcEnabled && $rcKey)
         @push('scripts')
-            @if($recaptchaVersion === 'v2')
+            @if($rcVersion === 'v2')
                 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
             @else
-                <script src="https://www.google.com/recaptcha/api.js?render={{ $recaptchaSiteKey }}"></script>
+                <script src="https://www.google.com/recaptcha/api.js?render={{ $rcKey }}"></script>
                 <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        var form = document.querySelector('form[action="{{ route('contact.store') }}"]');
-                        if (!form) return;
-                        form.addEventListener('submit', function (e) {
-                            e.preventDefault();
-                            var f = this;
-                            grecaptcha.ready(function () {
-                                grecaptcha.execute('{{ $recaptchaSiteKey }}', { action: 'contact' }).then(function (token) {
-                                    document.getElementById('g-recaptcha-response-contact').value = token;
-                                    f.submit();
-                                });
+                    grecaptcha.ready(function () {
+                        setInterval(function () {
+                            grecaptcha.execute('{{ $rcKey }}', { action: 'contact' }).then(function (token) {
+                                var el = document.getElementById('g-recaptcha-response-contact');
+                                if (el) { el.value = token; }
                             });
+                        }, 90000);
+                        grecaptcha.execute('{{ $rcKey }}', { action: 'contact' }).then(function (token) {
+                            var el = document.getElementById('g-recaptcha-response-contact');
+                            if (el) { el.value = token; }
                         });
                     });
                 </script>
             @endif
         @endpush
     @endif
+
+    @push('styles')
+    <style>
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+    @endpush
 
 </x-layouts.frontend>
