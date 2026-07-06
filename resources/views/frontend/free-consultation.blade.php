@@ -55,7 +55,7 @@
                             <label style="display:block;font-size:0.82rem;font-weight:600;color:var(--fg-text);margin-bottom:0.4rem">Budget Range</label>
                             <select name="budget">
                                 <option value="" disabled {{ old('budget') ? '' : 'selected' }}>Select a range…</option>
-                                @foreach(['Under $500','$500 – $2,000','$2,000 – $5,000','$5,000+'] as $b)
+                                @foreach(['$1,000 – $5,000','$5,000 – $15,000','$15,000 – $50,000','$50,000+'] as $b)
                                 <option value="{{ $b }}" {{ old('budget')===$b ? 'selected' : '' }}>{{ $b }}</option>
                                 @endforeach
                             </select>

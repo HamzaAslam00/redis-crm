@@ -234,7 +234,7 @@
                                     style="width:100%;padding:0.7rem 1rem;border-radius:8px;background:var(--fg-body);border:1px solid {{ $errors->has('budget') ? '#EF4444' : 'var(--fg-border)' }};color:var(--fg-heading);font-size:0.9rem;outline:none;box-sizing:border-box;cursor:pointer"
                                 >
                                     <option value="" disabled {{ old('budget') ? '' : 'selected' }}>Select a range…</option>
-                                    @foreach(['Under $500','$500 – $2,000','$2,000 – $5,000','$5,000+'] as $budget)
+                                    @foreach(['$1,000 – $5,000','$5,000 – $15,000','$15,000 – $50,000','$50,000+'] as $budget)
                                         <option value="{{ $budget }}" {{ old('budget') === $budget ? 'selected' : '' }}>{{ $budget }}</option>
                                     @endforeach
                                 </select>

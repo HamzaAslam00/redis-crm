@@ -51,12 +51,12 @@
             <div class="footer-col">
                 <h5>Services</h5>
                 <ul>
-                    <li><a href="{{ route('services') }}">Web Development</a></li>
-                    <li><a href="{{ route('services') }}">Mobile Apps</a></li>
-                    <li><a href="{{ route('services') }}">Digital Marketing</a></li>
-                    <li><a href="{{ route('services') }}">ERP / CMS Systems</a></li>
-                    <li><a href="{{ route('services') }}">AI Applications</a></li>
-                    <li><a href="{{ route('services') }}">Software Dev</a></li>
+                    <li><a href="{{ route('services') }}#web-development">Web Development</a></li>
+                    <li><a href="{{ route('services') }}#mobile-apps">Mobile Apps</a></li>
+                    <li><a href="{{ route('services') }}#digital-marketing">Digital Marketing</a></li>
+                    <li><a href="{{ route('services') }}#erp-cms">ERP / CMS Systems</a></li>
+                    <li><a href="{{ route('services') }}#ai-applications">AI Applications</a></li>
+                    <li><a href="{{ route('services') }}#software-development">Software Dev</a></li>
                 </ul>
             </div>
 
