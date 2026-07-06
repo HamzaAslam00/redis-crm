@@ -48,10 +48,13 @@ body:has(.photo-hero) .site-nav:not(.scrolled) {
     top: 0;
     left: 0;
     right: 0;
+    width: 100%;
     z-index: 100;
     padding: 1rem 0;
     transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, padding 0.2s ease;
     background: transparent;
+    // Prevent nav bar itself from overflowing viewport horizontally
+    overflow-x: clip;
 
     &.scrolled {
         background: var(--fg-nav-scrolled);
@@ -65,6 +68,7 @@ body:has(.photo-hero) .site-nav:not(.scrolled) {
 
 .nav-inner {
     max-width: 1240px;
+    width: 100%;
     margin: 0 auto;
     padding: 0 2rem;
     display: flex;
@@ -72,9 +76,9 @@ body:has(.photo-hero) .site-nav:not(.scrolled) {
     justify-content: space-between;
     gap: 2rem;
 
-    @include responsive(sm) { padding: 0 1.25rem; gap: 1rem; }
+    @include responsive(sm) { padding: 0 1rem; gap: 0.75rem; }
 
-    @media (max-width: 380px) { padding: 0 0.875rem; gap: 0.5rem; }
+    @media (max-width: 400px) { padding: 0 0.75rem; gap: 0.5rem; }
 }
 
 .nav-logo {
@@ -83,8 +87,17 @@ body:has(.photo-hero) .site-nav:not(.scrolled) {
     gap: 0.75rem;
     text-decoration: none;
     flex-shrink: 0;
+    min-width: 0;
 
-    img { height: 38px; width: auto; display: block; }
+    img {
+        height: 36px;
+        width: auto;
+        display: block;
+        max-width: 160px;
+
+        @include responsive(sm) { height: 30px; max-width: 120px; }
+        @media (max-width: 400px) { height: 28px; max-width: 100px; }
+    }
 }
 
 .nav-links {
@@ -124,6 +137,7 @@ body:has(.photo-hero) .site-nav:not(.scrolled) {
     align-items: center;
     gap: 0.75rem;
     flex-shrink: 0;
+    min-width: 0;
 }
 
 .nav-cta-btn {
@@ -138,8 +152,9 @@ body:has(.photo-hero) .site-nav:not(.scrolled) {
     display: none;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
     border-radius: $radius-sm;
     border: 1px solid var(--fg-border);
     background: var(--fg-nav-hamburger);
@@ -177,12 +192,18 @@ body:has(.photo-hero) .site-nav:not(.scrolled) {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-top: 1px solid var(--fg-border);
-    padding: 1.25rem 2rem 2.5rem;
+    padding: 1.25rem 1.25rem 2.5rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    min-height: calc(100dvh - 66px);
+    min-height: calc(100dvh - 60px);
     overflow-y: auto;
+    overflow-x: hidden;
 
-    @include responsive(sm) { padding: 1.25rem 1.25rem 2.5rem; }
+    // Smaller CTA buttons inside mobile menu
+    .btn-primary,
+    .btn-outline {
+        font-size: 0.85rem !important;
+        padding: 0.6rem 1rem !important;
+    }
 
     &__links {
         list-style: none;
