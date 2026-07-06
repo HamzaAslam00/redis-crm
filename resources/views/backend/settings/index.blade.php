@@ -414,7 +414,7 @@
 
                     <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
                         {{-- Test button --}}
-                        <div x-data="{ testing: false, result: '', ok: null }" style="display:flex;align-items:center;gap:0.75rem">
+                        <div x-data="{ testing: false, result: '', ok: null }" style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
                             <button type="button"
                                 @click="testing=true; result=''; ok=null;
                                     fetch('{{ route('admin.settings.whatsapp.test') }}', {
@@ -423,11 +423,12 @@
                                     }).then(r=>r.json()).then(d=>{testing=false;result=d.message;ok=d.success}).catch(()=>{testing=false;result='Request failed.';ok=false})"
                                 :disabled="testing"
                                 class="btn btn-outline"
-                                style="font-size:0.82rem;padding:0.5rem 1rem">
+                                style="font-size:0.82rem;padding:0.5rem 1rem;display:inline-flex;align-items:center;gap:0.4rem">
                                 <i class="ri-whatsapp-line" style="color:#25D366"></i>
-                                <span x-text="testing ? 'Sending…' : 'Send Test Message'"></span>
+                                <span x-show="!testing">Send Test Message</span>
+                                <span x-show="testing" x-cloak>Sending…</span>
                             </button>
-                            <span x-show="result" x-text="result"
+                            <span x-show="result" x-cloak x-text="result"
                                 :style="{ color: ok ? '#34D399' : '#ef4444' }"
                                 style="font-size:0.8rem;font-weight:600"></span>
                         </div>
