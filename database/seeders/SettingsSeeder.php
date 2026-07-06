@@ -26,19 +26,25 @@ class SettingsSeeder extends Seeder
             ['key' => 'social_twitter',        'value' => '',                                                                 'group' => 'general'],
             ['key' => 'social_instagram',      'value' => '',                                                                 'group' => 'general'],
 
-            // SMTP
-            ['key' => 'smtp_host',             'value' => 'smtp.gmail.com',            'group' => 'smtp'],
+            // SMTP — Titan Email (Hostinger)
+            ['key' => 'smtp_host',             'value' => 'smtp.titan.email',          'group' => 'smtp'],
             ['key' => 'smtp_port',             'value' => '465',                       'group' => 'smtp'],
-            ['key' => 'smtp_username',         'value' => 'hamzaaslam016@gmail.com',   'group' => 'smtp'],
-            ['key' => 'smtp_password',         'value' => 'dzlg zpep ndwm lvtw',      'group' => 'smtp'],
+            ['key' => 'smtp_username',         'value' => 'info@redissolution.com',    'group' => 'smtp'],
+            ['key' => 'smtp_password',         'value' => 'gAJFa?_2Cv272p-',           'group' => 'smtp'],
             ['key' => 'smtp_encryption',       'value' => 'ssl',                       'group' => 'smtp'],
-            ['key' => 'smtp_from_address',     'value' => 'hamzaaslam016@gmail.com',   'group' => 'smtp'],
+            ['key' => 'smtp_from_address',     'value' => 'info@redissolution.com',    'group' => 'smtp'],
             ['key' => 'smtp_from_name',        'value' => 'Redis Solution',            'group' => 'smtp'],
 
             // Email recipients
             ['key' => 'mail_to',               'value' => 'info@redissolution.com',                        'group' => 'smtp'],
             ['key' => 'mail_cc',               'value' => 'junikhan209@gmail.com, hamzaaslam016@gmail.com', 'group' => 'smtp'],
             ['key' => 'mail_test_to',          'value' => 'info@redissolution.com',                        'group' => 'smtp'],
+
+            // WhatsApp notifications — UltraMsg
+            ['key' => 'whatsapp_notify_enabled',  'value' => '1',                  'group' => 'whatsapp'],
+            ['key' => 'whatsapp_notify_number',   'value' => '+923493614440',      'group' => 'whatsapp'],
+            ['key' => 'ultramsg_instance',        'value' => 'instance183887',     'group' => 'whatsapp'],
+            ['key' => 'ultramsg_token',           'value' => 'r8yqcm9f26tqm6pq',  'group' => 'whatsapp'],
 
             // reCAPTCHA
             ['key' => 'recaptcha_enabled',     'value' => '0',                         'group' => 'recaptcha'],
