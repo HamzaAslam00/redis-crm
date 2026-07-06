@@ -182,8 +182,8 @@
                         <form action="{{ route('contact.store') }}" method="POST" novalidate @submit.prevent="submit($event)">
                             @csrf
 
-                            {{-- Anti-bot: honeypot --}}
-                            <div style="position:absolute;left:-9999px;top:-9999px;width:0;height:0;overflow:hidden" aria-hidden="true" tabindex="-1">
+                            {{-- Anti-bot: honeypot — display:none stops browser autofill, bots still fill it --}}
+                            <div style="display:none" aria-hidden="true">
                                 <input type="text" name="hp_website" value="" tabindex="-1" autocomplete="off">
                             </div>
 
