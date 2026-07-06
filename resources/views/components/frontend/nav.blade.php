@@ -49,11 +49,8 @@
             <li><a href="{{ route('contact') }}"           class="{{ isActive('contact') }}">Contact</a></li>
             <li><a href="{{ route('free-audit') }}"        class="{{ isActive('free-audit') }}">Free SEO Audit</a></li>
         </ul>
-        <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:0.75rem">
-            <a href="{{ route('free-consultation') }}" class="btn-primary" style="display:inline-flex;justify-content:center">
-                Free Consultation
-            </a>
-            <a href="{{ route('contact') }}" class="btn-outline" style="display:inline-flex;justify-content:center">
+        <div style="margin-top:1.5rem">
+            <a href="{{ route('contact') }}" class="btn-primary" style="display:inline-flex;justify-content:center;width:100%">
                 Get a Quote
             </a>
         </div>
