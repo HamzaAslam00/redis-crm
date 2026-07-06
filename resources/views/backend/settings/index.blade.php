@@ -384,11 +384,11 @@
 
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem">
                         <div>
-                            <label class="form-label">Your WhatsApp Number <span style="color:#ef4444">*</span></label>
+                            <label class="form-label">Receive Notifications On <span style="color:#ef4444">*</span></label>
                             <input type="text" name="whatsapp_notify_number" class="form-control"
                                 value="{{ old('whatsapp_notify_number', setting('whatsapp_notify_number', '')) }}"
-                                placeholder="+923001234567">
-                            <p style="font-size:0.75rem;color:var(--crm-text-muted);margin-top:0.4rem">Include country code, e.g. +923001234567</p>
+                                placeholder="+923493614440">
+                            <p style="font-size:0.75rem;color:var(--crm-text-muted);margin-top:0.4rem">Jo number notifications receive kry — country code ke saath e.g. +923493614440</p>
                         </div>
                         <div>
                             <label class="form-label">UltraMsg Instance ID <span style="color:#ef4444">*</span></label>
@@ -422,8 +422,8 @@
                                         headers:{'Accept':'application/json','X-CSRF-TOKEN':'{{ csrf_token() }}'}
                                     }).then(r=>r.json()).then(d=>{testing=false;result=d.message;ok=d.success}).catch(()=>{testing=false;result='Request failed.';ok=false})"
                                 :disabled="testing"
-                                class="btn btn-outline"
-                                style="font-size:0.82rem;padding:0.5rem 1rem;display:inline-flex;align-items:center;gap:0.4rem">
+                                class="btn btn-secondary"
+                                style="font-size:0.82rem;display:inline-flex;align-items:center;gap:0.4rem">
                                 <i class="ri-whatsapp-line" style="color:#25D366"></i>
                                 <span x-show="!testing">Send Test Message</span>
                                 <span x-show="testing" x-cloak>Sending…</span>
