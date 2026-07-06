@@ -42,7 +42,7 @@ class SettingsSeeder extends Seeder
 
             // WhatsApp notifications — UltraMsg
             ['key' => 'whatsapp_notify_enabled',  'value' => '1',                  'group' => 'whatsapp'],
-            ['key' => 'whatsapp_notify_number',   'value' => '+923169767733',      'group' => 'whatsapp'],
+            ['key' => 'whatsapp_notify_number',   'value' => '+923493614440',      'group' => 'whatsapp'],
             ['key' => 'ultramsg_instance',        'value' => 'instance183887',     'group' => 'whatsapp'],
             ['key' => 'ultramsg_token',           'value' => 'r8yqcm9f26tqm6pq',  'group' => 'whatsapp'],
 
