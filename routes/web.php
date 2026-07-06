@@ -29,7 +29,7 @@ Route::middleware(ApplySeoMeta::class)->group(function (): void {
     Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 });
 
-Route::post('/contact', [ContactSubmitController::class, 'store'])->middleware('throttle:3,60')->name('contact.store');
+Route::post('/contact', [ContactSubmitController::class, 'store'])->middleware('throttle:10,60')->name('contact.store');
 Route::post('/free-audit/analyze', [FreeAuditController::class, 'analyze'])->middleware('throttle:5,60')->name('free-audit.analyze');
 
 /*
