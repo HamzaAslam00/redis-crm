@@ -19,6 +19,8 @@
     <section class="section">
         <div class="container">
 
+            <h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Portfolio Projects</h2>
+
             {{-- Filter tabs --}}
             <div class="filter-tabs" data-gsap-fade>
                 <button class="filter-tab active" data-filter="all" aria-pressed="true">All</button>

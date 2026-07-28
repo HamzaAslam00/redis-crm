@@ -96,7 +96,7 @@
             {{-- Related posts --}}
             @if($related->isNotEmpty())
                 <div style="margin-top:5rem;padding-top:3rem;border-top:1px solid var(--fg-border)">
-                    <h3 style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:var(--fg-heading);margin-bottom:2rem">Related Articles</h3>
+                    <h2 style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700;color:var(--fg-heading);margin-bottom:2rem">Related Articles</h2>
                     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
                         @foreach($related as $rel)
                             <a href="{{ route('blog.show', $rel->slug) }}"
@@ -109,9 +109,9 @@
                                     @if($rel->category)
                                         <span style="font-size:0.7rem;font-weight:700;text-transform:uppercase;color:#FF6400;letter-spacing:0.06em">{{ $rel->category->name }}</span>
                                     @endif
-                                    <h4 style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;color:var(--fg-heading);margin:0.3rem 0 0.4rem;line-height:1.4">
+                                    <h3 style="font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;color:var(--fg-heading);margin:0.3rem 0 0.4rem;line-height:1.4">
                                         {{ Str::limit($rel->title, 65) }}
-                                    </h4>
+                                    </h3>
                                     <span style="font-size:0.77rem;color:var(--fg-text-muted)">{{ $rel->published_at->format('d M Y') }}</span>
                                 </div>
                             </a>
