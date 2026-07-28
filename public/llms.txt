@@ -40,5 +40,6 @@ Laravel, React, Vue.js, Flutter, Node.js, Python, OpenAI, Claude AI, LangChain, 
 ## Contact
 
 - Email: info@redissolution.com
+- Phone: +92 349 3614440
 - Website: https://redissolution.com
 - Location: Rawalpindi, Pakistan

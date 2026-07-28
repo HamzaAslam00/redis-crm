@@ -49,7 +49,7 @@
 
             {{-- Services --}}
             <div class="footer-col">
-                <h4>Services</h4>
+                <h3>Services</h3>
                 <ul>
                     <li><a href="{{ route('services') }}#web-development">Web Development</a></li>
                     <li><a href="{{ route('services') }}#mobile-apps">Mobile Apps</a></li>
@@ -62,7 +62,7 @@
 
             {{-- Company --}}
             <div class="footer-col">
-                <h4>Company</h4>
+                <h3>Company</h3>
                 <ul>
                     <li><a href="{{ route('about') }}">About Us</a></li>
                     <li><a href="{{ route('portfolio') }}">Portfolio</a></li>
@@ -75,14 +75,14 @@
 
             {{-- Legal + Location --}}
             <div class="footer-col">
-                <h4>Legal</h4>
+                <h3>Legal</h3>
                 <ul>
                     <li><a href="{{ route('privacy-policy') }}">Privacy Policy</a></li>
                     <li><a href="{{ route('refund-policy') }}">Refund Policy</a></li>
                     <li><a href="{{ route('faqs') }}">FAQs</a></li>
                 </ul>
 
-                <h4 style="margin-top:1.75rem">Location</h4>
+                <h3 style="margin-top:1.75rem">Location</h3>
                 <p style="font-size:0.82rem;color:rgba(255,255,255,0.72);line-height:1.7">
                     <i class="ri-map-pin-line" style="color:#FF6400;margin-right:0.25rem"></i>
                     {{ setting('company_address','2nd Floor, ABC Plaza, 4th Road, Rawalpindi, Pakistan') }}
