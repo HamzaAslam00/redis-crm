@@ -5,11 +5,11 @@
         <a href="{{ route('home') }}" class="nav-logo">
             <picture>
                 <source srcset="{{ asset('assets/brand/logo-main.webp') }}" type="image/webp">
-                <img src="{{ asset('assets/brand/logo-main-sm.png') }}" alt="Redis Solution" class="logo-light" width="380" height="140" fetchpriority="high">
+                <img src="{{ asset('assets/brand/logo-main-sm.png') }}" alt="Redis Solution" class="logo-light" width="97" height="36" fetchpriority="high">
             </picture>
             <picture>
                 <source srcset="{{ asset('assets/brand/logo-white.webp') }}" type="image/webp">
-                <img src="{{ asset('assets/brand/logo-white-sm.png') }}" alt="Redis Solution" class="logo-dark" width="380" height="140" fetchpriority="high">
+                <img src="{{ asset('assets/brand/logo-white-sm.png') }}" alt="Redis Solution" class="logo-dark" width="97" height="36" fetchpriority="high">
             </picture>
         </a>
 

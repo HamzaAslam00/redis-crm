@@ -90,6 +90,7 @@ body:has(.photo-hero) .site-nav:not(.scrolled) {
     img {
         height: 36px;
         width: auto;
+        aspect-ratio: 380 / 141;
         display: block;
         max-width: 160px;
 

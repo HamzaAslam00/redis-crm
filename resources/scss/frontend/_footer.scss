@@ -60,7 +60,7 @@
 }
 
 .footer-brand {
-    &__logo { display: inline-flex; margin-bottom: 1.25rem; img { height: 36px; } }
+    &__logo { display: inline-flex; margin-bottom: 1.25rem; img { height: 36px; width: auto; aspect-ratio: 380 / 141; } }
     &__tagline { font-size: 0.875rem; color: rgba(255, 255, 255, 0.72); line-height: 1.75; max-width: 280px; margin-bottom: 1.25rem; }
 }
 

@@ -309,7 +309,7 @@
                 </a>
             </div>
             <div class="about-grid__image">
-                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=680&q=80&auto=format&fit=crop" alt="Redis Solution team collaborating on a project" class="about-img" loading="lazy" width="680" height="453">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=548&q=75&auto=format&fit=crop" alt="Redis Solution team collaborating on a project" class="about-img" loading="lazy" width="548" height="365">
                 <div class="about-img-badge">
                     <i class="ri-verified-badge-fill" style="color:#FF6400;font-size:1.75rem"></i>
                     <div>
