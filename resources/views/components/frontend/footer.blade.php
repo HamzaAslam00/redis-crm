@@ -7,7 +7,10 @@
             {{-- Brand col: Logo + tagline + contacts --}}
             <div class="footer-brand">
                 <a href="{{ route('home') }}" class="footer-brand__logo">
-                    <img src="{{ asset('assets/brand/logo-white.png') }}" alt="Redis Solution">
+                    <picture>
+                        <source srcset="{{ asset('assets/brand/logo-white.webp') }}" type="image/webp">
+                        <img src="{{ asset('assets/brand/logo-white-sm.png') }}" alt="Redis Solution" width="380" height="140" loading="lazy">
+                    </picture>
                 </a>
                 <p class="footer-brand__tagline">Your trusted IT partner in Rawalpindi, Pakistan. We build web, mobile and enterprise solutions that scale.</p>
 

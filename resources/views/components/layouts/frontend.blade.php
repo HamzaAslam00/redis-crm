@@ -17,6 +17,9 @@
         {!! JsonLd::generate() !!}
     @endisset
 
+    {{-- Preload first-party CSS as early as possible --}}
+    <link rel="preload" as="style" href="{{ Vite::asset('resources/scss/public.scss') }}">
+
     {{-- Preconnects --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
