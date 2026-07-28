@@ -237,8 +237,8 @@
                     <h3 class="service-card__title">{!! $title !!}</h3>
                     <p class="service-card__desc">{{ $desc }}</p>
                 </div>
-                <a href="{{ route('services') }}#{{ $anchor }}" class="service-card__arrow" aria-label="Learn more about {{ html_entity_decode(strip_tags($title)) }}">
-                    Read More
+                <a href="{{ route('services') }}#{{ $anchor }}" class="service-card__arrow" aria-label="View details: {{ html_entity_decode(strip_tags($title)) }}">
+                    View Details
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:13px;height:13px" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
                 </a>
             </div>
@@ -473,7 +473,7 @@
                 <div class="blog-card__body">
                     <h3 class="blog-card__title"><a href="{{ route('blog.show',$post->slug) }}">{{ $post->title }}</a></h3>
                     <p class="blog-card__excerpt">{{ Str::limit(strip_tags($post->content ?? ''), 120) }}</p>
-                    <a href="{{ route('blog.show',$post->slug) }}" class="blog-card__link" aria-label="Read article: {{ $post->title }}">Read More <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                    <a href="{{ route('blog.show',$post->slug) }}" class="blog-card__link" aria-label="Read article: {{ $post->title }}">Read Article <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
                 </div>
             </article>
             @endforeach
