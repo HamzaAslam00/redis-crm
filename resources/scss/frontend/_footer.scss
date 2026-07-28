@@ -39,7 +39,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.72);
     font-size: 1rem;
     transition: all 0.2s ease;
 
@@ -61,7 +61,7 @@
 
 .footer-brand {
     &__logo { display: inline-flex; margin-bottom: 1.25rem; img { height: 36px; } }
-    &__tagline { font-size: 0.875rem; color: rgba(255, 255, 255, 0.45); line-height: 1.75; max-width: 280px; margin-bottom: 1.25rem; }
+    &__tagline { font-size: 0.875rem; color: rgba(255, 255, 255, 0.72); line-height: 1.75; max-width: 280px; margin-bottom: 1.25rem; }
 }
 
 .footer-contact-list {
@@ -76,7 +76,7 @@
     align-items: center;
     gap: 0.5rem;
     font-size: 0.82rem;
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(255, 255, 255, 0.72);
     text-decoration: none;
     transition: color 0.15s ease;
 
@@ -86,12 +86,12 @@
 }
 
 .footer-col {
-    h5 {
+    h4, h5 {
         font-size: 0.78rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        color: rgba(255, 255, 255, 0.5);
+        color: rgba(255, 255, 255, 0.72);
         margin-bottom: 1rem;
     }
 
@@ -99,7 +99,7 @@
 
     li a {
         font-size: 0.875rem;
-        color: rgba(255, 255, 255, 0.45);
+        color: rgba(255, 255, 255, 0.72);
         text-decoration: none;
         transition: color 0.15s ease;
 
@@ -115,14 +115,14 @@
     align-items: center;
     justify-content: space-between;
     font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.65);
     flex-wrap: wrap;
     gap: 0.5rem;
 }
 
 .footer-crm-link {
     font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.40);
     text-decoration: none;
     transition: color 0.15s ease;
 

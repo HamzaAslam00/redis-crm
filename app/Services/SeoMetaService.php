@@ -6,6 +6,7 @@ use App\Models\SeoPage;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\TwitterCard;
+use Illuminate\Support\Facades\View;
 
 class SeoMetaService
 {
@@ -72,9 +73,9 @@ class SeoMetaService
             TwitterCard::setImage(asset($page->og_image));
         }
 
-        // JSON-LD Schema
+        // JSON-LD Schema — share raw JSON; layout outputs it as <script type="application/ld+json">
         if ($page->schema_json) {
-            SEOMeta::addMeta('schema', $page->schema_json, 'application/ld+json');
+            View::share('_schemaJson', $page->schema_json);
         }
     }
 

@@ -1,0 +1,44 @@
+# Redis Solution Pvt. Ltd.
+
+> Redis Solution is a full-service digital agency based in Rawalpindi, Pakistan. We design, build, and scale AI-powered digital products — from custom AI agents and LLM integrations to full-stack web applications, mobile apps, ERP systems, and digital marketing campaigns.
+
+## About Us
+
+Redis Solution was founded in 2020 with one belief: Pakistan deserves a software company that doesn't cut corners. Today we serve startups, enterprises, and international businesses with cutting-edge technology solutions.
+
+- **Founded:** 2020
+- **Location:** 2nd Floor, Rawalpindi, Pakistan
+- **Team:** 15+ professionals
+- **Clients:** 100+ businesses worldwide
+- **Retention:** 98% client satisfaction
+
+## Services
+
+- [AI Agents & Integrations](https://redissolution.com/services#ai-applications): Custom AI agents (Claude, OpenAI), RAG pipelines, n8n automation, MCP servers
+- [Web Development](https://redissolution.com/services#web-development): Full-stack web applications, SaaS platforms, Laravel, React, Vue.js
+- [Mobile App Development](https://redissolution.com/services#mobile-apps): Cross-platform Flutter apps with native performance
+- [Digital Marketing](https://redissolution.com/services#digital-marketing): SEO, Google Ads, Meta campaigns, social media strategy
+- [Software Development](https://redissolution.com/services#software-development): Custom enterprise software solutions
+- [ERP & CMS Development](https://redissolution.com/services#erp-cms): Custom ERP systems and content management platforms
+
+## Key Pages
+
+- [Home](https://redissolution.com/)
+- [About Us](https://redissolution.com/about)
+- [Services](https://redissolution.com/services)
+- [Portfolio](https://redissolution.com/portfolio)
+- [Blog](https://redissolution.com/blog)
+- [FAQs](https://redissolution.com/faqs)
+- [Contact](https://redissolution.com/contact)
+- [Free SEO Audit](https://redissolution.com/free-audit)
+- [Free Consultation](https://redissolution.com/free-consultation)
+
+## Technologies We Use
+
+Laravel, React, Vue.js, Flutter, Node.js, Python, OpenAI, Claude AI, LangChain, n8n, Docker, AWS, MySQL, Redis, Firebase, TypeScript
+
+## Contact
+
+- Email: info@redissolution.com
+- Website: https://redissolution.com
+- Location: Rawalpindi, Pakistan

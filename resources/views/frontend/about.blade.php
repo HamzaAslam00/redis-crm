@@ -78,7 +78,7 @@
                         <div style="position:relative;padding-bottom:{{ $index < count($milestones)-1 ? '2.5rem' : '0' }}">
                             <div style="position:absolute;left:-2.55rem;top:0.2rem;width:14px;height:14px;border-radius:50%;background:#FF6400;border:3px solid var(--fg-surface)"></div>
                             <span style="display:inline-block;padding:0.2rem 0.65rem;border-radius:99px;background:rgba(255,100,0,0.12);border:1px solid rgba(255,100,0,0.25);color:#FF6400;font-size:0.75rem;font-weight:700;margin-bottom:0.5rem">{{ $m['year'] }}</span>
-                            <h4 style="font-family:'Syne',sans-serif;font-weight:700;color:var(--fg-heading);margin-bottom:0.35rem">{{ $m['title'] }}</h4>
+                            <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--fg-heading);margin-bottom:0.35rem">{{ $m['title'] }}</h3>
                             <p style="color:var(--fg-text-muted);line-height:1.7;font-size:0.95rem">{{ $m['desc'] }}</p>
                         </div>
                         @endforeach

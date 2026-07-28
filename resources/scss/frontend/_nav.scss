@@ -142,6 +142,10 @@ body:has(.photo-hero) .site-nav:not(.scrolled) {
     border-radius: $radius-full !important;
     padding: 0.6rem 1.4rem !important;
     font-size: 0.85rem !important;
+    background: #b84600 !important;
+    border-color: #b84600 !important;
+
+    &:hover { background: #a03d00 !important; border-color: #a03d00 !important; }
 
     @include responsive(lg) { display: none; }
 }

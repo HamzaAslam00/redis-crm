@@ -3,8 +3,8 @@
 
         {{-- Logo --}}
         <a href="{{ route('home') }}" class="nav-logo">
-            <img src="{{ asset('assets/brand/logo-main.png') }}" alt="Redis Solution" class="logo-light">
-            <img src="{{ asset('assets/brand/logo-white.png') }}" alt="Redis Solution" class="logo-dark">
+            <img src="{{ asset('assets/brand/logo-main.png') }}" alt="Redis Solution" class="logo-light" width="1024" height="378">
+            <img src="{{ asset('assets/brand/logo-white.png') }}" alt="Redis Solution" class="logo-dark" width="1024" height="378">
         </a>
 
         {{-- Desktop links --}}
