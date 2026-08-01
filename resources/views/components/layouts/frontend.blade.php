@@ -42,8 +42,12 @@
     <noscript><link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"></noscript>
 
     {{-- Favicon --}}
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" href="{{ asset('assets/brand/favicon-white-32.png') }}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{{ asset('assets/brand/favicon-192.png') }}" sizes="192x192">
     <link rel="apple-touch-icon" href="{{ asset('assets/brand/favicon-apple-white.png') }}">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#FF6400">
 
     {{-- Website CSS --}}
     @vite(['resources/scss/public.scss', 'resources/js/public.js'])

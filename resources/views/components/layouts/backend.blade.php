@@ -7,8 +7,11 @@
     <title>{{ $title ?? config('app.name') }} — CRM</title>
 
     {{-- Favicon --}}
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/png" href="{{ asset('assets/brand/favicon-white-32.png') }}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{{ asset('assets/brand/favicon-white-192.png') }}" sizes="192x192">
     <link rel="apple-touch-icon" href="{{ asset('assets/brand/favicon-apple-white.png') }}">
+    <meta name="theme-color" content="#1A1829">
 
     {{-- Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">

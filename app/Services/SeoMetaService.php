@@ -54,6 +54,7 @@ class SeoMetaService
 
         // Open Graph
         OpenGraph::setSiteName($siteName);
+        OpenGraph::setUrl($page->canonical_url ?: url()->current());
         OpenGraph::setType($page->og_type ?: 'website');
         OpenGraph::setTitle($page->og_title ?: $page->meta_title ?: $siteName);
         if ($page->og_description ?: $page->meta_description) {

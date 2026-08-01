@@ -4,6 +4,7 @@ use App\Http\Controllers\Frontend\BlogController;
 use App\Http\Controllers\Frontend\ContactSubmitController;
 use App\Http\Controllers\Frontend\FreeAuditController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\SitemapController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\ApplySeoMeta;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,7 @@ Route::middleware(ApplySeoMeta::class)->group(function (): void {
     Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 });
 
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::post('/contact', [ContactSubmitController::class, 'store'])->middleware('throttle:10,60')->name('contact.store');
 Route::post('/free-audit/analyze', [FreeAuditController::class, 'analyze'])->middleware('throttle:5,60')->name('free-audit.analyze');
 
