@@ -4,7 +4,7 @@
 
     {{-- Hero --}}
     <section class="photo-hero">
-        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1600&q=80&auto=format&fit=crop" alt="Refund Policy" class="photo-hero__img">
+        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&q=72&auto=format&fit=crop" alt="Refund Policy" fetchpriority="high" class="photo-hero__img">
         <div class="photo-hero__overlay"></div>
         <div class="container photo-hero__content" style="text-align:center">
             <p class="photo-hero__eye">Fair & Transparent</p>

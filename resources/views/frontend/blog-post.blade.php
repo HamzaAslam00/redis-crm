@@ -3,9 +3,9 @@
     {{-- HERO --}}
     <section class="photo-hero">
         @if($post->featured_image)
-            <img src="{{ $post->featured_image }}" alt="{{ $post->title }}" class="photo-hero__img">
+            <img src="{{ $post->featured_image }}" alt="{{ $post->title }}" fetchpriority="high" class="photo-hero__img">
         @else
-            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1600&q=80&auto=format&fit=crop" alt="Blog" class="photo-hero__img">
+            <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1200&q=72&auto=format&fit=crop" alt="Blog" fetchpriority="high" class="photo-hero__img">
         @endif
         <div class="photo-hero__overlay"></div>
         <div class="container photo-hero__content">

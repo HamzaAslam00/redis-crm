@@ -1,7 +1,7 @@
 <x-layouts.frontend title="AI Agents, Integrations & Digital Services — Redis Solution">
 
     <section class="photo-hero">
-        <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1600&q=80&auto=format&fit=crop" alt="AI Services" class="photo-hero__img">
+        <img src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1200&q=72&auto=format&fit=crop" alt="AI Services" fetchpriority="high" class="photo-hero__img">
         <div class="photo-hero__overlay"></div>
         <div class="container photo-hero__content">
             <p class="photo-hero__eye">What We Do</p>

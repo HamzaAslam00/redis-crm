@@ -4,7 +4,7 @@
          PAGE HERO
     ═══════════════════════════════════════════════ --}}
     <section class="photo-hero">
-        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1600&q=80&auto=format&fit=crop" alt="Our Work" class="photo-hero__img">
+        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=72&auto=format&fit=crop" alt="Our Work" fetchpriority="high" class="photo-hero__img">
         <div class="photo-hero__overlay"></div>
         <div class="container photo-hero__content">
             <p class="photo-hero__eye">Case Studies</p>

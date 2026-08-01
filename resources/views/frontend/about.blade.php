@@ -5,9 +5,9 @@
     ═══════════════════════════════════════════════ --}}
     <section class="photo-hero">
         <img
-            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600&q=80&auto=format&fit=crop"
+            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=72&auto=format&fit=crop"
             alt="Redis Solution team"
-            class="photo-hero__img"
+            fetchpriority="high" class="photo-hero__img"
         >
         <div class="photo-hero__overlay"></div>
         <div class="container photo-hero__content">

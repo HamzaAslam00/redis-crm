@@ -356,7 +356,7 @@
 
             <div class="work-bento__featured">
                 <div class="work-bento__featured-img">
-                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=900&q=80&auto=format&fit=crop" alt="PakBazar E-Commerce" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=72&auto=format&fit=crop" alt="PakBazar E-Commerce" loading="lazy">
                 </div>
                 <div class="work-bento__featured-body">
                     <span class="work-bento__cat" style="background:rgba(255,100,0,0.1);color:#FF6400;border:1px solid rgba(255,100,0,0.22)">

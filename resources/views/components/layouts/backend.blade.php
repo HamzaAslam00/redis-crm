@@ -8,6 +8,7 @@
 
     {{-- Favicon --}}
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" href="{{ asset('assets/brand/favicon-white-16.png') }}" sizes="16x16">
     <link rel="icon" type="image/png" href="{{ asset('assets/brand/favicon-white-32.png') }}" sizes="32x32">
     <link rel="icon" type="image/png" href="{{ asset('assets/brand/favicon-white-192.png') }}" sizes="192x192">
     <link rel="apple-touch-icon" href="{{ asset('assets/brand/favicon-apple-white.png') }}">

@@ -4,7 +4,7 @@
          PAGE HERO
     ═══════════════════════════════════════════════ --}}
     <section class="photo-hero">
-        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600&q=80&auto=format&fit=crop" alt="Contact us" class="photo-hero__img">
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=72&auto=format&fit=crop" alt="Contact us" fetchpriority="high" class="photo-hero__img">
         <div class="photo-hero__overlay"></div>
         <div class="container photo-hero__content" style="text-align:center">
             <p class="photo-hero__eye">Get in Touch</p>

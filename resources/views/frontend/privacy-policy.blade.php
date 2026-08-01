@@ -4,7 +4,7 @@
 
     {{-- Hero --}}
     <section class="photo-hero">
-        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1600&q=80&auto=format&fit=crop" alt="Privacy Policy" class="photo-hero__img">
+        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&q=72&auto=format&fit=crop" alt="Privacy Policy" fetchpriority="high" class="photo-hero__img">
         <div class="photo-hero__overlay"></div>
         <div class="container photo-hero__content" style="text-align:center">
             <p class="photo-hero__eye">Your Data, Our Responsibility</p>
