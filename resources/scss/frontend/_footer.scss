@@ -107,6 +107,19 @@
     }
 }
 
+.footer-location-heading { margin-top: 1.75rem !important; }
+
+.footer-address {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.7;
+    font-style: normal;
+    display: flex;
+    gap: 0.35rem;
+}
+
+.footer-address__icon { color: $orange; flex-shrink: 0; margin-top: 0.15rem; }
+
 .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.07);
     padding-top: 1.5rem;
@@ -119,6 +132,10 @@
     flex-wrap: wrap;
     gap: 0.5rem;
 }
+
+.footer-bottom__meta { display: flex; align-items: center; gap: 1rem; }
+
+.footer-heart { color: $orange; }
 
 .footer-crm-link {
     font-size: 0.75rem;

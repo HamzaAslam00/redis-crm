@@ -17,17 +17,17 @@
                 <div class="footer-contact-list">
                     @if(setting('company_email'))
                     <a href="mailto:{{ setting('company_email') }}" class="footer-contact-link">
-                        <i class="ri-mail-line"></i> {{ setting('company_email') }}
+                        <i class="ri-mail-line" aria-hidden="true"></i> {{ setting('company_email') }}
                     </a>
                     @endif
                     @if(setting('company_email2'))
                     <a href="mailto:{{ setting('company_email2') }}" class="footer-contact-link">
-                        <i class="ri-mail-line"></i> {{ setting('company_email2') }}
+                        <i class="ri-mail-line" aria-hidden="true"></i> {{ setting('company_email2') }}
                     </a>
                     @endif
                     @if(setting('company_phone'))
                     <a href="tel:{{ preg_replace('/\s+/', '', setting('company_phone')) }}" class="footer-contact-link">
-                        <i class="ri-phone-line"></i> {{ setting('company_phone') }}
+                        <i class="ri-phone-line" aria-hidden="true"></i> {{ setting('company_phone') }}
                     </a>
                     @endif
                 </div>
@@ -85,11 +85,11 @@
                     <li><a href="{{ route('faqs') }}">FAQs</a></li>
                 </ul>
 
-                <h3 style="margin-top:1.75rem">Location</h3>
-                <p style="font-size:0.82rem;color:rgba(255,255,255,0.72);line-height:1.7">
-                    <i class="ri-map-pin-line" style="color:#FF6400;margin-right:0.25rem"></i>
+                <h3 class="footer-location-heading">Location</h3>
+                <address class="footer-address">
+                    <i class="ri-map-pin-line footer-address__icon" aria-hidden="true"></i>
                     {{ setting('company_address','2nd Floor, ABC Plaza, 4th Road, Rawalpindi, Pakistan') }}
-                </p>
+                </address>
             </div>
 
         </div>
@@ -97,8 +97,8 @@
         {{-- Bottom bar --}}
         <div class="footer-bottom">
             <span>&copy; {{ date('Y') }} Redis Solution Pvt. Ltd. All rights reserved.</span>
-            <div style="display:flex;align-items:center;gap:1rem">
-                <span>Built with <span style="color:#FF6400">♥</span> in Pakistan</span>
+            <div class="footer-bottom__meta">
+                <span>Built with <span class="footer-heart">♥</span> in Pakistan</span>
                 <a href="{{ route('login') }}" class="footer-crm-link">CRM</a>
             </div>
         </div>
